@@ -1,5 +1,10 @@
 package main.controller;
 
+/*
+ * @author Gadi Engelsman.
+ * @author Shachar Raz.
+ * */
+
 import main.listeners.LogicListenable;
 import main.listeners.ViewListenable;
 import main.model.Model;

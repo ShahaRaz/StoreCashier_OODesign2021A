@@ -1,5 +1,10 @@
 package main.view;
 
+/*
+ * @author Gadi Engelsman.
+ * @author Shachar Raz.
+ * */
+
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;

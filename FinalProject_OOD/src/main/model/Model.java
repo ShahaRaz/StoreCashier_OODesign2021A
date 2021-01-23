@@ -1,5 +1,10 @@
 package main.model;
 
+/*
+ * @author Gadi Engelsman.
+ * @author Shachar Raz.
+ * */
+
 import main.listeners.LogicListenable;
 
 import java.util.ArrayList;

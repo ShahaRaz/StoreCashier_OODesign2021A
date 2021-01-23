@@ -1,5 +1,10 @@
 package Activation;
 
+/*
+ * @author Gadi Engelsman.
+ * @author Shachar Raz.
+ * */
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import main.controller.Controller;
