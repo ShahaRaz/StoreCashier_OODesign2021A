@@ -27,7 +27,7 @@ public class View {
         BorderPane bpRoot = new BorderPane();
 
         // Btn -> setOnAction ->
-        fireAddNewProduct();
+//        fireAddNewProduct();
 
         Scene scene = new Scene(bpRoot,760*ENLRAGMENT_FACTOR,420*ENLRAGMENT_FACTOR);
         stage.setScene(scene);
