@@ -11,6 +11,8 @@ import main.model.Model;
 import main.model.Product;
 import main.view.View;
 
+import java.util.ArrayList;
+
 public class Controller implements ViewListenable, LogicListenable {
     private Model theModel;
     private View theView;
@@ -35,6 +37,7 @@ public Controller(Model m, View v) {
         theView.notifyProductAdded(p);
     }
 
+<<<<<<< HEAD
     //Model return a massage: The produce rejected.
     @Override
     public void modelRejectedProduct(Product p, String str) {
@@ -54,6 +57,12 @@ public Controller(Model m, View v) {
 	}
 	
 	
+=======
+    @Override
+    public void modelSendProductsList(ArrayList<Product> products) {
+        theView.nofityProductsArrived(products);
+    }
+>>>>>>> refs/remotes/origin/LogicBranch
 
 //    public class Controller implements ChampionshipListenable , ViewListenable {
 //        private Model theModel;
