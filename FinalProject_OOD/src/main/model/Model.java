@@ -53,17 +53,17 @@ public class Model {
         }
     }
 
-<<<<<<< HEAD
+
 	public void removedProduct(Product p) {
 		for (LogicListenable l  : allListeners){
             l.modelRemovedProduct(p);
         }
 	}
-=======
+
     private void fireSendProductsArrToView(ArrayList<Product> products){
         for (LogicListenable l  : allListeners){
             l.modelSendProductsList(products);
         }
     }
->>>>>>> refs/remotes/origin/LogicBranch
+
 }

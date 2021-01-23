@@ -74,16 +74,10 @@ public class View {
 		// show user that the massage that product was successfully added
 	}
 
-<<<<<<< HEAD
 	public void notifyProductRemoved(Product p) {
 		// Display removed massage.
 	}
 
-	
-=======
-    public void notifyProductAdded(Product p) {
-        // show user that the massage that product was successfully added
-    }
 
     public void nofityProductsArrived(ArrayList<Product> products) {
         //send array of products (may also contain only 1 product)
@@ -94,7 +88,7 @@ public class View {
 //        }
 
     }
->>>>>>> refs/remotes/origin/LogicBranch
+
 }
 
 //

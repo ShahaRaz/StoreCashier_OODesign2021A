@@ -37,7 +37,6 @@ public Controller(Model m, View v) {
         theView.notifyProductAdded(p);
     }
 
-<<<<<<< HEAD
     //Model return a massage: The produce rejected.
     @Override
     public void modelRejectedProduct(Product p, String str) {
@@ -57,13 +56,11 @@ public Controller(Model m, View v) {
 	}
 	
 	
-=======
     @Override
     public void modelSendProductsList(ArrayList<Product> products) {
         theView.nofityProductsArrived(products);
     }
->>>>>>> refs/remotes/origin/LogicBranch
-
+    
 //    public class Controller implements ChampionshipListenable , ViewListenable {
 //        private Model theModel;
 //        private View theView;
