@@ -1,9 +1,9 @@
 package main.listeners;
 
-/*
- * @author Gadi Engelsman.
- * @author Shachar Raz.
- * */
+import main.model.Product;
 
 public interface LogicListenable {
+    void modelRejectedProduct(Product p, String str);
+
+    void modelAddedProduct(Product p);
 }

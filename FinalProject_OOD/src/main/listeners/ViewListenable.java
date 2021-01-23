@@ -1,10 +1,8 @@
 package main.listeners;
 
-/*
- * @author Gadi Engelsman.
- * @author Shachar Raz.
- * */
+import main.model.Product;
 
 public interface ViewListenable {
+    public void viewAskToAddProduct(Product p);
 
 }

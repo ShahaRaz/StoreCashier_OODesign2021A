@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
+import main.model.Customer;
+import main.model.Product;
 
 import java.util.ArrayList;
 
@@ -24,12 +26,31 @@ public class View {
 
         BorderPane bpRoot = new BorderPane();
 
+        // Btn -> setOnAction ->
+        fireAddNewProduct();
+
         Scene scene = new Scene(bpRoot,760*ENLRAGMENT_FACTOR,420*ENLRAGMENT_FACTOR);
         stage.setScene(scene);
         stage.show();
     }
 
+    private void fireAddNewProduct(String description, int costToStore, int priceSold, int customerId, String pID) {
 
+        Product addMe = new Product(pID);
+
+        for (ViewListenable l : allListeners){
+            l.viewAskToAddProduct(addMe);
+        }
+    }
+
+
+    public void notifyProductRejected(Product p, String str) {
+        // show user that the massage and explanation
+    }
+
+    public void notifyProductAdded(Product p) {
+        // show user that the massage that product was successfully added
+    }
 }
 
 
