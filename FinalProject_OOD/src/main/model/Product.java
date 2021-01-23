@@ -1,6 +1,7 @@
 package main.model;
 
 public class Product {
+    private long timeAdded;
     private String description;
     private int costToStore;
     private int priceSold;
@@ -9,6 +10,7 @@ public class Product {
 
 
     public Product(String description, int costToStore, int priceSold, Customer customer, String pID) {
+        this.timeAdded = System.currentTimeMillis();
         this.description = description;
         this.costToStore = costToStore;
         this.priceSold = priceSold;
@@ -17,10 +19,11 @@ public class Product {
     }
 
     public Product(String pID) {
+        this.timeAdded = System.currentTimeMillis();
         this.pID = pID;
         this.description = "-1";
         this.costToStore = -1;
-        this.priceSold = -1;
+        this.priceSold = 0;
         this.customer = null;
     }
 
@@ -36,5 +39,9 @@ public class Product {
             return false;
         }
         return true;
+    }
+
+    public long getTimeMilis() {
+        return this.timeAdded;
     }
 }

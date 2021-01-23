@@ -2,7 +2,7 @@ package main.model;
 
 /*
  * @author Gadi Engelsman.
- * @author Shachar Raz.
+ * @author Shahar Raz.
  * */
 
 import main.listeners.LogicListenable;
@@ -50,6 +50,12 @@ public class Model {
     private void fireProductNotGood(Product p,String str) {
         for (LogicListenable l  : allListeners){
             l.modelRejectedProduct(p,str);
+        }
+    }
+
+    private void fireSendProductsArrToView(ArrayList<Product> products){
+        for (LogicListenable l  : allListeners){
+            l.modelSendProductsList(products);
         }
     }
 }
