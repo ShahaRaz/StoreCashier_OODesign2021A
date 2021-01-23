@@ -24,5 +24,6 @@ public class Store {
         productsMap.put(p.getId(),p);
         soldProducts.add(p);
 
+
     }
 }
