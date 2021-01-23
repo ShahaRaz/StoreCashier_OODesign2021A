@@ -6,53 +6,80 @@ package main.view;
  * */
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
-import main.model.Customer;
 import main.model.Product;
 
 import java.util.ArrayList;
 
 public class View {
-    private ArrayList<ViewListenable> allListeners;
-    private static final double ENLRAGMENT_FACTOR = 1; // constant
-    public void registerListener(ViewListenable l) {
-        allListeners.add(l);
-    }
-    public View(Stage stage) {
-        allListeners = new ArrayList<ViewListenable>();
+	private ArrayList<ViewListenable> allListeners;
+	
+	private Button btnAdd;
+	
+	private static final double ENLRAGMENT_FACTOR = 1; // constant
+	private Stage stage;
+	private AddProductView addWindow;
 
+	public void registerListener(ViewListenable l) {
+		allListeners.add(l);
+		
+	}
 
-        BorderPane bpRoot = new BorderPane();
+	public View(Stage stg) {
+		allListeners = new ArrayList<ViewListenable>();
+		this.stage = stg;
+		BorderPane bpRoot = new BorderPane();
 
-        // Btn -> setOnAction ->
+		btnAdd.setOnAction(e -> {
+			addWindow = new AddProductView();
+			stage.setScene(new Scene(addWindow, 500, 500));
+			stage.setTitle("Add Product Saver");
+			stage.show();
+			
+		});
 //        fireAddNewProduct();
 
-        Scene scene = new Scene(bpRoot,760*ENLRAGMENT_FACTOR,420*ENLRAGMENT_FACTOR);
-        stage.setScene(scene);
-        stage.show();
-    }
+		Scene scene = new Scene(bpRoot, 760 * ENLRAGMENT_FACTOR, 420 * ENLRAGMENT_FACTOR);
+		stage.setScene(scene);
+		stage.show();
+		
+	}
 
-    private void fireAddNewProduct(String description, int costToStore, int priceSold, int customerId, String pID) {
+	private void fireAddNewProduct(String description, int costToStore, int priceSold, int customerId, String pID) {
+		
+		
+		Product addMe = new Product(pID);
 
-        Product addMe = new Product(pID);
+		for (ViewListenable l : allListeners) {
+			l.viewAskToAddProduct(addMe);
+		}
+	}
+	
+	private void fireRemoveProduct(String pID) {
+		Product removeMe = new Product(pID);
 
-        for (ViewListenable l : allListeners){
-            l.viewAskToAddProduct(addMe);
-        }
-    }
+		for (ViewListenable l : allListeners) {
+			l.viewAskToRemoveProduct(removeMe);
+		}
+	}
 
+	public void notifyProductRejected(Product p, String str) {
+		// show user that the massage and explanation
+	}
 
-    public void notifyProductRejected(Product p, String str) {
-        // show user that the massage and explanation
-    }
+	public void notifyProductAdded(Product p) {
+		// show user that the massage that product was successfully added
+	}
 
-    public void notifyProductAdded(Product p) {
-        // show user that the massage that product was successfully added
-    }
+	public void notifyProductRemoved(Product p) {
+		// Display removed massage.
+	}
+
+	
 }
-
 
 //
 //// REFERENCE _______

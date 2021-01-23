@@ -52,4 +52,10 @@ public class Model {
             l.modelRejectedProduct(p,str);
         }
     }
+
+	public void removedProduct(Product p) {
+		for (LogicListenable l  : allListeners){
+            l.modelRemovedProduct(p);
+        }
+	}
 }
