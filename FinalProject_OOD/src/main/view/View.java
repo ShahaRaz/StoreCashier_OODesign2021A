@@ -1,13 +1,11 @@
 package main.view;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-
 /*
  * @author Gadi Engelsman.
  * @author Shachar Raz.
  * */
-
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -16,79 +14,61 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
-
 import java.util.ArrayList;
 
-public class View extends GridPane{
+public class View extends GridPane {
 	private ArrayList<ViewListenable> allListeners;
-	
+
 	private HBox hbButtons;
 	private Button btnAdd;
 	private Button btnRemove;
-	
+
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
 	private Stage stage;
 	private AddProductView addWindow;
 
 	public void registerListener(ViewListenable l) {
 		allListeners.add(l);
-		
+
 	}
 
 	public View(Stage stg) {
 		allListeners = new ArrayList<ViewListenable>();
 		this.stage = stg;
+
 		BorderPane bpRoot = new BorderPane();
 		hbButtons = getHBox();
-//		add(btnAdd, 1, 6);
-//        fireAddNewProduct();
+
 		btnAdd = new Button("Add Product");
 		btnAdd.setOnAction(e -> {
-			addWindow = new AddProductView();
-			stage.setScene(new Scene(addWindow, 500, 500));
-			stage.setTitle("Add Product Saver");
-			stage.show();
-			if (addWindow.getTxtFldPrdctBarCode() != null)
+			addWindow = new AddProductView(stage);
+			if (	!addWindow.getTxtFldPrdctBarCode().getText().equals("")
+				||  !addWindow.getTxtFldPrdctBarCode().getText().equals(null))
 				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
 		});
 		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
-			//TODO: add window to remove product.
-			addWindow = new AddProductView();
-			stage.setScene(new Scene(addWindow, 500, 500));
-			stage.setTitle("Add Product Saver");
-			stage.show();
-			if (addWindow.getTxtFldPrdctBarCode() != null)
-				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
+			addWindow = new AddProductView(stage);
+			if (	!addWindow.getTxtFldPrdctBarCode().getText().equals("")
+				||  !addWindow.getTxtFldPrdctBarCode().getText().equals(null))
+				fireRemoveProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
 		});
-		
+
 		hbButtons.getChildren().addAll(btnAdd, btnRemove);
 		Scene scene = new Scene(hbButtons, 760 * ENLRAGMENT_FACTOR, 420 * ENLRAGMENT_FACTOR);
 		stage.setScene(scene);
 		stage.setTitle("Store Saver");
 		stage.show();
-		
+
 	}
 
 	private void fireAddNewProduct(Product addMe) {
-		
 		for (ViewListenable l : allListeners) {
 			l.viewAskToAddProduct(addMe);
 		}
 	}
-	
-	// get new styled hbox
-	private HBox getHBox() {
-		HBox hBox = new HBox(5);
-		hBox.setMinSize(300, 50);
-		hBox.setPadding(new Insets(10, 10, 10, 10));
-		hBox.setAlignment(Pos.CENTER);
-		return hBox;
-	}
-	
-	private void fireRemoveProduct(String pID) {
-		Product removeMe = new Product(pID);
 
+	private void fireRemoveProduct(Product removeMe) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToRemoveProduct(removeMe);
 		}
@@ -106,16 +86,24 @@ public class View extends GridPane{
 		// Display removed massage.
 	}
 
-
-    public void nofityProductsArrived(ArrayList<Product> products) {
-        //send array of products (may also contain only 1 product)
-        //note! the products will be by reference, so don't change them.
-        // access elements ___________
+	public void nofityProductsArrived(ArrayList<Product> products) {
+		// send array of products (may also contain only 1 product)
+		// note! the products will be by reference, so don't change them.
+		// access elements ___________
 //        for (Product p : products){
 //            doSomthingWithP(p)
 //        }
 
-    }
+	}
+
+	// get new styled hbox
+	private HBox getHBox() {
+		HBox hBox = new HBox(5);
+		hBox.setMinSize(300, 50);
+		hBox.setPadding(new Insets(10, 10, 10, 10));
+		hBox.setAlignment(Pos.CENTER);
+		return hBox;
+	}
 
 }
 

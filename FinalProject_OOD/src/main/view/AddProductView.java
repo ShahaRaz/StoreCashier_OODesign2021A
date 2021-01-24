@@ -1,8 +1,13 @@
 package main.view;
 
+/*
+ * @author Gadi Engelsman.
+ * @author Shahar Raz.
+ * */
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,28 +17,38 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class AddProductView extends GridPane {
-	/**
-	 * Variables
-	 */
+
+//	  	Variables
+
 	/* ProductName */
 	private TextField txtFldPrdctName;
 	/* Price */
 	private TextField txtFldPrdctPrice;
 	/* Barcode */
 	private TextField txtFldPrdctBarCode;
-	/* priceToStore */
+	/* PriceToStore */
 	private TextField txtFldPrdctPriceToStore;
 	/* Customer */
 	private TextField txtFldCustomer;
-	/* status */
+	/* Status */
 	private Label lblStatus;
-	/*Add button*/
+	/* Add button */
 	private Button btnAdd;
-	
-	public AddProductView() {
+
+	private Stage stage;
+	private Scene baseScene;
+
+	public AddProductView(Stage stg) {
+		this.stage = stg;
+		baseScene = stg.getScene();
+
 		init();
+		stage.setScene(new Scene(this, 500, 500));
+		stage.setTitle("Store Saver");
+		stage.show();
 	}
 
 	private void init() {
@@ -92,8 +107,11 @@ public class AddProductView extends GridPane {
 		txtFldCustomer.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product's Customer: "), 0, 7);
 		add(txtFldCustomer, 1, 7);
-		
+
 		btnAdd = new Button("Add Product");
+		btnAdd.setOnAction(e -> {
+			stage.setScene(baseScene);
+		});
 		add(btnAdd, 1, 9);
 	}
 
@@ -158,7 +176,6 @@ public class AddProductView extends GridPane {
 	public void setLblStatus(Label lblStatus) {
 		this.lblStatus = lblStatus;
 	}
-	//END Setters & Getters.
-	
-	
+	// END Setters & Getters.
+
 }
