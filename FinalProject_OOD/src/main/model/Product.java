@@ -31,15 +31,12 @@ public class Product {
         return this.pID;
     }
 
-    public boolean isValidProduct() {
-        if (        this.description.equals("-1") ||
-                    this.costToStore == -1 ||
-                    this.priceSold == -1 ||
-                    this.customer == null){
-            return false;
-        }
-        return true;
-    }
+	public boolean isValidProduct() {
+		if (this.description.equals("-1") || this.costToStore == -1 || this.priceSold == -1 || this.customer == null) {
+			return false;
+		}
+		return true;
+	}
 
     public long getTimeMilis() {
         return this.timeAdded;

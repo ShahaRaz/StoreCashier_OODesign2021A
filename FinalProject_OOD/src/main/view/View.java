@@ -1,5 +1,8 @@
 package main.view;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
 /*
  * @author Gadi Engelsman.
  * @author Shachar Raz.
@@ -8,16 +11,20 @@ package main.view;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
 
 import java.util.ArrayList;
 
-public class View {
+public class View extends GridPane{
 	private ArrayList<ViewListenable> allListeners;
 	
+	private HBox hbButtons;
 	private Button btnAdd;
+	private Button btnRemove;
 	
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
 	private Stage stage;
@@ -32,30 +39,51 @@ public class View {
 		allListeners = new ArrayList<ViewListenable>();
 		this.stage = stg;
 		BorderPane bpRoot = new BorderPane();
-
+		hbButtons = getHBox();
+//		add(btnAdd, 1, 6);
+//        fireAddNewProduct();
+		btnAdd = new Button("Add Product");
 		btnAdd.setOnAction(e -> {
 			addWindow = new AddProductView();
 			stage.setScene(new Scene(addWindow, 500, 500));
 			stage.setTitle("Add Product Saver");
 			stage.show();
-			
+			if (addWindow.getTxtFldPrdctBarCode() != null)
+				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
 		});
-//        fireAddNewProduct();
-
-		Scene scene = new Scene(bpRoot, 760 * ENLRAGMENT_FACTOR, 420 * ENLRAGMENT_FACTOR);
+		btnRemove = new Button("Remove Product");
+		btnRemove.setOnAction(e -> {
+			//TODO: add window to remove product.
+			addWindow = new AddProductView();
+			stage.setScene(new Scene(addWindow, 500, 500));
+			stage.setTitle("Add Product Saver");
+			stage.show();
+			if (addWindow.getTxtFldPrdctBarCode() != null)
+				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
+		});
+		
+		hbButtons.getChildren().addAll(btnAdd, btnRemove);
+		Scene scene = new Scene(hbButtons, 760 * ENLRAGMENT_FACTOR, 420 * ENLRAGMENT_FACTOR);
 		stage.setScene(scene);
+		stage.setTitle("Store Saver");
 		stage.show();
 		
 	}
 
-	private void fireAddNewProduct(String description, int costToStore, int priceSold, int customerId, String pID) {
+	private void fireAddNewProduct(Product addMe) {
 		
-		
-		Product addMe = new Product(pID);
-
 		for (ViewListenable l : allListeners) {
 			l.viewAskToAddProduct(addMe);
 		}
+	}
+	
+	// get new styled hbox
+	private HBox getHBox() {
+		HBox hBox = new HBox(5);
+		hBox.setMinSize(300, 50);
+		hBox.setPadding(new Insets(10, 10, 10, 10));
+		hBox.setAlignment(Pos.CENTER);
+		return hBox;
 	}
 	
 	private void fireRemoveProduct(String pID) {
