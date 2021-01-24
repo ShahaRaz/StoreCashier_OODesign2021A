@@ -33,8 +33,6 @@ public class AddProductView extends GridPane {
 	private TextField txtFldPrdctPriceToStore;
 	/* Customer */
 	private TextField txtFldCustomer;
-	/* Status */
-	private Label lblStatus;
 	/* Add button */
 	private Button btnAdd;
 
@@ -55,7 +53,6 @@ public class AddProductView extends GridPane {
 		initRoot();
 		initTitle();
 		initAddProduct();
-		initStatus();
 	}
 
 	private void initRoot() {
@@ -84,27 +81,22 @@ public class AddProductView extends GridPane {
 
 	private void initAddProduct() {
 		txtFldPrdctName = new TextField();
-		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Name: "), 0, 3);
 		add(txtFldPrdctName, 1, 3);
 
 		txtFldPrdctPrice = new TextField();
-		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Price: "), 0, 4);
 		add(txtFldPrdctPrice, 1, 4);
 
 		txtFldPrdctBarCode = new TextField();
-		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 5);
 		add(txtFldPrdctBarCode, 1, 5);
 
 		txtFldPrdctPriceToStore = new TextField();
-		txtFldPrdctPriceToStore.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Store Price: "), 0, 6);
 		add(txtFldPrdctPriceToStore, 1, 6);
 
 		txtFldCustomer = new TextField();
-		txtFldCustomer.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product's Customer: "), 0, 7);
 		add(txtFldCustomer, 1, 7);
 
@@ -113,19 +105,6 @@ public class AddProductView extends GridPane {
 			stage.setScene(baseScene);
 		});
 		add(btnAdd, 1, 9);
-	}
-
-	// init status
-	private void initStatus() {
-		lblStatus = new Label();
-		add(new Label("Status: "), 0, 8);
-		add(lblStatus, 1, 8, 4, 1);
-	}
-
-	// update status
-	public void updateStatus(String status, String color) {
-		lblStatus.setText(status);
-		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
 	}
 
 	// Setters & Getters.
@@ -169,13 +148,6 @@ public class AddProductView extends GridPane {
 		this.txtFldCustomer = txtFldCustomer;
 	}
 
-	public Label getLblStatus() {
-		return lblStatus;
-	}
-
-	public void setLblStatus(Label lblStatus) {
-		this.lblStatus = lblStatus;
-	}
 	// END Setters & Getters.
 
 }

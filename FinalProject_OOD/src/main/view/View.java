@@ -26,6 +26,7 @@ public class View extends GridPane {
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
 	private Stage stage;
 	private AddProductView addWindow;
+	private RemoveProductView removeWindow;
 
 	public void registerListener(ViewListenable l) {
 		allListeners.add(l);
@@ -48,10 +49,10 @@ public class View extends GridPane {
 		});
 		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
-			addWindow = new AddProductView(stage);
-			if (	!addWindow.getTxtFldPrdctBarCode().getText().equals("")
-				||  !addWindow.getTxtFldPrdctBarCode().getText().equals(null))
-				fireRemoveProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
+			removeWindow = new RemoveProductView(stage);
+			if (	!removeWindow.getTxtFldPrdctBarCode().getText().equals("")
+				||  !removeWindow.getTxtFldPrdctBarCode().getText().equals(null))
+				fireRemoveProduct(new Product(removeWindow.getTxtFldPrdctBarCode().getText()));
 		});
 
 		hbButtons.getChildren().addAll(btnAdd, btnRemove);
