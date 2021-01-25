@@ -2,7 +2,7 @@ package main.controller;
 
 /*
  * @author Gadi Engelsman.
- * @author Shachar Raz.
+ * @author Shahar Raz.
  * */
 
 import main.listeners.LogicListenable;

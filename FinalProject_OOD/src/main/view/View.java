@@ -2,15 +2,18 @@ package main.view;
 
 /*
  * @author Gadi Engelsman.
- * @author Shachar Raz.
+ * @author Shahar Raz.
  * */
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
@@ -37,26 +40,34 @@ public class View extends GridPane {
 		allListeners = new ArrayList<ViewListenable>();
 		this.stage = stg;
 
-		BorderPane bpRoot = new BorderPane();
 		hbButtons = getHBox();
+		TabPane tbPane = new TabPane();
 
-		btnAdd = new Button("Add Product");
-		btnAdd.setOnAction(e -> {
-			addWindow = new AddProductView(stage);
-			if (	!addWindow.getTxtFldPrdctBarCode().getText().equals("")
-				||  !addWindow.getTxtFldPrdctBarCode().getText().equals(null))
-				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
-		});
-		btnRemove = new Button("Remove Product");
-		btnRemove.setOnAction(e -> {
-			removeWindow = new RemoveProductView(stage);
-			if (	!removeWindow.getTxtFldPrdctBarCode().getText().equals("")
-				||  !removeWindow.getTxtFldPrdctBarCode().getText().equals(null))
-				fireRemoveProduct(new Product(removeWindow.getTxtFldPrdctBarCode().getText()));
-		});
-
-		hbButtons.getChildren().addAll(btnAdd, btnRemove);
-		Scene scene = new Scene(hbButtons, 760 * ENLRAGMENT_FACTOR, 420 * ENLRAGMENT_FACTOR);
+		Tab tab1 = new Tab("Add Product", new AddProductView(stage));
+		Tab tab2 = new Tab("Remove Product", new RemoveProductView(stage));
+		Tab tab3 = new Tab("Sum", new AddProductView(stage));
+		tbPane.getTabs().add(tab1);
+		tbPane.getTabs().add(tab2);
+		tbPane.getTabs().add(tab3);
+		
+//		btnAdd = new Button("Add Product");
+//		btnAdd.setOnAction(e -> {
+//			addWindow = new AddProductView(stage);
+//			if (	!addWindow.getTxtFldPrdctBarCode().getText().equals("")
+//				||  !addWindow.getTxtFldPrdctBarCode().getText().equals(null))
+//				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
+//		});
+//		btnRemove = new Button("Remove Product");
+//		btnRemove.setOnAction(e -> {
+//			removeWindow = new RemoveProductView(stage);
+//			if (	!removeWindow.getTxtFldPrdctBarCode().getText().equals("")
+//				||  !removeWindow.getTxtFldPrdctBarCode().getText().equals(null))
+//				fireRemoveProduct(new Product(removeWindow.getTxtFldPrdctBarCode().getText()));
+//		});
+//
+//		hbButtons.getChildren().addAll(btnAdd, btnRemove);
+		hbButtons.getChildren().add(tbPane);
+		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
 		stage.setScene(scene);
 		stage.setTitle("Store Saver");
 		stage.show();

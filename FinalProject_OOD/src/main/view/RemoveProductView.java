@@ -20,6 +20,8 @@ public class RemoveProductView extends GridPane {
 	private TextField txtFldPrdctBarCode;
 	/* Remove button */
 	private Button btnRemove;
+	/* Status */
+	private Label lblStatus;
 
 	private Stage stage;
 	private Scene baseScene;
@@ -38,6 +40,7 @@ public class RemoveProductView extends GridPane {
 		initRoot();
 		initTitle();
 		initRemoveProduct();
+		initStatus();
 	}
 
 	private void initRoot() {
@@ -66,14 +69,28 @@ public class RemoveProductView extends GridPane {
 
 	private void initRemoveProduct() {
 		txtFldPrdctBarCode = new TextField();
+		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 3);
 		add(txtFldPrdctBarCode, 1, 3);
-		
+
 		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
 			stage.setScene(baseScene);
 		});
 		add(btnRemove, 1, 9);
+	}
+
+	// init status
+	private void initStatus() {
+		lblStatus = new Label();
+		add(new Label("Status: "), 0, 8);
+		add(lblStatus, 1, 8, 4, 1);
+	}
+
+	// update status
+	public void updateStatus(String status, String color) {
+		lblStatus.setText(status);
+		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
 	}
 
 	public TextField getTxtFldPrdctBarCode() {
@@ -107,5 +124,13 @@ public class RemoveProductView extends GridPane {
 	public void setBaseScene(Scene baseScene) {
 		this.baseScene = baseScene;
 	}
-	
+
+	public Label getLblStatus() {
+		return lblStatus;
+	}
+
+	public void setLblStatus(Label lblStatus) {
+		this.lblStatus = lblStatus;
+	}
+
 }

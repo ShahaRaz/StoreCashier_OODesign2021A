@@ -2,7 +2,7 @@ package Activation;
 
 /*
  * @author Gadi Engelsman.
- * @author Shachar Raz.
+ * @author Shahar Raz.
  * */
 
 import javafx.application.Application;
