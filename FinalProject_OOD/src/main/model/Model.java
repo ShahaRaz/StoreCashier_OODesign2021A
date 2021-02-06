@@ -1,5 +1,7 @@
 package main.model;
 
+import main.interfaces.saleEventListener;
+
 /*
  * @author Gadi Engelsman.
  * @author Shahar Raz.
@@ -59,6 +61,12 @@ public class Model {
 	private void fireSendProductsArrToView(ArrayList<Product> products) {
 		for (LogicListenable l : allListeners) {
 			l.modelSendProductsList(products);
+		}
+	}
+	
+	private void fireSaleForCustomer( ) {
+		for (LogicListenable l : allListeners) {
+			store.notifyAllCustomers();
 		}
 	}
 

@@ -2,57 +2,71 @@ package main.model;
 
 import java.util.*;
 
+import main.interfaces.saleEventListener;
+
 public class Store {
-    HashMap<String,Product> productsMap;
-    ArrayList<Product> soldProducts;
-    ArrayList<Product> inventory; // maybe from file..? needed?
+	private String storeName;
 
-    public Store() {
-        this.productsMap =  new HashMap();
-        soldProducts = new ArrayList<Product>();
-        inventory = new ArrayList<Product>();
+	public HashMap<String, Product> productsMap;
+	private ArrayList<saleEventListener> subscribedCustomers;
+	ArrayList<Product> soldProducts;
+	ArrayList<Product> inventory; // maybe from file..? needed?
 
-    }
-    public Product getProductDetails(String id){
-        return productsMap.get(id); // if not exists. return null
+	public Store() {
+		this.productsMap = new HashMap<String, Product>();
+		soldProducts = new ArrayList<Product>();
+		inventory = new ArrayList<Product>();
+	}
 
-    }
+	public String getStoreName() {
+		return storeName;
+	}
 
-    public void addNewProduct(Product p) {
-        productsMap.put(p.getId(),p);
-        soldProducts.add(p);
-    }
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
 
-    public void orderProducts(String methodOfOrdering){
-        switch(methodOfOrdering){
+	public Product getProductDetails(String id) {
+		return productsMap.get(id); // if not exists. return null
+	}
+
+	public void addNewProduct(Product p) {
+		productsMap.put(p.getId(), p);
+		soldProducts.add(p);
+	}
+
+	public void orderProducts(String methodOfOrdering) {
+		switch (methodOfOrdering) {
 //            case "ABup":
 //                Collections.sort(productsMap,compareByPID);
-            // TODO: 23/01/2021 continue & fixme 
+		// TODO: 23/01/2021 continue & fixme
+		}
+	}
+	
+	//Implement Observable Pattern, notify all the subscribed customers.
+	public void notifyAllCustomers() {
+		for (saleEventListener customer : subscribedCustomers) {
+			customer.onSaleEvent(this);
+		}
+	}
 
+	// Inner Comparators for Sorts //
+	public static Comparator<String> compareByPID = new Comparator<String>() {
+		@Override
+		public int compare(String s1, String s2) {
+			return s1.compareTo(s2);
+		}
+	};
 
-        }
+	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
+		@Override
+		public int compare(Product p1, Product p2) {
+			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
+		}
 
-
-    }
-    // Inner Comparators for Sorts //
-    public static Comparator<String> compareByPID = new Comparator<String>() {
-        @Override
-        public int compare(String s1, String s2) {
-            return s1.compareTo(s2);
-        }
-    };
-
-    public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
-        @Override
-        public int compare(Product p1, Product p2) {
-            return (int)(p1.getTimeMilis()-p2.getTimeMilis());
-        }
-
-
-    };
-
-
-
+	};
+	
+	
 
 //    public static Comparator<Flight> compareByDepDate = new Comparator<Flight>() {
 //        @Override

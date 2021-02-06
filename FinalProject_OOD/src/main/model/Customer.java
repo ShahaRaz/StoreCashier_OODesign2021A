@@ -1,6 +1,8 @@
 package main.model;
 
-public class Customer {
+import main.interfaces.saleEventListener;
+
+public class Customer implements saleEventListener{
 	private String name;
 	private String mobileNumber;
 	private Boolean isAcceptingPromotions;
@@ -33,6 +35,13 @@ public class Customer {
 
 	public void setIsAcceptingPromotions(Boolean isAcceptingPromotions) {
 		this.isAcceptingPromotions = isAcceptingPromotions;
+	}
+
+	// Implement the Observable interface.
+	@Override
+	public void onSaleEvent(Store store) {
+		// TODO: For now, create a console message, need to decide if we want to display with a new window or as a status reference.
+		System.out.println(name + "! There is sale on '"+store.getStoreName() + "'");
 	}
 	
 	

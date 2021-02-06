@@ -10,10 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
@@ -22,20 +20,19 @@ import main.model.Store;
 import java.util.ArrayList;
 
 public class View extends GridPane {
-	private ArrayList<ViewListenable> allListeners;
-
-	private HBox hbButtons;
-	private Button btnAdd;
-	private Button btnRemove;
-
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
+	
+	private ArrayList<ViewListenable> allListeners;
+	private HBox hbButtons;
 	private Stage stage;
-	private AddProductView addWindow;
-	private RemoveProductView removeWindow;
+	
+//	private AddProductView addWindow;
+//	private RemoveProductView removeWindow;
+//	private Button btnAdd;
+//	private Button btnRemove;
 
 	public void registerListener(ViewListenable l) {
 		allListeners.add(l);
-
 	}
 
 	public View(Stage stg) {
@@ -45,29 +42,12 @@ public class View extends GridPane {
 		hbButtons = getHBox();
 		
 		TabPane tbPane = new TabPane();
-		Tab tab1 = new Tab("Add Product", new AddProductView(stage));
-		Tab tab2 = new Tab("Remove Product", new RemoveProductView(stage));
-		Tab tab3 = new Tab("Table Of All Products", new ProductTableView(Store.productsMap, stage));
+		Tab tab1 = new Tab("Add Product", new AddProductView(stage, this));
+		Tab tab2 = new Tab("Remove Product", new RemoveProductView(stage, this));
+		Tab tab3 = new Tab("Table Of All Products", new ProductTableView(stage));
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);
-		
-//		btnAdd = new Button("Add Product");
-//		btnAdd.setOnAction(e -> {
-//			addWindow = new AddProductView(stage);
-//			if (	!addWindow.getTxtFldPrdctBarCode().getText().equals("")
-//				||  !addWindow.getTxtFldPrdctBarCode().getText().equals(null))
-//				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
-//		});
-//		btnRemove = new Button("Remove Product");
-//		btnRemove.setOnAction(e -> {
-//			removeWindow = new RemoveProductView(stage);
-//			if (	!removeWindow.getTxtFldPrdctBarCode().getText().equals("")
-//				||  !removeWindow.getTxtFldPrdctBarCode().getText().equals(null))
-//				fireRemoveProduct(new Product(removeWindow.getTxtFldPrdctBarCode().getText()));
-//		});
-//
-//		hbButtons.getChildren().addAll(btnAdd, btnRemove);
 
 		hbButtons.getChildren().add(tbPane);
 		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
@@ -77,13 +57,13 @@ public class View extends GridPane {
 
 	}
 
-	private void fireAddNewProduct(Product addMe) {
+	public void fireAddNewProduct(Product addMe) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToAddProduct(addMe);
 		}
 	}
 
-	private void fireRemoveProduct(Product removeMe) {
+	public void fireRemoveProduct(Product removeMe) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToRemoveProduct(removeMe);
 		}
@@ -120,7 +100,23 @@ public class View extends GridPane {
 		return hBox;
 	}
 
-}
+}		
+//		btnAdd = new Button("Add Product");
+//		btnAdd.setOnAction(e -> {
+//			addWindow = new AddProductView(stage);
+//			if (	!addWindow.getTxtFldPrdctBarCode().getText().equals("")
+//				||  !addWindow.getTxtFldPrdctBarCode().getText().equals(null))
+//				fireAddNewProduct(new Product(addWindow.getTxtFldPrdctBarCode().getText()));
+//		});
+//		btnRemove = new Button("Remove Product");
+//		btnRemove.setOnAction(e -> {
+//			removeWindow = new RemoveProductView(stage);
+//			if (	!removeWindow.getTxtFldPrdctBarCode().getText().equals("")
+//				||  !removeWindow.getTxtFldPrdctBarCode().getText().equals(null))
+//				fireRemoveProduct(new Product(removeWindow.getTxtFldPrdctBarCode().getText()));
+//		});
+//
+//		hbButtons.getChildren().addAll(btnAdd, btnRemove);
 
 //
 //// REFERENCE _______

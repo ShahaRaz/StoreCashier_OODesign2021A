@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class RemoveProductView extends GridPane {
+	private View view;
 	/* Barcode */
 	private TextField txtFldPrdctBarCode;
 	/* Remove button */
@@ -26,8 +27,9 @@ public class RemoveProductView extends GridPane {
 	private Stage stage;
 	private Scene baseScene;
 
-	public RemoveProductView(Stage stg) {
+	public RemoveProductView(Stage stg, View view) {
 		this.stage = stg;
+		this.view = view;
 		baseScene = stg.getScene();
 
 		init();
@@ -75,7 +77,9 @@ public class RemoveProductView extends GridPane {
 
 		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
-			stage.setScene(baseScene);
+			cleanValueFields();
+//			stage.setScene(baseScene);
+			// TODO: Remove the data.
 		});
 		add(btnRemove, 1, 9);
 	}
@@ -131,6 +135,13 @@ public class RemoveProductView extends GridPane {
 
 	public void setLblStatus(Label lblStatus) {
 		this.lblStatus = lblStatus;
+	}
+
+	// END Setters & Getters.
+
+	// clean Value Fields
+	public void cleanValueFields() {
+		txtFldPrdctBarCode.setText("");
 	}
 
 }
