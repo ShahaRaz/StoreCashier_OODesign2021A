@@ -17,6 +17,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
+import main.model.Store;
+
 import java.util.ArrayList;
 
 public class View extends GridPane {
@@ -41,11 +43,11 @@ public class View extends GridPane {
 		this.stage = stg;
 
 		hbButtons = getHBox();
+		
 		TabPane tbPane = new TabPane();
-
 		Tab tab1 = new Tab("Add Product", new AddProductView(stage));
 		Tab tab2 = new Tab("Remove Product", new RemoveProductView(stage));
-		Tab tab3 = new Tab("Sum", new AddProductView(stage));
+		Tab tab3 = new Tab("Table Of All Products", new ProductTableView(Store.productsMap, stage));
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);
@@ -66,6 +68,7 @@ public class View extends GridPane {
 //		});
 //
 //		hbButtons.getChildren().addAll(btnAdd, btnRemove);
+
 		hbButtons.getChildren().add(tbPane);
 		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
 		stage.setScene(scene);

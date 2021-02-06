@@ -18,11 +18,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.model.Product;
 
 public class AddProductView extends GridPane {
 
 //	  	Variables
 
+	private View view;
 	/* ProductName */
 	private TextField txtFldPrdctName;
 	/* Price */
@@ -41,9 +43,9 @@ public class AddProductView extends GridPane {
 	private Stage stage;
 //	private Scene baseScene;
 
-	public AddProductView(Stage stg) {
+	public AddProductView(Stage stg, View view) {
 		this.stage = stg;
-//		baseScene = stg.getScene();
+		this.view = view;
 
 		init();
 		stage.setScene(new Scene(this, 500, 500));
@@ -110,8 +112,14 @@ public class AddProductView extends GridPane {
 
 		btnAdd = new Button("Add Product");
 		btnAdd.setOnAction(e -> {
+			cleanValueFields();
 //			stage.setScene(baseScene);
 			// TODO: Store the data.
+			String desc= txtFldPrdctName.getText().equals("")? "NA" : txtFldPrdctPriceToStore.getText();
+			int priceToStore = Integer.parseInt(txtFldPrdctPriceToStore.getText().equals("")? "0" : txtFldPrdctPriceToStore.getText());
+			int priceSold = Integer.parseInt(txtFldPrdctPrice.getText().equals("")? "0" : txtFldPrdctPriceToStore.getText());
+			String id = txtFldPrdctBarCode.getText().equals("")? "0000" : txtFldPrdctPriceToStore.getText();
+			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, null, id));
 		});
 		add(btnAdd, 1, 9);
 	}
@@ -177,7 +185,14 @@ public class AddProductView extends GridPane {
 	public void setLblStatus(Label lblStatus) {
 		this.lblStatus = lblStatus;
 	}
-
 	// END Setters & Getters.
 
+	// clean Value Fields
+	public void cleanValueFields() {
+		txtFldCustomer.setText("");
+		txtFldPrdctBarCode.setText("");
+		txtFldPrdctName.setText("");
+		txtFldPrdctPriceToStore.setText("");
+		txtFldCustomer.setText("");
+	}
 }
