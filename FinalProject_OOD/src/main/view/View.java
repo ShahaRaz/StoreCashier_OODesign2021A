@@ -21,13 +21,13 @@ import java.util.ArrayList;
 
 public class View extends GridPane {
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
-	
+
 	private ArrayList<ViewListenable> allListeners;
 	private HBox hbButtons;
 	private Stage stage;
-	
-//	private AddProductView addWindow;
-//	private RemoveProductView removeWindow;
+
+	private AddProductView addWindow;
+	private RemoveProductView removeWindow;
 //	private Button btnAdd;
 //	private Button btnRemove;
 
@@ -40,10 +40,10 @@ public class View extends GridPane {
 		this.stage = stg;
 
 		hbButtons = getHBox();
-		
+
 		TabPane tbPane = new TabPane();
-		Tab tab1 = new Tab("Add Product", new AddProductView(stage, this));
-		Tab tab2 = new Tab("Remove Product", new RemoveProductView(stage, this));
+		Tab tab1 = new Tab("Add Product", addWindow = new AddProductView(stage, this));
+		Tab tab2 = new Tab("Remove Product", removeWindow = new RemoveProductView(stage, this));
 		Tab tab3 = new Tab("Table Of All Products", new ProductTableView(stage));
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
@@ -54,7 +54,6 @@ public class View extends GridPane {
 		stage.setScene(scene);
 		stage.setTitle("Store Saver");
 		stage.show();
-
 	}
 
 	public void fireAddNewProduct(Product addMe) {
@@ -71,14 +70,22 @@ public class View extends GridPane {
 
 	public void notifyProductRejected(Product p, String str) {
 		// show user that the massage and explanation
+		addWindow.updateStatus(str, "red");
+	}
+
+	public void notifyProductNotExist(Product p, String str) {
+		// show user that the massage and explanation
+		removeWindow.updateStatus(str, "red");
 	}
 
 	public void notifyProductAdded(Product p) {
 		// show user that the massage that product was successfully added
+		addWindow.updateStatus("The product " + p.getId() + " added!", "green");
 	}
 
 	public void notifyProductRemoved(Product p) {
 		// Display removed massage.
+		removeWindow.updateStatus("The product " + p.getId() + " removed!", "green");
 	}
 
 	public void nofityProductsArrived(ArrayList<Product> products) {
@@ -100,7 +107,7 @@ public class View extends GridPane {
 		return hBox;
 	}
 
-}		
+}
 //		btnAdd = new Button("Add Product");
 //		btnAdd.setOnAction(e -> {
 //			addWindow = new AddProductView(stage);

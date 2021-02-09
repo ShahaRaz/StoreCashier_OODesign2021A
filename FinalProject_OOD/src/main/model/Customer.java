@@ -7,8 +7,14 @@ public class Customer implements saleEventListener{
 	private String mobileNumber;
 	private Boolean isAcceptingPromotions;
 
-	public Customer(String name, String mobileNumber, Boolean isAcceptingPromotions) {
+	public Customer(String name) {
 		this.name = name;
+		this.mobileNumber = "0";
+		this.isAcceptingPromotions = false;
+	}
+	
+	public Customer(String name, String mobileNumber, Boolean isAcceptingPromotions) {
+		this(name);
 		this.mobileNumber = mobileNumber;
 		this.isAcceptingPromotions = isAcceptingPromotions;
 	}

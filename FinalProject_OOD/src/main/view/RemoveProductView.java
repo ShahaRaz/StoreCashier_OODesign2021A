@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.model.Product;
 
 public class RemoveProductView extends GridPane {
 	private View view;
@@ -77,9 +78,9 @@ public class RemoveProductView extends GridPane {
 
 		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
+			String pID = getTxtFldPrdctBarCode().getText();
+			view.fireRemoveProduct(new Product(pID));
 			cleanValueFields();
-//			stage.setScene(baseScene);
-			// TODO: Remove the data.
 		});
 		add(btnRemove, 1, 9);
 	}

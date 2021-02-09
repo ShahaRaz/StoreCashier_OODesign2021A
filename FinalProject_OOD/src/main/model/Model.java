@@ -26,7 +26,7 @@ public class Model {
 
 	public void addProduct(Product p) {
 		if (store.getProductDetails(p.getId()) == null) { // product isn't yet in hashMap
-			if (p.isValidProduct()) {
+			if (p.isValidProduct(this)) {
 				store.addNewProduct(p);
 				fireProductAdded(p);
 			} else {
@@ -46,16 +46,23 @@ public class Model {
 		}
 	}
 
-	private void fireProductNotGood(Product p, String str) {
+	public void fireProductNotGood(Product p, String str) {
 		for (LogicListenable l : allListeners) {
 			l.modelRejectedProduct(p, str);
 		}
 	}
 
 	public void removedProduct(Product p) {
-		for (LogicListenable l : allListeners) {
-			l.modelRemovedProduct(p);
-		}
+//		if (store.productsMap.get(p.getId()).equals(null)) {
+//			for (LogicListenable l : allListeners) {
+//				l.notifyProductNotExist(p, "The product " + p.getId() + " not exist!");
+//			}
+//		} else {
+			for (LogicListenable l : allListeners) {
+				l.modelRemovedProduct(p);
+			}
+
+//		}
 	}
 
 	private void fireSendProductsArrToView(ArrayList<Product> products) {
@@ -63,8 +70,8 @@ public class Model {
 			l.modelSendProductsList(products);
 		}
 	}
-	
-	private void fireSaleForCustomer( ) {
+
+	private void fireSaleForCustomer() {
 		for (LogicListenable l : allListeners) {
 			store.notifyAllCustomers();
 		}

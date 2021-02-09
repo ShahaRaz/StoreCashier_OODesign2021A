@@ -9,4 +9,5 @@ public interface LogicListenable {
     void modelAddedProduct(Product p);
 	void modelRemovedProduct(Product p);
     void modelSendProductsList(ArrayList<Product> products);
+	void notifyProductNotExist(Product p, String string);
 }

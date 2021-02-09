@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.model.Customer;
 import main.model.Product;
 
 public class AddProductView extends GridPane {
@@ -35,6 +36,8 @@ public class AddProductView extends GridPane {
 	private TextField txtFldPrdctPriceToStore;
 	/* Customer */
 	private TextField txtFldCustomer;
+	//TODO: Add TaxtField of phoneNum and isAcceptingPromotions.
+	
 	/* Status */
 	private Label lblStatus;
 	/* Add button */
@@ -112,14 +115,14 @@ public class AddProductView extends GridPane {
 
 		btnAdd = new Button("Add Product");
 		btnAdd.setOnAction(e -> {
-			cleanValueFields();
-//			stage.setScene(baseScene);
 			// TODO: Store the data.
-			String desc= txtFldPrdctName.getText().equals("")? "NA" : txtFldPrdctPriceToStore.getText();
-			int priceToStore = Integer.parseInt(txtFldPrdctPriceToStore.getText().equals("")? "0" : txtFldPrdctPriceToStore.getText());
-			int priceSold = Integer.parseInt(txtFldPrdctPrice.getText().equals("")? "0" : txtFldPrdctPriceToStore.getText());
-			String id = txtFldPrdctBarCode.getText().equals("")? "0000" : txtFldPrdctPriceToStore.getText();
-			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, null, id));
+			String desc = txtFldPrdctName.getText().equals("") ? "NA" : txtFldPrdctPriceToStore.getText();
+			int priceToStore = Integer.parseInt(txtFldPrdctPriceToStore.getText().equals("") ? "0" : txtFldPrdctPriceToStore.getText());
+			int priceSold = Integer.parseInt(txtFldPrdctPrice.getText().equals("") ? "0": txtFldPrdctPriceToStore.getText());
+			String id = txtFldPrdctBarCode.getText().equals("") ? "0000" : txtFldPrdctPriceToStore.getText();
+			Customer c = new Customer(txtFldCustomer.getText());
+			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, c, id));
+			cleanValueFields();
 		});
 		add(btnAdd, 1, 9);
 	}
@@ -193,6 +196,6 @@ public class AddProductView extends GridPane {
 		txtFldPrdctBarCode.setText("");
 		txtFldPrdctName.setText("");
 		txtFldPrdctPriceToStore.setText("");
-		txtFldCustomer.setText("");
+		txtFldPrdctPrice.setText("");
 	}
 }
