@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
-import main.model.Store;
 
 import java.util.ArrayList;
 
@@ -28,8 +27,6 @@ public class View extends GridPane {
 
 	private AddProductView addWindow;
 	private RemoveProductView removeWindow;
-//	private Button btnAdd;
-//	private Button btnRemove;
 
 	public void registerListener(ViewListenable l) {
 		allListeners.add(l);
