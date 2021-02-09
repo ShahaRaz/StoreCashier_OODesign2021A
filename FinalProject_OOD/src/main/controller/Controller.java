@@ -1,6 +1,6 @@
 package main.controller;
 
-/*
+/**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  * */
@@ -58,6 +58,12 @@ public class Controller implements ViewListenable, LogicListenable {
 	@Override
 	public void modelSendProductsList(ArrayList<Product> products) {
 		theView.nofityProductsArrived(products);
+	}
+
+	@Override
+	public void notifyProductNotExist(Product p, String str) {
+		// TODO Auto-generated method stub
+		theView.notifyProductNotExist(p, str);
 	}
 
 //    public class Controller implements ChampionshipListenable , ViewListenable {

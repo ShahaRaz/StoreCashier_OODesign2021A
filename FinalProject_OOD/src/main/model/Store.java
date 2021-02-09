@@ -26,6 +26,14 @@ public class Store {
 		this.storeName = storeName;
 	}
 
+	public void setProductsMap(HashMap<String, Product> productsMap) {
+		this.productsMap = productsMap;
+	}
+	
+	public HashMap<String, Product> getProductsMap() {
+		return this.productsMap;
+	}
+
 	public Product getProductDetails(String id) {
 		return productsMap.get(id); // if not exists. return null
 	}
