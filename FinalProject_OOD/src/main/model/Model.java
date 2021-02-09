@@ -34,7 +34,7 @@ public class Model {
 			}
 			return;
 		}
-
+		// note! (got here if) product is already in hashmap already, which means it's valid
 		store.addNewProduct(p);
 		fireProductAdded(p);
 

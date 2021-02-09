@@ -7,7 +7,7 @@ import main.interfaces.saleEventListener;
 public class Store {
 	private String storeName;
 
-	public HashMap<String, Product> productsMap;
+	public HashMap<String, Product> productsMap; // <productId,ProductObject>
 	private ArrayList<saleEventListener> subscribedCustomers;
 	ArrayList<Product> soldProducts;
 	ArrayList<Product> inventory; // maybe from file..? needed?
