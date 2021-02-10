@@ -1,13 +1,12 @@
 package main.view;
 
-/*
+/**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  * */
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;

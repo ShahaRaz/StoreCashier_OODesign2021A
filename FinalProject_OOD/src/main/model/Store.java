@@ -1,7 +1,10 @@
 package main.model;
 
+/**
+ * @author Gadi Engelsman.
+ * @author Shahar Raz.
+ */
 import java.util.*;
-
 import main.interfaces.saleEventListener;
 
 public class Store {
@@ -29,7 +32,7 @@ public class Store {
 	public void setProductsMap(HashMap<String, Product> productsMap) {
 		this.productsMap = productsMap;
 	}
-	
+
 	public HashMap<String, Product> getProductsMap() {
 		return this.productsMap;
 	}
@@ -50,8 +53,8 @@ public class Store {
 		// TODO: 23/01/2021 continue & fixme
 		}
 	}
-	
-	//Implement Observable Pattern, notify all the subscribed customers.
+
+	// Implement Observable Pattern, notify all the subscribed customers.
 	public void notifyAllCustomers() {
 		for (saleEventListener customer : subscribedCustomers) {
 			customer.onSaleEvent(this);
@@ -73,8 +76,6 @@ public class Store {
 		}
 
 	};
-	
-	
 
 //    public static Comparator<Flight> compareByDepDate = new Comparator<Flight>() {
 //        @Override

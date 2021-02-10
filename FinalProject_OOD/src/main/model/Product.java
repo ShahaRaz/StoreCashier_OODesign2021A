@@ -1,18 +1,22 @@
 package main.model;
 
+/**
+ * @author Gadi Engelsman.
+ * @author Shahar Raz.
+ */
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Product {
 	private long timeAdded;
-	
+
 	private SimpleStringProperty description;
 	private SimpleStringProperty barcode; // MAKAT( Cytological Number )
 
 	private SimpleIntegerProperty costToStore;
 	private SimpleIntegerProperty priceSold;
 	private Customer customer;
-	
+
 	public Product(String description, int costToStore, int priceSold, Customer customer, String pID) {
 		this.timeAdded = System.currentTimeMillis();
 		this.description = new SimpleStringProperty(description);
@@ -95,7 +99,5 @@ public class Product {
 	public void setBarcode(String barcode) {
 		this.barcode.set(barcode);
 	}
-
-	
 
 }

@@ -1,9 +1,9 @@
 package Activation;
 
-/*
+/**
  * @author Gadi Engelsman.
- * @author Shachar Raz.
- * */
+ * @author Shahar Raz.
+ */
 
 public class main {
 

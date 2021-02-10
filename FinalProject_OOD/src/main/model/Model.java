@@ -1,6 +1,8 @@
 package main.model;
-
-import main.interfaces.saleEventListener;
+/**
+ * @author Gadi Engelsman.
+ * @author Shahar Raz.
+ */
 
 /*
  * @author Gadi Engelsman.
@@ -34,7 +36,8 @@ public class Model {
 			}
 			return;
 		}
-		// note! (got here if) product is already in hashmap already, which means it's valid
+		// note! (got here if) product is already in hashmap already, which means it's
+		// valid
 		store.addNewProduct(p);
 		fireProductAdded(p);
 
@@ -53,14 +56,14 @@ public class Model {
 	}
 
 	public void removedProduct(Product p) {
-//		if (store.productsMap.get(p.getId()).equals(null)) {
+//		if (store.productsMap.get(p.getBarcose()).equals(null)) {
 //			for (LogicListenable l : allListeners) {
-//				l.notifyProductNotExist(p, "The product " + p.getId() + " not exist!");
+//				l.notifyProductNotExist(p, "The product " + p.getBarcose() + " not exist!");
 //			}
 //		} else {
-			for (LogicListenable l : allListeners) {
-				l.modelRemovedProduct(p);
-			}
+		for (LogicListenable l : allListeners) {
+			l.modelRemovedProduct(p);
+		}
 
 //		}
 	}

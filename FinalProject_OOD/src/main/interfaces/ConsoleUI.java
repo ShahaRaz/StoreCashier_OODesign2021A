@@ -1,5 +1,10 @@
 package main.interfaces;
 
+/**
+ * @author Gadi Engelsman.
+ * @author Shahar Raz.
+ * */
+
 import java.util.Scanner;
 
 public class ConsoleUI implements Messageable {

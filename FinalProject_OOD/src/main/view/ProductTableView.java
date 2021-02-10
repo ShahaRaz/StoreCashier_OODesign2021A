@@ -1,5 +1,9 @@
 package main.view;
 
+/**
+ * @author Gadi Engelsman.
+ * @author Shahar Raz.
+ */
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
@@ -65,7 +69,7 @@ public class ProductTableView extends GridPane {
 		stage.show();
 	}
 
-	@SuppressWarnings("unchecked")	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createTable() {
 
 		final ObservableList<Product> data = FXCollections.observableArrayList(
@@ -73,7 +77,6 @@ public class ProductTableView extends GridPane {
 				new Product("Bisli", 12, 16, new Customer("Lulu"), "BI987"),
 				new Product("Apropo", 8, 10, new Customer("Gogo"), "AP3658"),
 				new Product("Banana", 1, 3, new Customer("Bilbi"), "BA4862"));
-
 
 		TableView table = new TableView();
 
@@ -91,7 +94,7 @@ public class ProductTableView extends GridPane {
 		priceCol.getColumns().addAll(storePrice, customerPrice);
 		storePrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("costToStore"));
 		customerPrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("priceSold"));
-		
+
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 

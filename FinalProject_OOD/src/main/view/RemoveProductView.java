@@ -1,5 +1,9 @@
 package main.view;
 
+/**
+ * @author Gadi Engelsman.
+ * @author Shahar Raz.
+ */
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -77,20 +81,21 @@ public class RemoveProductView extends GridPane {
 		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 3);
 		add(txtFldPrdctBarCode, 1, 3);
-		
-		//Make the Enter available from the txt field
+
+		// Make the Enter available from the txt field
 		txtFldPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-	        if (ev.getCode() == KeyCode.ENTER) {
-	        	btnRemove.fire();
-	            ev.consume(); 
-	         }
-	     });
-		
-		btnRemove = new Button("Remove Product");		
+			if (ev.getCode() == KeyCode.ENTER) {
+				btnRemove.fire();
+				ev.consume();
+			}
+		});
+
+		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
 			String pID = getTxtFldPrdctBarCode().getText();
 			view.fireRemoveProduct(new Product(pID));
 			cleanValueFields();
+			txtFldPrdctBarCode.requestFocus();
 		});
 		add(btnRemove, 1, 9);
 	}
