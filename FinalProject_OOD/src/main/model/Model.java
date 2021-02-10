@@ -19,7 +19,7 @@ public class Model {
 
 	public Model() {
 		this.allListeners = new ArrayList<>();
-		store = new Store();
+		store = Store.getInstance();
 	}
 
 	public void registerListener(LogicListenable l) {

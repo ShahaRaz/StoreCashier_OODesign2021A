@@ -5,20 +5,28 @@ package main.model;
  * @author Shahar Raz.
  */
 import java.util.*;
+
 import main.interfaces.saleEventListener;
 
 public class Store {
+
+	// Singleton pattern.
+	private static Store instance = new Store();
 	private String storeName;
 
-	public HashMap<String, Product> productsMap; // <productId,ProductObject>
+	public SortedMap<String, Product> productsMap; // <productId,ProductObject>
 	private ArrayList<saleEventListener> subscribedCustomers;
 	ArrayList<Product> soldProducts;
 	ArrayList<Product> inventory; // maybe from file..? needed?
 
-	public Store() {
-		this.productsMap = new HashMap<String, Product>();
+	private Store() {
+		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
 		soldProducts = new ArrayList<Product>();
 		inventory = new ArrayList<Product>();
+	}
+
+	public static Store getInstance() {
+		return instance;
 	}
 
 	public String getStoreName() {
@@ -29,11 +37,11 @@ public class Store {
 		this.storeName = storeName;
 	}
 
-	public void setProductsMap(HashMap<String, Product> productsMap) {
+	public void setProductsMap(TreeMap<String, Product> productsMap) {
 		this.productsMap = productsMap;
 	}
 
-	public HashMap<String, Product> getProductsMap() {
+	public SortedMap<String, Product> getProductsMap() {
 		return this.productsMap;
 	}
 
@@ -74,10 +82,7 @@ public class Store {
 		public int compare(Product p1, Product p2) {
 			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
 		}
-
 	};
-	
-	
 
 //    public static Comparator<Flight> compareByDepDate = new Comparator<Flight>() {
 //        @Override
