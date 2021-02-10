@@ -77,12 +77,12 @@ public class View extends GridPane {
 
 	public void notifyProductAdded(Product p) {
 		// show user that the massage that product was successfully added
-		addWindow.updateStatus("The product " + p.getId() + " added!", "green");
+		addWindow.updateStatus("The product " + p.getBarcode() + " added!", "green");
 	}
 
 	public void notifyProductRemoved(Product p) {
 		// Display removed massage.
-		removeWindow.updateStatus("The product " + p.getId() + " removed!", "green");
+		removeWindow.updateStatus("The product " + p.getBarcode() + " removed!", "green");
 	}
 
 	public void nofityProductsArrived(ArrayList<Product> products) {

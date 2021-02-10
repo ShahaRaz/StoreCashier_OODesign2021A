@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Reflection;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -92,26 +94,61 @@ public class AddProductView extends GridPane {
 		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Name: "), 0, 3);
 		add(txtFldPrdctName, 1, 3);
+		//Switch to  the next txtField after pressing Enter.
+		txtFldPrdctName.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	        	txtFldPrdctPrice.requestFocus();
+	            ev.consume(); 
+	         }
+	     });
 
 		txtFldPrdctPrice = new TextField();
 		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Price: "), 0, 4);
 		add(txtFldPrdctPrice, 1, 4);
+		//Switch to  the next txtField after pressing Enter.
+		txtFldPrdctPrice.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	        	txtFldPrdctBarCode.requestFocus();
+	            ev.consume(); 
+	         }
+	     });
 
 		txtFldPrdctBarCode = new TextField();
 		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 5);
 		add(txtFldPrdctBarCode, 1, 5);
+		//Switch to  the next txtField after pressing Enter.
+		txtFldPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	        	txtFldPrdctPriceToStore.requestFocus();
+	            ev.consume(); 
+	         }
+	     });
 
 		txtFldPrdctPriceToStore = new TextField();
 		txtFldPrdctPriceToStore.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Store Price: "), 0, 6);
 		add(txtFldPrdctPriceToStore, 1, 6);
+		//Switch to  the next txtField after pressing Enter.
+		txtFldPrdctPriceToStore.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	        	txtFldCustomer.requestFocus();
+	            ev.consume(); 
+	         }
+	     });
 
 		txtFldCustomer = new TextField();
 		txtFldCustomer.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product's Customer: "), 0, 7);
 		add(txtFldCustomer, 1, 7);
+		//Switch to  the next txtField after pressing Enter.
+		txtFldCustomer.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	        	btnAdd.requestFocus();
+	            ev.consume(); 
+	         }
+	     });
 
 		btnAdd = new Button("Add Product");
 		btnAdd.setOnAction(e -> {

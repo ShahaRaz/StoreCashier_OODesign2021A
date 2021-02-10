@@ -25,7 +25,7 @@ public class Model {
 	}
 
 	public void addProduct(Product p) {
-		if (store.getProductDetails(p.getId()) == null) { // product isn't yet in hashMap
+		if (store.getProductDetails(p.getBarcode()) == null) { // product isn't yet in hashMap
 			if (p.isValidProduct(this)) {
 				store.addNewProduct(p);
 				fireProductAdded(p);

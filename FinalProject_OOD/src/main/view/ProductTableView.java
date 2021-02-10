@@ -5,10 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Reflection;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -66,29 +65,35 @@ public class ProductTableView extends GridPane {
 		stage.show();
 	}
 
+	@SuppressWarnings("unchecked")	
 	public void createTable() {
 
 		final ObservableList<Product> data = FXCollections.observableArrayList(
-				new Product("Bamba", 1, 3, new Customer("Momo"), "123456"),
-				new Product("Bisli", 1, 3, new Customer("Lulu"), "1234567"),
-				new Product("Apropo", 1, 3, new Customer("Gogo"), "12345678"),
-				new Product("Banana", 1, 3, new Customer("Bilbi"), "123456789"));
+				new Product("Bamba", 1, 4, new Customer("Momo"), "BA536"),
+				new Product("Bisli", 12, 16, new Customer("Lulu"), "BI987"),
+				new Product("Apropo", 8, 10, new Customer("Gogo"), "AP3658"),
+				new Product("Banana", 1, 3, new Customer("Bilbi"), "BA4862"));
+
 
 		TableView table = new TableView();
 
 		stage.setTitle("Product's Table");
 
-		TableColumn firstNameCol = new TableColumn("Description");
-//		firstNameCol.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
+		TableColumn prodctNameCol = new TableColumn("Description");
+		prodctNameCol.setCellValueFactory(new PropertyValueFactory("description"));
 
-		TableColumn lastNameCol = new TableColumn("Barcode");
-//		lastNameCol.setCellValueFactory(new PropertyValueFactory<Product, String>("pID"));
+		TableColumn barcodeCol = new TableColumn("Barcode");
+		barcodeCol.setCellValueFactory(new PropertyValueFactory("barcode"));
 
-		TableColumn emailCol = new TableColumn("Price");
-//		emailCol.setCellValueFactory(new PropertyValueFactory<Product, String>("priceSold"));
-
+		TableColumn priceCol = new TableColumn("Price");
+		TableColumn storePrice = new TableColumn("Store Price");
+		TableColumn customerPrice = new TableColumn("Customer price");
+		priceCol.getColumns().addAll(storePrice, customerPrice);
+		storePrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("costToStore"));
+		customerPrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("priceSold"));
+		
 		table.setItems(data);
-		table.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
+		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
 		add(table, 0, 3, 5, 1);
 	}

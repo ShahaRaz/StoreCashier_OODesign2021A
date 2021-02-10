@@ -39,7 +39,7 @@ public class Store {
 	}
 
 	public void addNewProduct(Product p) {
-		productsMap.put(p.getId(), p);
+		productsMap.put(p.getBarcode(), p);
 		soldProducts.add(p);
 	}
 

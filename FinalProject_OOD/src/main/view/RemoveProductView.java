@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Reflection;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -75,8 +77,16 @@ public class RemoveProductView extends GridPane {
 		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 3);
 		add(txtFldPrdctBarCode, 1, 3);
-
-		btnRemove = new Button("Remove Product");
+		
+		//Make the Enter available from the txt field
+		txtFldPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	        	btnRemove.fire();
+	            ev.consume(); 
+	         }
+	     });
+		
+		btnRemove = new Button("Remove Product");		
 		btnRemove.setOnAction(e -> {
 			String pID = getTxtFldPrdctBarCode().getText();
 			view.fireRemoveProduct(new Product(pID));
