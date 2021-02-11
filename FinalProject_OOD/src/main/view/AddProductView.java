@@ -91,6 +91,15 @@ public class AddProductView extends GridPane {
 	}
 
 	private void initAddProduct() {
+		initFldName();
+		initFldPrice();
+		initFldBarcode();
+		initFldPriceToStore();
+		initFldCustomer();
+		initButton();
+	}
+
+	private void initFldName() {
 		txtFldPrdctName = new TextField();
 		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Name: "), 0, 3);
@@ -102,7 +111,9 @@ public class AddProductView extends GridPane {
 				ev.consume();
 			}
 		});
+	}
 
+	private void initFldPrice() {
 		txtFldPrdctPrice = new TextField();
 		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Price: "), 0, 4);
@@ -114,7 +125,9 @@ public class AddProductView extends GridPane {
 				ev.consume();
 			}
 		});
+	}
 
+	private void initFldBarcode() {
 		txtFldPrdctBarCode = new TextField();
 		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 5);
@@ -126,7 +139,9 @@ public class AddProductView extends GridPane {
 				ev.consume();
 			}
 		});
+	}
 
+	private void initFldPriceToStore() {
 		txtFldPrdctPriceToStore = new TextField();
 		txtFldPrdctPriceToStore.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Store Price: "), 0, 6);
@@ -138,7 +153,9 @@ public class AddProductView extends GridPane {
 				ev.consume();
 			}
 		});
+	}
 
+	private void initFldCustomer() {
 		txtFldCustomer = new TextField();
 		txtFldCustomer.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product's Customer: "), 0, 7);
@@ -150,24 +167,26 @@ public class AddProductView extends GridPane {
 				ev.consume();
 			}
 		});
+	}
 
+	private void initButton() {
 		btnAdd = new Button("Add Product");
 		btnAdd.setOnAction(e -> {
 			// Store the data.
-			String desc = txtFldPrdctName.getText().equals("") ? "NA" : txtFldPrdctPriceToStore.getText();
-			int priceToStore = Integer
-					.parseInt(txtFldPrdctPriceToStore.getText().equals("") ? "0" : txtFldPrdctPriceToStore.getText());
-			int priceSold = Integer
-					.parseInt(txtFldPrdctPrice.getText().equals("") ? "0" : txtFldPrdctPriceToStore.getText());
-			String id = txtFldPrdctBarCode.getText().equals("") ? "0000" : txtFldPrdctPriceToStore.getText();
+			String desc = txtFldPrdctName.getText().equals("") ? "NA" : txtFldPrdctName.getText();
+			int priceToStore = Integer.parseInt(txtFldPrdctPriceToStore.getText().equals("") ? "0" : txtFldPrdctPriceToStore.getText());
+			int priceSold = Integer.parseInt(txtFldPrdctPrice.getText().equals("") ? "0" : txtFldPrdctPrice.getText());
+			String id = txtFldPrdctBarCode.getText().equals("") ? "0000" : txtFldPrdctBarCode.getText();
 			Customer c = new Customer(txtFldCustomer.getText());
+			Product p = new Product(desc, priceToStore, priceSold, c, id);
 			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, c, id));
 			cleanValueFields();
 			txtFldPrdctName.requestFocus();
+			view.getTableView().updateTable();
 		});
 		add(btnAdd, 1, 9);
 	}
-
+	
 	// init status
 	private void initStatus() {
 		lblStatus = new Label();

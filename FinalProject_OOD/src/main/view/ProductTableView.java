@@ -28,6 +28,7 @@ import main.model.Store;
 
 public class ProductTableView extends GridPane {
 	private Stage stage;
+	private final ObservableList<Product> data = FXCollections.observableArrayList();
 
 	public ProductTableView(Stage stg) {
 		this.stage = stg;
@@ -73,23 +74,26 @@ public class ProductTableView extends GridPane {
 		stage.show();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void createTable() {
-
-		final ObservableList<Product> data = FXCollections.observableArrayList(
-				new Product("Bamba", 1, 4, new Customer("Momo"), "BA536"),
-				new Product("Bisli", 12, 16, new Customer("Lulu"), "BI987"),
-				new Product("Apropo", 8, 10, new Customer("Gogo"), "AP3658"),
-				new Product("Banana", 1, 3, new Customer("Bilbi"), "BA4862"));
-
+	public void createTable() {	
+		//Hard Code. will be from File.
 		Store.getInstance().addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
 		Store.getInstance().addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
 		Store.getInstance().addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
 		Store.getInstance().addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
-
+		//TODO: Change HardCode to read from File.
+		
+		updateTable();
+		initTable();
+	}
+	
+	public void updateTable() {
 		for (Map.Entry<String, Product> e : Store.getInstance().getProductsMap().entrySet()) {
-			data.add(e.getValue());
+			data.addAll(e.getValue());
 		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initTable(){
 		TableView table = new TableView();
 
 		stage.setTitle("Product's Table");
@@ -111,5 +115,15 @@ public class ProductTableView extends GridPane {
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
 		add(table, 0, 3, 5, 1);
+		
+
+//		final ObservableList<Product> data = FXCollections.observableArrayList();
+//				new Product("Bamba", 1, 4, new Customer("Momo"), "BA536"),
+//				new Product("Bisli", 12, 16, new Customer("Lulu"), "BI987"),
+//				new Product("Apropo", 8, 10, new Customer("Gogo"), "AP3658"),
+//				new Product("Banana", 1, 3, new Customer("Bilbi"), "BA4862"));
+//		for (Map.Entry<String, Product> e : Store.getInstance().getProductsMap().entrySet()) {
+//			data.addAll(e.getValue());
+//		}
 	}
 }

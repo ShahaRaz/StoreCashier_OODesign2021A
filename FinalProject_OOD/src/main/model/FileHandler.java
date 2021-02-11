@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class FileHandler {
-//	private File file = new File("");
+//	private File file = new File("products.txt");
 
 	// remove string from file
 	public void deleteStrFromFile(File file, String find) {

@@ -26,6 +26,7 @@ public class View extends GridPane {
 
 	private AddProductView addWindow;
 	private RemoveProductView removeWindow;
+	private ProductTableView tableView;
 
 	public void registerListener(ViewListenable l) {
 		allListeners.add(l);
@@ -40,7 +41,7 @@ public class View extends GridPane {
 		TabPane tbPane = new TabPane();
 		Tab tab1 = new Tab("Add Product", addWindow = new AddProductView(stage, this));
 		Tab tab2 = new Tab("Remove Product", removeWindow = new RemoveProductView(stage, this));
-		Tab tab3 = new Tab("Table Of All Products", new ProductTableView(stage));
+		Tab tab3 = new Tab("Table Of All Products", tableView = new ProductTableView(stage));
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);
@@ -101,6 +102,30 @@ public class View extends GridPane {
 		hBox.setPadding(new Insets(10, 10, 10, 10));
 		hBox.setAlignment(Pos.CENTER);
 		return hBox;
+	}
+
+	public AddProductView getAddWindow() {
+		return addWindow;
+	}
+
+	public void setAddWindow(AddProductView addWindow) {
+		this.addWindow = addWindow;
+	}
+
+	public RemoveProductView getRemoveWindow() {
+		return removeWindow;
+	}
+
+	public void setRemoveWindow(RemoveProductView removeWindow) {
+		this.removeWindow = removeWindow;
+	}
+
+	public ProductTableView getTableView() {
+		return tableView;
+	}
+
+	public void setTableView(ProductTableView tableView) {
+		this.tableView = tableView;
 	}
 
 }

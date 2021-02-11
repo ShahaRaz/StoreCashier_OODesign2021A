@@ -100,4 +100,12 @@ public class Product {
 		this.barcode.set(barcode);
 	}
 
+	@Override
+	public String toString() {
+		return "Product [timeAdded=" + timeAdded + ", description=" + description.get() + ", barcode=" + barcode.get()
+				+ ", costToStore=" + costToStore.get() + ", priceSold=" + priceSold.get() + ", customer=" + customer + "]";
+	}
+	
+	
+
 }
