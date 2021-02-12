@@ -1,4 +1,4 @@
-package main.model;
+package main.model.store;
 
 /**
  * @author Gadi Engelsman.
@@ -7,7 +7,11 @@ package main.model;
 import java.util.*;
 
 import main.interfaces.saleEventListener;
+import main.model.Model;
+import main.model.Product;
+
 public class Store {
+
 
 
 
@@ -23,14 +27,14 @@ public class Store {
 	private String storeName;
 
 
-	public SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap
+	protected SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap
 	protected ArrayList<saleEventListener> subscribedCustomers;
-	private ArrayList<Product> soldProducts;
+	protected ArrayList<Product> soldProductsArr;
 	private Model model;
 
 	private Store() {
 		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
-		soldProducts = new ArrayList<Product>(); // am i needed?
+		soldProductsArr = new ArrayList<Product>(); // am i needed?
 	}
 
 	public static Store getInstance() {
@@ -49,6 +53,7 @@ public class Store {
 		this.productsMap = productsMap;
 	}
 
+	// TODO - DELETE ME , ASK FOR THIS USING THE CONTROLLER
 	public SortedMap<String, Product> getProductsMap() {
 		return this.productsMap;
 	}
@@ -59,12 +64,27 @@ public class Store {
 
 	public void addNewProduct(Product p) {
 		// Access only from command
-		productsMap.put(p.getBarcode(), p);
-		soldProducts.add(p);
+		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p,productsMap,soldProductsArr);
+		commandStack.add(commandAdd);
+		commandAdd.execute();
+//		productsMap.put(p.getBarcode(), p);
+//		soldProductsArr.add(p);
+	}
+
+	public void addToMap_fromCmndOnly(Product p){
+
 	}
 
 
+	public void removeProduct(Product p) {
+		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p,productsMap,soldProductsArr);
+		commandStack.add(commandRemove);
+		commandRemove.execute();
+	}
 
+	public void undoLastAction(){
+		commandStack.pop().undo();
+	}
 
 
 	// Implement Observable Pattern, notify all the subscribed customers.

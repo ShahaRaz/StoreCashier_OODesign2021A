@@ -1,6 +1,7 @@
 package main.model;
 
 import main.interfaces.saleEventListener;
+import main.model.store.Store;
 
 public class Customer implements saleEventListener{
 	private String name;
