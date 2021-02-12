@@ -170,21 +170,52 @@ public class AddProductView extends GridPane {
 	}
 
 	private void initButton() {
-		btnAdd = new Button("Add Product");
-		btnAdd.setOnAction(e -> {
-			// Store the data.
-			String desc = txtFldPrdctName.getText().equals("") ? "NA" : txtFldPrdctName.getText();
-			int priceToStore = Integer.parseInt(txtFldPrdctPriceToStore.getText().equals("") ? "0" : txtFldPrdctPriceToStore.getText());
-			int priceSold = Integer.parseInt(txtFldPrdctPrice.getText().equals("") ? "0" : txtFldPrdctPrice.getText());
-			String id = txtFldPrdctBarCode.getText().equals("") ? "0000" : txtFldPrdctBarCode.getText();
-			Customer c = new Customer(txtFldCustomer.getText());
-			Product p = new Product(desc, priceToStore, priceSold, c, id);
-			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, c, id));
-			cleanValueFields();
-			txtFldPrdctName.requestFocus();
-			view.getTableView().updateTable();
-		});
-		add(btnAdd, 1, 9);
+	btnAdd = new Button("Add Product");
+	btnAdd.setOnAction(e -> {
+		// Store the data.
+
+		// Product's Description
+		String description = txtFldPrdctName.getText();
+		description = description.equals("") ? "NA" : description;
+
+
+
+		// Product's price to store
+		String priceToStoreStr = txtFldPrdctPriceToStore.getText();
+		int priceToStore = 0;
+		try {
+				priceToStore = Integer.parseInt(priceToStoreStr.equals("") ? "0" : priceToStoreStr);
+		}catch (Exception e1)
+		{
+			System.err.println("letting priceToStore be 0");
+		}
+
+
+		// Product's price sold
+		String priceSoldStr = txtFldPrdctPrice.getText();
+		int priceSold =  0;
+		try {
+			priceSold = Integer.parseInt(priceSoldStr.equals("") ? "0" : priceSoldStr);
+		}catch (Exception e2){
+			System.err.println("Letting price to store be 0");
+		}
+
+
+		// Product's id
+		String id = txtFldPrdctBarCode.getText();
+		id = id.equals("") ? "0000" : id;
+
+		// Product's Customer who bought it.
+		Customer c = new Customer(txtFldCustomer.getText());
+		Product p = new Product(description, priceToStore, priceSold, c, id);
+		view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
+
+		cleanValueFields();
+		txtFldPrdctName.requestFocus();
+		view.getTableView().updateTable();
+			});
+			add(btnAdd, 1, 9);
+
 	}
 	
 	// init status
