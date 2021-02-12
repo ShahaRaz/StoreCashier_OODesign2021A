@@ -5,7 +5,6 @@ package main.view;
  */
 
 import java.util.Map;
-import java.util.SortedMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.model.Customer;
 import main.model.Product;
-import main.model.Store;
+import main.model.store.Store;
 
 public class ProductTableView extends GridPane {
 	private Stage stage;

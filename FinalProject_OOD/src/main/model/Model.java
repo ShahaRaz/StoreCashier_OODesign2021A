@@ -10,6 +10,7 @@ package main.model;
  * */
 
 import main.listeners.LogicListenable;
+import main.model.store.Store;
 
 import java.util.ArrayList;
 
@@ -55,19 +56,14 @@ public class Model {
 		}
 	}
 
-	public void removedProduct(Product p) {
-		if (store.productsMap.get(p.getBarcode()).equals(null)) {
-			for (LogicListenable l : allListeners) {
-				l.notifyProductNotExist(p, "The product " + p.getBarcode() + " not exist!");
-			}
-		} else {
-			for (LogicListenable l : allListeners) {
-				l.modelRemovedProduct(p);
-			}
 
-		}
+	public void removedProduct(Product p) {
+		store.removeProduct(p);
 	}
 
+	public void undoLastAction(){
+		store.undoLastAction();
+	}
 
 
 	private void fireSendProductsArrToView(ArrayList<Product> products){

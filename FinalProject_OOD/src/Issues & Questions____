@@ -5,6 +5,11 @@
     do i need to save as TreeMap, so for the entire program we will hold a sorted Sorted Map. if yes, how?????
     or it is enough to hold a hashmap, and everytime the user asks for the products list convert the map to list and sort it?
 
+2b. Map:
+    When undoing a
+
+
+
 3. Which data we save?
     If we only save the map of products, than we wont be able to hold the Sales of each product
     if we only save it inside the Customer.purchased products, we won't contain sales to antoninus buyers
