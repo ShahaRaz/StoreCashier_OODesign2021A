@@ -7,22 +7,30 @@ package main.model;
 import java.util.*;
 
 import main.interfaces.saleEventListener;
-
 public class Store {
+
+
+
+	public interface KEYS {
+		final int ORDER_BY_ABC_UP = 1;
+		final int ORDER_BY_ABC_DOWN = 2;
+		final int ORDER_BY_INSERT_ORDER = 3;
+	}
+	private Stack<Command> commandStack = new Stack<>(); // hold all operations
 
 	// Singleton pattern.
 	private static Store instance = new Store();
 	private String storeName;
 
-	public SortedMap<String, Product> productsMap; // <productId,ProductObject>
-	private ArrayList<saleEventListener> subscribedCustomers;
-	ArrayList<Product> soldProducts;
-	ArrayList<Product> inventory; // maybe from file..? needed?
+
+	public SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap
+	protected ArrayList<saleEventListener> subscribedCustomers;
+	private ArrayList<Product> soldProducts;
+	private Model model;
 
 	private Store() {
 		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
-		soldProducts = new ArrayList<Product>();
-		inventory = new ArrayList<Product>();
+		soldProducts = new ArrayList<Product>(); // am i needed?
 	}
 
 	public static Store getInstance() {
@@ -50,23 +58,47 @@ public class Store {
 	}
 
 	public void addNewProduct(Product p) {
+		// Access only from command
 		productsMap.put(p.getBarcode(), p);
 		soldProducts.add(p);
 	}
 
-	public void orderProducts(String methodOfOrdering) {
-		switch (methodOfOrdering) {
-//            case "ABup":
-//                Collections.sort(productsMap,compareByPID);
-		// TODO: 23/01/2021 continue & fixme
-		}
-	}
+
+
+
 
 	// Implement Observable Pattern, notify all the subscribed customers.
 	public void notifyAllCustomers() {
 		for (saleEventListener customer : subscribedCustomers) {
 			customer.onSaleEvent(this);
 		}
+	}
+
+
+
+
+
+
+	public void orderProducts(int methodOfOrdering) {
+//		//////// Lec6 1:24:00 Comparator for TreeSet (Very similar to Comparator for TreeMap)
+//		//// Lec6 20:00 how to comparator works 23:30
+//		/// lec 6 53:00
+//		// lec6 1:18:00
+//		// inside the TreeMap 'add' method, it already inserts the organs in sorted way!
+//		switch (methodOfOrdering) {
+//			case KEYS.ORDER_BY_ABC_UP:
+//				Collections.sort(productsMap, compareByPidUp);
+//				break;
+//			case KEYS.ORDER_BY_ABC_DOWN:
+//
+//				break;
+//
+//			case KEYS.ORDER_BY_INSERT_ORDER:
+//
+//				break;
+//
+////		 TODO: 23/01/2021 continue & fixme
+//		}
 	}
 
 	// Inner Comparators for Sorts //
@@ -83,6 +115,49 @@ public class Store {
 			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
 		}
 	};
+
+
+	// Inner Comparators for Sorts //
+	public static Comparator<HashMap.Entry<String, Product>> compareByPidUp = new Comparator<>() {
+
+		@Override
+		public int compare(Map.Entry<String, Product> stringProductEntry, Map.Entry<String, Product> t1) {
+			return 0;
+		}
+	};
+
+	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
+		@Override
+		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
+//			return entry1.getKey().compareTo(entry2.getKey());
+			return (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
+		}
+
+	};
+
+
+
+//	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
+//		@Override
+//		public int compare(Product p1, Product p2) {
+//			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
+//		}
+//	};
+
+}
+
+
+
+//
+//	// Sort the list
+//        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+//		public int compare(Map.Entry<String, Integer> o1,
+//				Map.Entry<String, Integer> o2)
+//		{
+//			return (o1.getValue()).compareTo(o2.getValue());
+//		}
+//	});
+
 
 //    public static Comparator<Flight> compareByDepDate = new Comparator<Flight>() {
 //        @Override
@@ -103,4 +178,69 @@ public class Store {
 //
 //        }
 //    };
-}
+
+
+
+//	public void orderProducts(int methodOfOrdering) {
+//		switch (methodOfOrdering) {
+//			case KEYS.ORDER_BY_ABC_UP:
+//				Collections.sort(productsMap, new Comparator<HashMap.Entry<String,Product>>() {
+//					@Override
+//					public int compare(Map.Entry<String, Product> stringProductEntry, Map.Entry<String, Product> t1) {
+//						return 0;
+//					}
+//
+//
+//				});
+//
+////		 TODO: 23/01/2021 continue & fixme
+//		}
+//	}
+
+//
+//	public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
+//	{
+//		// Create a list from elements of HashMap
+//		List<Map.Entry<String, Integer> > list =
+//				new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+//
+//		// Sort the list
+//		Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+//			public int compare(Map.Entry<String, Integer> o1,
+//							   Map.Entry<String, Integer> o2)
+//			{
+//				return (o1.getValue()).compareTo(o2.getValue());
+//			}
+//		});
+//
+//		// put data from sorted list to hashmap
+//		HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+//		for (Map.Entry<String, Integer> aa : list) {
+//			temp.put(aa.getKey(), aa.getValue());
+//		}
+//		return temp;
+//	}
+//
+//	// Driver Code
+//	public static void main(String[] args)
+//	{
+//
+//		HashMap<String, Integer> hm = new HashMap<String, Integer>();
+//
+//		// enter data into hashmap
+//		hm.put("Math", 98);
+//		hm.put("Data Structure", 85);
+//		hm.put("Database", 91);
+//		hm.put("Java", 95);
+//		hm.put("Operating System", 79);
+//		hm.put("Networking", 80);
+//		Map<String, Integer> hm1 = sortByValue(hm);
+//
+//		// print the sorted hashmap
+//		for (Map.Entry<String, Integer> en : hm1.entrySet()) {
+//			System.out.println("Key = " + en.getKey() +
+//					", Value = " + en.getValue());
+//		}
+//	}
+
+
