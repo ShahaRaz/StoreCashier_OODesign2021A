@@ -20,7 +20,7 @@ public class Cmnd_removeProduct implements Command {
     @Override
     public void execute() {
         soldProductsArr_ref.remove(product);
-        map_ref.remove(product.getBarcode()); // TODO delete me if im unnecessary
+        map_ref.remove(product.getBarcode());
     }
 
     @Override

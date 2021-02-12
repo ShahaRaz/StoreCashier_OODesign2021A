@@ -1,12 +1,13 @@
 package main.model.store;
 
+import main.model.Customer;
 import main.model.Product;
 
 import java.util.ArrayList;
 import java.util.SortedMap;
 
 public class Cmnd_AddProduct implements Command{
-    private Product oldProductInMap=null;
+    private Product oldProductInMap=null; // save it in-case we'll overwrite old details of the product in the map
     boolean wasProductInMapB4thisCmnd=false;
     private ArrayList<Product> soldProductsArr_ref; // reference
     private Product product;
@@ -21,7 +22,7 @@ public class Cmnd_AddProduct implements Command{
     @Override
     public void execute() {
         soldProductsArr_ref.add(product);
-        if(map_ref.containsKey(product.getBarcode())) { // knowing if
+        if(map_ref.containsKey(product.getBarcode())) { // knowing if product is already in map
             wasProductInMapB4thisCmnd = true;
             oldProductInMap = map_ref.get(product.getBarcode());
         }
@@ -36,7 +37,7 @@ public class Cmnd_AddProduct implements Command{
         soldProductsArr_ref.remove(product);
         if(wasProductInMapB4thisCmnd) {
             map_ref.remove(product); // TODO delete me if im unnecessary
-            map_ref.put(oldProductInMap.getBarcode(),oldProductInMap);
+            map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
 
         }
     }

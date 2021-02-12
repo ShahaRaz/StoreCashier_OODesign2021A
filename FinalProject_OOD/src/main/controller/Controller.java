@@ -66,6 +66,26 @@ public class Controller implements ViewListenable, LogicListenable {
 		theView.notifyProductNotExist(p, str);
 	}
 
+	@Override
+	public void modelFailedOperation(String errorMassage,String elaborate) {
+		/**
+		 * notify user that operation faild
+		 * Operations like:
+		 *
+		 * UNDO
+		 * or any general thing..
+		 *
+		 *
+		 *
+		 *
+		 * in elaborate:
+		 * extra data (for internal use) my hold tokens or other things that needs to be passed from model to view
+		 *
+		 *
+		 */
+		//failed
+	}
+
 //    public class Controller implements ChampionshipListenable , ViewListenable {
 //        private Model theModel;
 //        private View theView;

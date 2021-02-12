@@ -75,10 +75,10 @@ public class ProductTableView extends GridPane {
 
 	public void createTable() {	
 		//Hard Code. will be from File.
-		Store.getInstance().addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
-		Store.getInstance().addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
-		Store.getInstance().addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
-		Store.getInstance().addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
+		Store.getInstance(null).addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
+		Store.getInstance(null).addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
+		Store.getInstance(null).addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
+		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
 		//TODO: Change HardCode to read from File.
 		
 		updateTable();
@@ -86,7 +86,7 @@ public class ProductTableView extends GridPane {
 	}
 	
 	public void updateTable() {
-		for (Map.Entry<String, Product> e : Store.getInstance().getProductsMap().entrySet()) {
+		for (Map.Entry<String, Product> e : Store.getInstance(null).getProductsMap().entrySet()) {
 			data.addAll(e.getValue());
 		}
 	}
