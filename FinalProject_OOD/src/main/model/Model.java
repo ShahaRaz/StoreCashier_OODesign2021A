@@ -66,10 +66,6 @@ public class Model {
 		}
 	}
 
-
-
-
-
 	private void fireSendProductsArrToView(ArrayList<Product> products){
 		for (LogicListenable l : allListeners) {
 			l.modelSendProductsList(products);
