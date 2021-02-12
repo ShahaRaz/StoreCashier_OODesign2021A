@@ -84,6 +84,7 @@ public class RemoveProductView extends GridPane {
 	// init Text Field.
 	private void initFldPrdctBarcode() {
 		txtFldPrdctBarCode = new TextField();
+		txtFldPrdctBarCode.setPromptText("Barcode");
 		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 3);
 		add(txtFldPrdctBarCode, 1, 3);

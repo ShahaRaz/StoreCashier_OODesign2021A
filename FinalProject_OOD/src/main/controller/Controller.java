@@ -56,14 +56,24 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
+	public void notifyProductNotExist(Product p, String str) {
+		// TODO Auto-generated method stub
+		theView.notifyProductNotExist(p, str);
+	}
+
+	@Override
 	public void modelSendProductsList(ArrayList<Product> products) {
 		theView.nofityProductsArrived(products);
 	}
 
 	@Override
-	public void notifyProductNotExist(Product p, String str) {
-		// TODO Auto-generated method stub
-		theView.notifyProductNotExist(p, str);
+	public void ViewAskForProduct(Product searchMe) {
+//		theModel.
+	}
+
+	@Override
+	public void viewAskForListOfAllProducts() {
+//		theModel
 	}
 
 //    public class Controller implements ChampionshipListenable , ViewListenable {

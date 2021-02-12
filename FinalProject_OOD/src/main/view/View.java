@@ -39,9 +39,9 @@ public class View extends GridPane {
 		hbButtons = getHBox();
 
 		TabPane tbPane = new TabPane();
-		Tab tab1 = new Tab("Add Product", addWindow = new AddProductView(stage, this));
-		Tab tab2 = new Tab("Remove Product", removeWindow = new RemoveProductView(stage, this));
-		Tab tab3 = new Tab("Table Of All Products", tableView = new ProductTableView(stage));
+		Tab tab1 = new Tab("Table Of All Products", tableView = new ProductTableView(stage));
+		Tab tab2 = new Tab("Add Product", addWindow = new AddProductView(stage, this));
+		Tab tab3 = new Tab("Remove Product", removeWindow = new RemoveProductView(stage, this));
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);
@@ -62,6 +62,18 @@ public class View extends GridPane {
 	public void fireRemoveProduct(Product removeMe) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToRemoveProduct(removeMe);
+		}
+	}
+
+	public void fireSearchProduct(Product searchMe) {
+		for (ViewListenable l : allListeners) {
+			l.ViewAskForProduct(searchMe);
+		}
+	}
+	
+	public void fireListOfProsucts() {
+		for (ViewListenable l : allListeners) {
+			l.viewAskForListOfAllProducts();
 		}
 	}
 
