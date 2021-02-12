@@ -7,7 +7,7 @@ package main.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Product {
+public class Product  {
 	private long timeAdded;
 
 	private SimpleStringProperty description;
@@ -35,16 +35,14 @@ public class Product {
 		this.customer = null;
 	}
 
-	public boolean isValidProduct(Model model) {
+	public String isValidProduct(Model model) {
 		if (this.costToStore.get() < 0 || this.priceSold.get() < 0) {
-			model.fireProductNotGood(this, "Price can't be negative");
-			return false;
+			return "Price can't be negative";
 		}
 		if (this.description.get().equals("")) {
-			model.fireProductNotGood(this, "Product's name can't be empty");
-			return false;
+			return "Product's name can't be empty";
 		}
-		return true;
+		return "";
 		// TODO: Check exist customer
 	}
 

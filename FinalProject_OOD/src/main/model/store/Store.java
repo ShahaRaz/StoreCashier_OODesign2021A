@@ -23,21 +23,25 @@ public class Store {
 	private Stack<Command> commandStack = new Stack<>(); // hold all operations
 
 	// Singleton pattern.
-	private static Store instance = new Store();
+	private static Store instance;
 	private String storeName;
 
 
-	protected SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap
+	protected SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap// note! will be modified only by using Commands (commandStack)
+	protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
 	protected ArrayList<saleEventListener> subscribedCustomers;
-	protected ArrayList<Product> soldProductsArr;
+
 	private Model model;
 
-	private Store() {
+	private Store(Model model) {
 		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
 		soldProductsArr = new ArrayList<Product>(); // am i needed?
+		this.model = model;
 	}
 
-	public static Store getInstance() {
+	public static Store getInstance(Model model) {
+		if (instance ==null) //if it is the first init of the store.
+			instance = new Store(model);
 		return instance;
 	}
 
@@ -53,7 +57,7 @@ public class Store {
 		this.productsMap = productsMap;
 	}
 
-	// TODO - DELETE ME , ASK FOR THIS USING THE CONTROLLER
+	// TODO - DELETE ME , ASK FOR THIS DATA USING THE CONTROLLER
 	public SortedMap<String, Product> getProductsMap() {
 		return this.productsMap;
 	}
@@ -71,9 +75,6 @@ public class Store {
 //		soldProductsArr.add(p);
 	}
 
-	public void addToMap_fromCmndOnly(Product p){
-
-	}
 
 
 	public void removeProduct(Product p) {
@@ -83,6 +84,8 @@ public class Store {
 	}
 
 	public void undoLastAction(){
+		if(commandStack.empty())
+			model.fireOperationFailed("Unable to undo action", "UNDO FAILED");
 		commandStack.pop().undo();
 	}
 

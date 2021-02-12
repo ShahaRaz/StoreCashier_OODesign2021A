@@ -20,7 +20,7 @@ public class Model {
 
 	public Model() {
 		this.allListeners = new ArrayList<>();
-		store = Store.getInstance();
+		store = Store.getInstance(this);
 	}
 
 	public void registerListener(LogicListenable l) {
@@ -29,20 +29,30 @@ public class Model {
 
 	public void addProduct(Product p) {
 		if (store.getProductDetails(p.getBarcode()) == null) { // product isn't yet in hashMap
-			if (p.isValidProduct(this)) {
+			String problemsWithProduct = p.isValidProduct(this); //return the first error found
+			if (problemsWithProduct.length()==0) { // no errors found
 				store.addNewProduct(p);
 				fireProductAdded(p);
 			} else {
-				fireProductNotGood(p, "Insert All Product's fields");
+				fireProductNotGood(p, problemsWithProduct);
 			}
-			return;
 		}
-		// note! (got here if) product is already in hashmap already, which means it's
-		// valid
-		store.addNewProduct(p);
-		fireProductAdded(p);
-
+		else { //note! (got here if) product is already in map already, which means it's valid
+			store.addNewProduct(p);
+			fireProductAdded(p);
+		}
 	}
+
+	public void removedProduct(Product p) {
+		if (store.getProductDetails(p.getBarcode())==null) // product not in store.
+		store.removeProduct(p);
+		// firing a return statement from within the store.
+	}
+
+	public void undoLastAction(){
+		store.undoLastAction();
+	}
+
 
 	private void fireProductAdded(Product p) {
 		for (LogicListenable l : allListeners) {
@@ -57,13 +67,7 @@ public class Model {
 	}
 
 
-	public void removedProduct(Product p) {
-		store.removeProduct(p);
-	}
 
-	public void undoLastAction(){
-		store.undoLastAction();
-	}
 
 
 	private void fireSendProductsArrToView(ArrayList<Product> products){
@@ -72,10 +76,10 @@ public class Model {
 		}
 	}
 
-	private void fireSaleForCustomer() {
+
+	public void fireOperationFailed(String errorMassage, String elaborate) {
 		for (LogicListenable l : allListeners) {
-			store.notifyAllCustomers();
+			l.modelFailedOperation(errorMassage,elaborate);
 		}
 	}
-
 }
