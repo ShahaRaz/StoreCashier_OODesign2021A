@@ -32,12 +32,12 @@ public class RemoveProductView extends GridPane {
 	private Label lblStatus;
 
 	private Stage stage;
-	private Scene baseScene;
+//	private Scene baseScene;
 
 	public RemoveProductView(Stage stg, View view) {
 		this.stage = stg;
 		this.view = view;
-		baseScene = stg.getScene();
+//		baseScene = stg.getScene();
 
 		init();
 		stage.setScene(new Scene(this, 500, 500));
@@ -77,6 +77,12 @@ public class RemoveProductView extends GridPane {
 	}
 
 	private void initRemoveProduct() {
+		initFldPrdctBarcode();
+		initRemoveButton();
+	}
+
+	// init Text Field.
+	private void initFldPrdctBarcode() {
 		txtFldPrdctBarCode = new TextField();
 		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
 		add(new Label("Product Barcode: "), 0, 3);
@@ -89,13 +95,17 @@ public class RemoveProductView extends GridPane {
 				ev.consume();
 			}
 		});
+	}
 
+	// init Button.
+	private void initRemoveButton() {
 		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
 			String pID = getTxtFldPrdctBarCode().getText();
 			view.fireRemoveProduct(new Product(pID));
 			cleanValueFields();
 			txtFldPrdctBarCode.requestFocus();
+			view.getTableView().updateTable();
 		});
 		add(btnRemove, 1, 9);
 	}
@@ -113,6 +123,7 @@ public class RemoveProductView extends GridPane {
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
 	}
 
+	// Setters & Getters.
 	public TextField getTxtFldPrdctBarCode() {
 		return txtFldPrdctBarCode;
 	}
@@ -137,14 +148,6 @@ public class RemoveProductView extends GridPane {
 		this.stage = stage;
 	}
 
-	public Scene getBaseScene() {
-		return baseScene;
-	}
-
-	public void setBaseScene(Scene baseScene) {
-		this.baseScene = baseScene;
-	}
-
 	public Label getLblStatus() {
 		return lblStatus;
 	}
@@ -152,12 +155,10 @@ public class RemoveProductView extends GridPane {
 	public void setLblStatus(Label lblStatus) {
 		this.lblStatus = lblStatus;
 	}
-
 	// END Setters & Getters.
 
 	// clean Value Fields
 	public void cleanValueFields() {
 		txtFldPrdctBarCode.setText("");
 	}
-
 }
