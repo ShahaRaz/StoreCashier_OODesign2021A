@@ -21,6 +21,7 @@ public class Model {
 	public Model() {
 		this.allListeners = new ArrayList<>();
 		store = Store.getInstance(this);
+		// TODO add here products from file
 	}
 
 	public void registerListener(LogicListenable l) {

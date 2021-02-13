@@ -131,29 +131,29 @@ public class HW01 extends Application {
     // A method that prevents Exception of adding objects to file
     private void resetOutputStream(String type) {
         try {
-            switch (type) {
-                case "Data":
-                    System.out.println("resetOutputStream: isAppendable: " + isAppendableData);
-                    // if file exists and isAppendable==false -> the file will be overwritten
-                    dOut = new DataOutputStream(new FileOutputStream(dataFile, isAppendableData));
-                    break;
-                case "Object":
-                    // TODO: 20/11/2020 delete next line and uncomment the lines after it
-                    oOut = new ObjectOutputStream(new FileOutputStream(objectFile, isAppendableObject));
-
-                    if (isAppendableObject) {///||objectFile.length()==0) {
-                        oOut = new ObjectOutputStream(new FileOutputStream(objectFile, isAppendableObject)) {
-                            @Override // anonymous class that overrides the method that writes the header in the file
-                            protected void writeStreamHeader() throws IOException {
-                                // do not write header again
-                                return;
-                            }
-                        };
-                    } else {
-                        oOut = new ObjectOutputStream(new FileOutputStream(objectFile, isAppendableObject));
-                    }
-                    break;
-            }
+//            switch (type) {
+//                case "Data":
+////                    System.out.println("resetOutputStream: isAppendable: " + isAppendableData);
+//                     if file exists and isAppendable==false -> the file will be overwritten
+//                    dOut = new DataOutputStream(new FileOutputStream(dataFile, isAppendableData));
+//                    break;
+//                case "Object":
+//                     TODO: 20/11/2020 delete next line and uncomment the lines after it
+//                    oOut = new ObjectOutputStream(new FileOutputStream(objectFile, isAppendableObject));
+//
+//                    if (isAppendableObject) {///||objectFile.length()==0) {
+//                        oOut = new ObjectOutputStream(new FileOutputStream(objectFile, isAppendableObject)) {
+//                            @Override // anonymous class that overrides the method that writes the header in the file
+//                            protected void writeStreamHeader() throws IOException {
+//                                // do not write header again
+//                                return;
+//                            }
+//                        };
+//                    } else {
+//                        oOut = new ObjectOutputStream(new FileOutputStream(objectFile, isAppendableObject));
+//                    }
+//                    break;
+//            }
         } catch (FileNotFoundException e) {
             System.out.println("resetOutputStream method Exception: " + e.getMessage());
         } catch (IOException e) {

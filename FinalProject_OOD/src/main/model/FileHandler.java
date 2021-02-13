@@ -10,10 +10,15 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class FileHandler {
-	private File file = new File("products.txt");
+	private File file;
+
+	public FileHandler() {
+		this.file  = new File("products.txt");
+
+	}
 
 	// remove string from file
-	public void deleteStrFromFile(File file, String find) {
+	public void deleteStrFromFile(String find) {
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 			// create readPointer for reading and writePointer for writing
 			int readPointer = 0, writePointer = 0;
@@ -45,7 +50,7 @@ public class FileHandler {
 		}
 	}
 
-	public void deleteStrFromFile2(File file, String find) {
+	public void deleteStrFromFile2(String find) {
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 			int readPointer = 0;
 			byte[] data = new byte[find.length()];
@@ -67,7 +72,7 @@ public class FileHandler {
 		}
 	}
 
-	public void deleteStrFromFile3(File file, String find) {
+	public void deleteStrFromFile3(String find) {
 		byte[] data = new byte[find.length()];
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 			int read = 0;
@@ -93,7 +98,7 @@ public class FileHandler {
 	}
 
 	// read string from file by position and string size
-	public byte[] readStrFromFile(File file, int pos, int size) {
+	public byte[] readStrFromFile(int pos, int size) {
 		byte[] temp = null;
 
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
@@ -120,7 +125,7 @@ public class FileHandler {
 	}
 
 	// add fixed text to file
-	public void addFixedStrToFile(File file, String text) {
+	public void addFixedStrToFile(String text) {
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 			// set pointer to end position
 			raf.seek(raf.length());
@@ -137,4 +142,33 @@ public class FileHandler {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	public void addStrToFile(String txt, int pos){
+		try(RandomAccessFile raf = new RandomAccessFile(file,"rw")) {
+			// go to position:
+			raf.seek(pos);
+
+			// backup data from pointer to the end of the file
+			byte[] temp = new byte[(int)(raf.length()-pos)];
+			raf.read(temp);
+
+			// return to the position
+			raf.seek(pos);
+
+			//write new text and backup text to file
+			raf.write((txt.getBytes()));
+			raf.write(temp);
+
+			System.out.println("String \"" + txt + "\" added to the file" + file.getName() + "! :D");
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+
+	}
+
 }
