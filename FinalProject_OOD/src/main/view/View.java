@@ -16,6 +16,7 @@ import main.listeners.ViewListenable;
 import main.model.Product;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 
 public class View extends GridPane {
@@ -38,7 +39,14 @@ public class View extends GridPane {
 		this.stage = stg;
 
 		hbButtons = getHBox();
-
+		creatTabPane();
+		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
+		stage.setScene(scene);
+		stage.setTitle("Store Saver");
+		stage.show();
+	}
+	
+	public void creatTabPane() {
 		TabPane tbPane = new TabPane();
 		Tab tab1 = new Tab("Table Of All Products", tableView = new ProductTableView(stage, this));
 		Tab tab2 = new Tab("Add Product", addWindow = new AddProductView(stage, this));
@@ -48,10 +56,6 @@ public class View extends GridPane {
 		tbPane.getTabs().add(tab3);
 
 		hbButtons.getChildren().add(tbPane);
-		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
-		stage.setScene(scene);
-		stage.setTitle("Store Saver");
-		stage.show();
 	}
 
 	public void fireAddNewProduct(Product addMe) {
@@ -98,7 +102,7 @@ public class View extends GridPane {
 		removeWindow.updateStatus("The product " + p.getBarcode() + " removed!", "green");
 	}
 
-	public void nofityProductsArrived(Set<Product> products) {
+	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
 		tableView.updateTable(products);
 		// send array of products (may also contain only 1 product)
 		// note! the products will be by reference, so don't change them.
@@ -106,7 +110,6 @@ public class View extends GridPane {
 //        for (Product p : products){
 //            doSomthingWithP(p)
 //        }
-
 	}
 
 	// get new styled hbox

@@ -4,10 +4,8 @@ package main.view;
  * @author Shahar Raz.
  */
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,36 +65,19 @@ public class ProductTableView extends GridPane {
 
 	private void initTableProducts() {
 		createTable();
-
-//		list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-//			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-//				label.setText(new_val);
-//				label.setTextFill(Color.web(new_val));
-//			}
-//		});
-
 		stage.show();
 	}
 
-	public void createTable() {	
-		//Hard Code. will be from File.
-		Store.getInstance(null).addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
-		Store.getInstance(null).addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
-		Store.getInstance(null).addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
-		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
-		//TODO: Change HardCode to read from File.
-		
-//		updateTable();
-		view.fireListOfProducts();
+	public void createTable() {
 		initTable();
 	}
 	
-	public void updateTable(Set<Product> products) {
+	public void updateTable(Set<Map.Entry<String, Product>> products) {
+//		TODO: add without clear.
 		data.clear();
-//		for (Map.Entry<String, Product> e : products.entrySet()) {
-//			data.addAll(e.getValue());
-//		}
-		data.addAll(products);
+		for (Map.Entry<String, Product> e : products) {
+			data.addAll(e.getValue());
+		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -121,8 +102,15 @@ public class ProductTableView extends GridPane {
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
+		//Hard Code. will be from File.
+		Store.getInstance(null).addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
+		Store.getInstance(null).addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
+		Store.getInstance(null).addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
+		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
+		//TODO: Change HardCode to read from File.
+
+		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);
-		
 
 //		final ObservableList<Product> data = FXCollections.observableArrayList();
 //				new Product("Bamba", 1, 4, new Customer("Momo"), "BA536"),

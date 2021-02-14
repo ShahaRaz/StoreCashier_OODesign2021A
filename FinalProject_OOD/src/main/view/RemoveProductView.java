@@ -104,7 +104,6 @@ public class RemoveProductView extends GridPane {
 			view.fireRemoveProduct(new Product(pID));
 			cleanValueFields();
 			txtFldPrdctBarCode.requestFocus();
-//			view.getTableView().updateTable();
 			view.fireListOfProducts();
 		});
 		add(btnRemove, 1, 9);

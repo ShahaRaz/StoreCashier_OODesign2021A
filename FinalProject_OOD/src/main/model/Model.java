@@ -9,8 +9,8 @@ import main.listeners.LogicListenable;
 import main.model.store.Store;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 
 public class Model {
 	private Store store;
@@ -19,6 +19,7 @@ public class Model {
 	public Model() {
 		this.allListeners = new ArrayList<>();
 		store = Store.getInstance(this);
+		// TODO add here products from file
 	}
 
 	public void registerListener(LogicListenable l) {
@@ -43,6 +44,8 @@ public class Model {
 	public void removedProduct(Product p) {
 		if (store.getProductDetails(p.getBarcode()) == null) // product not in store.
 			store.removeProduct(p);
+		
+		//TODO: Return fireProductRemoved
 		// firing a return statement from within the store.
 	}
 
@@ -68,7 +71,7 @@ public class Model {
 //		}
 //	}
 	
-	private void fireSendProductsArrToView(Set<Product> products) {
+	private void fireSendProductsArrToView(Set<Map.Entry<String, Product>> products) {
 		for (LogicListenable l : allListeners) {
 			l.modelSendProductsList(products);
 		}
@@ -81,7 +84,6 @@ public class Model {
 	}
 
 	public void sendAllProductsToView() {
-		store.getProductsMap();
-//		fireSendProductsArrToView();
+		fireSendProductsArrToView(store.getProductsSet());
 	}
 }

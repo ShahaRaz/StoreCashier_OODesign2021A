@@ -7,6 +7,7 @@ package main.model.store;
 import java.util.*;
 
 import main.interfaces.saleEventListener;
+import main.model.FileHandler;
 import main.model.Model;
 import main.model.Product;
 
@@ -26,15 +27,18 @@ public class Store {
 
 	protected SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap// note! will be modified
 														// only by using Commands (commandStack)
+
 	protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
 	protected ArrayList<saleEventListener> subscribedCustomers;
 
 	private Model model;
+	FileHandler theFile;
 
 	private Store(Model model) {
 		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
 		soldProductsArr = new ArrayList<Product>(); // am i needed?
 		this.model = model;
+		theFile = new FileHandler();
 	}
 
 	public static Store getInstance(Model model) {
@@ -58,6 +62,12 @@ public class Store {
 	// TODO - DELETE ME , ASK FOR THIS DATA USING THE CONTROLLER
 	public SortedMap<String, Product> getProductsMap() {
 		return this.productsMap;
+
+	}
+
+	public Set<Map.Entry<String, Product>> getProductsSet() {
+		/// TODO: Create a copy of this set, and move it to the controller.
+		return this.productsMap.entrySet();
 	}
 
 	public Product getProductDetails(String id) {
@@ -67,10 +77,9 @@ public class Store {
 	public void addNewProduct(Product p) {
 		// Access only from command
 		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr);
+
 		commandStack.add(commandAdd);
 		commandAdd.execute();
-//		productsMap.put(p.getBarcode(), p);
-//		soldProductsArr.add(p);
 	}
 
 	public void removeProduct(Product p) {
@@ -82,7 +91,7 @@ public class Store {
 	public void undoLastAction() {
 		if (commandStack.empty())
 			model.fireOperationFailed("Unable to undo action", "UNDO FAILED");
-		commandStack.pop().undo();
+		commandStack.pop().undo(); // popping the last command entered the queue and undoing it.
 	}
 
 	// Implement Observable Pattern, notify all the subscribed customers.

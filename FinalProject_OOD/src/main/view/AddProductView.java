@@ -214,7 +214,6 @@ public class AddProductView extends GridPane {
 			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, c, id));
 			cleanValueFields();
 			txtFldPrdctName.requestFocus();
-//			view.getTableView().updateTable();
 			view.fireListOfProducts();
 		});
 		add(btnAdd, 1, 9);

@@ -17,6 +17,7 @@ public class AppRunnable extends Application {
 		launch(args);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Model theModel = new Model();

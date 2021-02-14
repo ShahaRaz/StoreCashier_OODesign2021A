@@ -7,11 +7,12 @@ package main.controller;
 
 import main.listeners.LogicListenable;
 import main.listeners.ViewListenable;
+import main.model.Customer;
 import main.model.Model;
 import main.model.Product;
+import main.model.store.Store;
 import main.view.View;
-
-import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 
 public class Controller implements ViewListenable, LogicListenable {
@@ -24,6 +25,9 @@ public class Controller implements ViewListenable, LogicListenable {
 
 		theModel.registerListener(this);
 		theView.registerListener(this); // throws
+		
+		// Send list to view after registerListener.
+		theView.fireListOfProducts();
 	}
 
 	// View wants to add product.
@@ -58,23 +62,22 @@ public class Controller implements ViewListenable, LogicListenable {
 
 	@Override
 	public void notifyProductNotExist(Product p, String str) {
-		// TODO Auto-generated method stub
 		theView.notifyProductNotExist(p, str);
 	}
-
 
 //	public void modelSendProductsList(ArrayList<Product> products) {
 //		theView.nofityProductsArrived(products);
 //	}
 
 	@Override
-	public void modelSendProductsList(Set<Product> products) {
+	public void modelSendProductsList(Set<Map.Entry<String, Product>> products) {
 		theView.nofityProductsArrived(products);
 	}
 
 	@Override
 	public void ViewAskForProduct(Product searchMe) {
-		//TODO: theModel.getProduct(searchMe); and return to the view to show other fields of searchMe.
+		// TODO: theModel.getProduct(searchMe); and return to the view to show other
+		// fields of searchMe.
 //		theModel.getProduct(searchMe);
 	}
 
