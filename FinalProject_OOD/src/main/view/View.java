@@ -45,7 +45,7 @@ public class View extends GridPane {
 		stage.setTitle("Store Saver");
 		stage.show();
 	}
-	
+
 	public void creatTabPane() {
 		TabPane tbPane = new TabPane();
 		Tab tab1 = new Tab("Table Of All Products", tableView = new ProductTableView(stage, this));
@@ -75,7 +75,7 @@ public class View extends GridPane {
 			l.ViewAskForProduct(searchMe);
 		}
 	}
-	
+
 	public void fireListOfProducts() {
 		for (ViewListenable l : allListeners) {
 			l.viewAskForListOfAllProducts();
@@ -104,6 +104,7 @@ public class View extends GridPane {
 
 	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
 		tableView.updateTable(products);
+		addWindow.updateComboBox(products);
 		// send array of products (may also contain only 1 product)
 		// note! the products will be by reference, so don't change them.
 		// access elements ___________

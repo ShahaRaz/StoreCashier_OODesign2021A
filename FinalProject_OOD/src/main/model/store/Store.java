@@ -59,12 +59,6 @@ public class Store {
 		this.productsMap = productsMap;
 	}
 
-	// TODO - DELETE ME , ASK FOR THIS DATA USING THE CONTROLLER
-	public SortedMap<String, Product> getProductsMap() {
-		return this.productsMap;
-
-	}
-
 	public Set<Map.Entry<String, Product>> getProductsSet() {
 		/// TODO: Create a copy of this set, and move it to the controller.
 		return this.productsMap.entrySet();

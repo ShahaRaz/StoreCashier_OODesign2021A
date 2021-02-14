@@ -10,7 +10,6 @@ import main.listeners.ViewListenable;
 import main.model.Customer;
 import main.model.Model;
 import main.model.Product;
-import main.model.store.Store;
 import main.view.View;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +24,7 @@ public class Controller implements ViewListenable, LogicListenable {
 
 		theModel.registerListener(this);
 		theView.registerListener(this); // throws
-		
+
 		// Send list to view after registerListener.
 		theView.fireListOfProducts();
 	}

@@ -71,17 +71,18 @@ public class ProductTableView extends GridPane {
 	public void createTable() {
 		initTable();
 	}
-	
+
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
 //		TODO: add without clear.
 		data.clear();
 		for (Map.Entry<String, Product> e : products) {
+//			if (!data.contains(e.getValue()))
 			data.addAll(e.getValue());
 		}
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initTable(){
+	public void initTable() {
 		TableView table = new TableView();
 
 		stage.setTitle("Product's Table");
@@ -102,12 +103,12 @@ public class ProductTableView extends GridPane {
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
-		//Hard Code. will be from File.
+		// Hard Code. will be from File.
 		Store.getInstance(null).addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
 		Store.getInstance(null).addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
 		Store.getInstance(null).addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
 		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
-		//TODO: Change HardCode to read from File.
+		// TODO: Change HardCode to read from File.
 
 		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);

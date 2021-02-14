@@ -44,8 +44,8 @@ public class Model {
 	public void removedProduct(Product p) {
 		if (store.getProductDetails(p.getBarcode()) == null) // product not in store.
 			store.removeProduct(p);
-		
-		//TODO: Return fireProductRemoved
+
+		// TODO: Return fireProductRemoved
 		// firing a return statement from within the store.
 	}
 
@@ -70,7 +70,7 @@ public class Model {
 //			l.modelSendProductsList(products);
 //		}
 //	}
-	
+
 	private void fireSendProductsArrToView(Set<Map.Entry<String, Product>> products) {
 		for (LogicListenable l : allListeners) {
 			l.modelSendProductsList(products);

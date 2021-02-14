@@ -1,14 +1,18 @@
 package main.view;
-
- /**
+/**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  */
+
+import java.util.Map.Entry;
+import java.util.Map;
+import java.util.Set;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Reflection;
@@ -33,13 +37,13 @@ public class AddProductView extends GridPane {
 	/* Price */
 	private TextField txtFldPrdctPrice;
 	/* Barcode */
-	private TextField txtFldPrdctBarCode;
+	ComboBox<String> cboxPrdctBarCode;
+//	private TextField txtFldPrdctBarCode;
 	/* PriceToStore */
 	private TextField txtFldPrdctPriceToStore;
 	/* Customer */
 	private TextField txtFldCustomer;
 	// TODO: Add TaxtField of phoneNum and isAcceptingPromotions.
-
 	/* Status */
 	private Label lblStatus;
 	/* Add button */
@@ -123,49 +127,36 @@ public class AddProductView extends GridPane {
 		// Switch to the next txtField after pressing Enter.
 		txtFldPrdctPrice.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
-				txtFldPrdctBarCode.requestFocus();
+				cboxPrdctBarCode.requestFocus();
 				ev.consume();
 			}
 		});
 	}
 
 	private void initFldBarcode() {
+		cboxPrdctBarCode = new ComboBox<String>();
+		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
+		cboxPrdctBarCode.getSelectionModel().select("");
+		cboxPrdctBarCode.setEditable(true);
+		cboxPrdctBarCode.setPromptText("Barcode");
 
-		txtFldPrdctBarCode = new TextField();
-		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
-		txtFldPrdctBarCode.setPromptText("Barcode");
-
+		add(cboxPrdctBarCode, 1, 5);
 		add(new Label("Product Barcode: "), 0, 5);
-		add(txtFldPrdctBarCode, 1, 5);
-		// Switch to the next txtField after pressing Enter.
-		txtFldPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+
+		view.fireListOfProducts();
+		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
 				txtFldPrdctPriceToStore.requestFocus();
 				ev.consume();
 			}
 		});
+	}
 
-//		ComboBox<String> txtFldPrdctBarCode = new ComboBox<String>();
-//		ObservableList<String> list = null;// = Store.getInstance().getProductsMap();
-//		for (Map.Entry<String, Product> e : Store.getInstance().getProductsMap().entrySet()) {
-//			System.out.println(e.getKey());
-//			txtFldPrdctBarCode.getItems().add(e.getKey());
-//		}
-//		txtFldPrdctBarCode.getItems().add("Gadi");
-//		txtFldPrdctBarCode.setEditable(true);
-////		txtFldPrdctBarCode.getItems().addAll(list);
-//		txtFldPrdctBarCode.setPromptText("Barcode");
-//		add(txtFldPrdctBarCode, 1, 5);
-//		add(new Label("Product Barcode: "), 0, 5);
-//		
-//		
-//		txtFldPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-//			if (ev.getCode() == KeyCode.ENTER) {
-//				txtFldPrdctPriceToStore.requestFocus();
-//				ev.consume();
-//			}
-//		});
-
+	public void updateComboBox(Set<Entry<String, Product>> products) {
+		for (Map.Entry<String, Product> e : products) {
+			if (!cboxPrdctBarCode.getItems().contains(e.getKey()))
+				cboxPrdctBarCode.getItems().add(e.getKey());
+		}
 	}
 
 	private void initFldPriceToStore() {
@@ -209,7 +200,7 @@ public class AddProductView extends GridPane {
 			int priceToStore = Integer
 					.parseInt(txtFldPrdctPriceToStore.getText().equals("") ? "0" : txtFldPrdctPriceToStore.getText());
 			int priceSold = Integer.parseInt(txtFldPrdctPrice.getText().equals("") ? "0" : txtFldPrdctPrice.getText());
-			String id = txtFldPrdctBarCode.getText().equals("") ? "0000" : txtFldPrdctBarCode.getText();
+			String id = cboxPrdctBarCode.getValue().equals("") ? "0000" : cboxPrdctBarCode.getValue();
 			Customer c = new Customer(txtFldCustomer.getText());
 			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, c, id));
 			cleanValueFields();
@@ -245,7 +236,7 @@ public class AddProductView extends GridPane {
 			}
 
 			// Product's id
-			String id = txtFldPrdctBarCode.getText();
+			String id = cboxPrdctBarCode.getValue().isBlank() ? "" : cboxPrdctBarCode.getValue();///////////
 			id = id.equals("") ? "0000" : id;
 
 			// Product's Customer who bought it.
@@ -254,11 +245,9 @@ public class AddProductView extends GridPane {
 
 			cleanValueFields();
 			txtFldPrdctName.requestFocus();
-//			view.getTableView().updateTable();
 			view.fireListOfProducts();
 		});
 		add(btnAdd, 1, 9);
-
 	}
 
 	// init status
@@ -291,12 +280,12 @@ public class AddProductView extends GridPane {
 		this.txtFldPrdctPrice = txtFldPrdctPrice;
 	}
 
-	public TextField getTxtFldPrdctBarCode() {
-		return txtFldPrdctBarCode;
+	public ComboBox<String> getCboxPrdctBarCode() {
+		return cboxPrdctBarCode;
 	}
 
-	public void setTxtFldPrdctBarCode(TextField txtFldPrdctBarCode) {
-		this.txtFldPrdctBarCode = txtFldPrdctBarCode;
+	public void setCboxPrdctBarCode(ComboBox<String> cboxPrdctBarCode) {
+		this.cboxPrdctBarCode = cboxPrdctBarCode;
 	}
 
 	public TextField getTxtFldPrdctPriceToStore() {
@@ -327,7 +316,8 @@ public class AddProductView extends GridPane {
 	// clean Value Fields
 	public void cleanValueFields() {
 		txtFldCustomer.setText("");
-		txtFldPrdctBarCode.setText("");
+		cboxPrdctBarCode.setValue("");
+		;
 		txtFldPrdctName.setText("");
 		txtFldPrdctPriceToStore.setText("");
 		txtFldPrdctPrice.setText("");

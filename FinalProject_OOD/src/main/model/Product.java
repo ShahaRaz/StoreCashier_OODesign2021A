@@ -7,7 +7,7 @@ package main.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Product  {
+public class Product {
 	private long timeAdded;
 
 	private SimpleStringProperty description;
@@ -101,9 +101,8 @@ public class Product  {
 	@Override
 	public String toString() {
 		return "Product [timeAdded=" + timeAdded + ", description=" + description.get() + ", barcode=" + barcode.get()
-				+ ", costToStore=" + costToStore.get() + ", priceSold=" + priceSold.get() + ", customer=" + customer + "]";
+				+ ", costToStore=" + costToStore.get() + ", priceSold=" + priceSold.get() + ", customer=" + customer
+				+ "]";
 	}
-	
-	
 
 }
