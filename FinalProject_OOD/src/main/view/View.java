@@ -16,6 +16,7 @@ import main.listeners.ViewListenable;
 import main.model.Product;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class View extends GridPane {
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
@@ -39,7 +40,7 @@ public class View extends GridPane {
 		hbButtons = getHBox();
 
 		TabPane tbPane = new TabPane();
-		Tab tab1 = new Tab("Table Of All Products", tableView = new ProductTableView(stage));
+		Tab tab1 = new Tab("Table Of All Products", tableView = new ProductTableView(stage, this));
 		Tab tab2 = new Tab("Add Product", addWindow = new AddProductView(stage, this));
 		Tab tab3 = new Tab("Remove Product", removeWindow = new RemoveProductView(stage, this));
 		tbPane.getTabs().add(tab1);
@@ -71,7 +72,7 @@ public class View extends GridPane {
 		}
 	}
 	
-	public void fireListOfProsucts() {
+	public void fireListOfProducts() {
 		for (ViewListenable l : allListeners) {
 			l.viewAskForListOfAllProducts();
 		}
@@ -97,7 +98,8 @@ public class View extends GridPane {
 		removeWindow.updateStatus("The product " + p.getBarcode() + " removed!", "green");
 	}
 
-	public void nofityProductsArrived(ArrayList<Product> products) {
+	public void nofityProductsArrived(Set<Product> products) {
+		tableView.updateTable(products);
 		// send array of products (may also contain only 1 product)
 		// note! the products will be by reference, so don't change them.
 		// access elements ___________

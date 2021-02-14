@@ -12,6 +12,7 @@ import main.model.Product;
 import main.view.View;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Controller implements ViewListenable, LogicListenable {
 	private Model theModel;
@@ -61,19 +62,43 @@ public class Controller implements ViewListenable, LogicListenable {
 		theView.notifyProductNotExist(p, str);
 	}
 
+
+//	public void modelSendProductsList(ArrayList<Product> products) {
+//		theView.nofityProductsArrived(products);
+//	}
+
 	@Override
-	public void modelSendProductsList(ArrayList<Product> products) {
+	public void modelSendProductsList(Set<Product> products) {
 		theView.nofityProductsArrived(products);
 	}
 
 	@Override
 	public void ViewAskForProduct(Product searchMe) {
-//		theModel.
+		//TODO: theModel.getProduct(searchMe); and return to the view to show other fields of searchMe.
+//		theModel.getProduct(searchMe);
 	}
 
 	@Override
 	public void viewAskForListOfAllProducts() {
-//		theModel
+		theModel.sendAllProductsToView();
+	}
+
+	@Override
+	public void modelFailedOperation(String errorMassage, String elaborate) {
+		/**
+		 * notify user that operation faild Operations like:
+		 *
+		 * UNDO or any general thing..
+		 *
+		 *
+		 *
+		 *
+		 * in elaborate: extra data (for internal use) my hold tokens or other things
+		 * that needs to be passed from model to view
+		 *
+		 *
+		 */
+		// failed
 	}
 
 //    public class Controller implements ChampionshipListenable , ViewListenable {

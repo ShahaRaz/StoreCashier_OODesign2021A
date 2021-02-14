@@ -32,12 +32,10 @@ public class RemoveProductView extends GridPane {
 	private Label lblStatus;
 
 	private Stage stage;
-//	private Scene baseScene;
 
 	public RemoveProductView(Stage stg, View view) {
 		this.stage = stg;
 		this.view = view;
-//		baseScene = stg.getScene();
 
 		init();
 		stage.setScene(new Scene(this, 500, 500));
@@ -106,7 +104,8 @@ public class RemoveProductView extends GridPane {
 			view.fireRemoveProduct(new Product(pID));
 			cleanValueFields();
 			txtFldPrdctBarCode.requestFocus();
-			view.getTableView().updateTable();
+//			view.getTableView().updateTable();
+			view.fireListOfProducts();
 		});
 		add(btnRemove, 1, 9);
 	}

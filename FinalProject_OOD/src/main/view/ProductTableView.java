@@ -4,7 +4,9 @@ package main.view;
  * @author Shahar Raz.
  */
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 
 import javafx.collections.FXCollections;
@@ -24,14 +26,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.model.Customer;
 import main.model.Product;
-import main.model.Store;
+import main.model.store.Store;
 
 public class ProductTableView extends GridPane {
 	private Stage stage;
+	private View view;
 	private final ObservableList<Product> data = FXCollections.observableArrayList();
 
-	public ProductTableView(Stage stg) {
+	public ProductTableView(Stage stg, View view) {
 		this.stage = stg;
+		this.view = view;
 		init();
 	}
 
@@ -74,27 +78,29 @@ public class ProductTableView extends GridPane {
 		stage.show();
 	}
 
-	public void createTable() {
-		// Hard Code. will be from File.
-		Store.getInstance().addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
-		Store.getInstance().addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
-		Store.getInstance().addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
-		Store.getInstance().addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
-		// TODO: Change HardCode to read from File.
-
-		updateTable();
+	public void createTable() {	
+		//Hard Code. will be from File.
+		Store.getInstance(null).addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
+		Store.getInstance(null).addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
+		Store.getInstance(null).addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
+		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
+		//TODO: Change HardCode to read from File.
+		
+//		updateTable();
+		view.fireListOfProducts();
 		initTable();
 	}
-
-	public void updateTable() {
+	
+	public void updateTable(Set<Product> products) {
 		data.clear();
-		for (Map.Entry<String, Product> e : Store.getInstance().getProductsMap().entrySet()) {
-			data.addAll(e.getValue());
-		}
+//		for (Map.Entry<String, Product> e : products.entrySet()) {
+//			data.addAll(e.getValue());
+//		}
+		data.addAll(products);
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initTable() {
+	public void initTable(){
 		TableView table = new TableView();
 
 		stage.setTitle("Product's Table");
@@ -116,6 +122,7 @@ public class ProductTableView extends GridPane {
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
 		add(table, 0, 3, 5, 1);
+		
 
 //		final ObservableList<Product> data = FXCollections.observableArrayList();
 //				new Product("Bamba", 1, 4, new Customer("Momo"), "BA536"),

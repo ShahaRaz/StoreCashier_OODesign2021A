@@ -1,8 +1,4 @@
 package main.model;
-/**
- * @author Gadi Engelsman.
- * @author Shahar Raz.
- */
 
 /*
  * @author Gadi Engelsman.
@@ -10,8 +6,11 @@ package main.model;
  * */
 
 import main.listeners.LogicListenable;
+import main.model.store.Store;
 
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.SortedMap;
 
 public class Model {
 	private Store store;
@@ -19,7 +18,7 @@ public class Model {
 
 	public Model() {
 		this.allListeners = new ArrayList<>();
-		store = Store.getInstance();
+		store = Store.getInstance(this);
 	}
 
 	public void registerListener(LogicListenable l) {
@@ -28,19 +27,27 @@ public class Model {
 
 	public void addProduct(Product p) {
 		if (store.getProductDetails(p.getBarcode()) == null) { // product isn't yet in hashMap
-			if (p.isValidProduct(this)) {
+			String problemsWithProduct = p.isValidProduct(this); // return the first error found
+			if (problemsWithProduct.length() == 0) { // no errors found
 				store.addNewProduct(p);
 				fireProductAdded(p);
 			} else {
-				fireProductNotGood(p, "Insert All Product's fields");
+				fireProductNotGood(p, problemsWithProduct);
 			}
-			return;
+		} else { // note! (got here if) product is already in map already, which means it's valid
+			store.addNewProduct(p);
+			fireProductAdded(p);
 		}
-		// note! (got here if) product is already in hashmap already, which means it's
-		// valid
-		store.addNewProduct(p);
-		fireProductAdded(p);
+	}
 
+	public void removedProduct(Product p) {
+		if (store.getProductDetails(p.getBarcode()) == null) // product not in store.
+			store.removeProduct(p);
+		// firing a return statement from within the store.
+	}
+
+	public void undoLastAction() {
+		store.undoLastAction();
 	}
 
 	private void fireProductAdded(Product p) {
@@ -55,29 +62,26 @@ public class Model {
 		}
 	}
 
-	public void removedProduct(Product p) {
-//		if (store.productsMap.get(p.getBarcose()).equals(null)) {
-//			for (LogicListenable l : allListeners) {
-//				l.notifyProductNotExist(p, "The product " + p.getBarcose() + " not exist!");
-//			}
-//		} else {
-		for (LogicListenable l : allListeners) {
-			l.modelRemovedProduct(p);
-		}
-
+//	private void fireSendProductsArrToView(ArrayList<Product> products) {
+//		for (LogicListenable l : allListeners) {
+//			l.modelSendProductsList(products);
 //		}
-	}
-
-	private void fireSendProductsArrToView(ArrayList<Product> products) {
+//	}
+	
+	private void fireSendProductsArrToView(Set<Product> products) {
 		for (LogicListenable l : allListeners) {
 			l.modelSendProductsList(products);
 		}
 	}
 
-	private void fireSaleForCustomer() {
+	public void fireOperationFailed(String errorMassage, String elaborate) {
 		for (LogicListenable l : allListeners) {
-			store.notifyAllCustomers();
+			l.modelFailedOperation(errorMassage, elaborate);
 		}
 	}
 
+	public void sendAllProductsToView() {
+		store.getProductsMap();
+//		fireSendProductsArrToView();
+	}
 }
