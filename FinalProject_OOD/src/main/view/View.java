@@ -40,7 +40,7 @@ public class View extends GridPane {
 
 		hbButtons = getHBox();
 		creatTabPane();
-		
+
 		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
 		stage.setScene(scene);
 		stage.setTitle("Store Saver");
@@ -77,9 +77,21 @@ public class View extends GridPane {
 		}
 	}
 
-	public void fireListOfProducts() {
+	public void fireListOfProductsAfterRemove() {
 		for (ViewListenable l : allListeners) {
-			l.viewAskForListOfAllProducts();
+			l.viewAskForListOfAllProductsAfterRemove();
+		}
+	}
+
+	public void fireListOfProductsAfterAdd() {
+		for (ViewListenable l : allListeners) {
+			l.viewAskForListOfAllProductsAfterAdd();
+		}
+	}
+
+	public void fireUndo() {
+		for (ViewListenable l : allListeners) {
+			l.viewAskForUndo();
 		}
 	}
 
@@ -104,9 +116,15 @@ public class View extends GridPane {
 
 	}
 
-	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
+	public void nofityProductsArrivedAfterRemove(Set<Map.Entry<String, Product>> products) {
 		tableView.updateTable(products);
-		addWindow.updateComboBox(products);
+		addWindow.updateComboBoxAfterRemoved(products);
+		removeWindow.updateComboBox(products);
+	}
+
+	public void nofityProductsArrivedAfterAdd(Set<Map.Entry<String, Product>> products) {
+		tableView.updateTable(products);
+		addWindow.updateComboBoxAfterAdded(products);
 		removeWindow.updateComboBox(products);
 	}
 

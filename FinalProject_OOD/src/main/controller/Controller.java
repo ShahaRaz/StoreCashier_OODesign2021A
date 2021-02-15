@@ -12,6 +12,7 @@ import main.model.Model;
 import main.model.Product;
 import main.view.View;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class Controller implements ViewListenable, LogicListenable {
@@ -26,7 +27,7 @@ public class Controller implements ViewListenable, LogicListenable {
 		theView.registerListener(this); // throws
 
 		// Send list to view after registerListener.
-		theView.fireListOfProducts();
+		theView.fireListOfProductsAfterRemove();
 	}
 
 	// View wants to add product.
@@ -64,13 +65,14 @@ public class Controller implements ViewListenable, LogicListenable {
 		theView.notifyProductNotExist(p, str);
 	}
 
-//	public void modelSendProductsList(ArrayList<Product> products) {
-//		theView.nofityProductsArrived(products);
-//	}
+	@Override
+	public void modelSendProductsListAfterRemove(Set<Map.Entry<String, Product>> products) {
+		theView.nofityProductsArrivedAfterRemove(products);
+	}
 
 	@Override
-	public void modelSendProductsList(Set<Map.Entry<String, Product>> products) {
-		theView.nofityProductsArrived(products);
+	public void modelSendProductsListAfterAdd(Set<Entry<String, Product>> products) {
+		theView.nofityProductsArrivedAfterAdd(products);
 	}
 
 	@Override
@@ -81,12 +83,23 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void viewAskForListOfAllProducts() {
-		theModel.sendAllProductsToView();
+	public void viewAskForListOfAllProductsAfterRemove() {
+		theModel.sendAllProductsToViewAfterRemove();
+	}
+
+	@Override
+	public void viewAskForListOfAllProductsAfterAdd() {
+		theModel.sendAllProductsToViewAfterAdd();
+	}
+
+	@Override
+	public void viewAskForUndo() {
+//		theModel.
 	}
 
 	@Override
 	public void modelFailedOperation(String errorMassage, String elaborate) {
+		// TODO: What operation? Remove or Add?
 		/**
 		 * notify user that operation faild Operations like:
 		 *

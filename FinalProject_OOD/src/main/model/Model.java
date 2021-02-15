@@ -10,6 +10,7 @@ import main.model.store.Store;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class Model {
@@ -44,8 +45,7 @@ public class Model {
 	public void removedProduct(Product p) {
 		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
 			fireOperationFailed("No product with such id", "product wasn't found");
-		}
-		else { // product is in our database
+		} else { // product is in our database
 			store.removeProduct(p);
 			fireProductRemoved(p);
 		}
@@ -81,9 +81,9 @@ public class Model {
 //		}
 //	}
 
-	private void fireSendProductsArrToView(Set<Map.Entry<String, Product>> products) {
+	private void fireSendProductsArrToViewAfterRemove(Set<Map.Entry<String, Product>> products) {
 		for (LogicListenable l : allListeners) {
-			l.modelSendProductsList(products);
+			l.modelSendProductsListAfterRemove(products);
 		}
 	}
 
@@ -93,18 +93,32 @@ public class Model {
 		}
 	}
 
-	public void sendAllProductsToView() {
-		fireSendProductsArrToView(store.getProductsSet());
+	public void sendAllProductsToViewAfterRemove() {
+		fireSendProductsArrToViewAfterRemove(store.getProductsSet());
+	}
+
+	public void sendAllProductsToViewAfterAdd() {
+		fireSendProductsArrToViewAfterAdd(store.getProductsSet());
+	}
+
+	private void fireSendProductsArrToViewAfterAdd(Set<Entry<String, Product>> products) {
+		for (LogicListenable l : allListeners) {
+			l.modelSendProductsListAfterAdd(products);
+		}
 	}
 
 	public void getProduct(String searchMe) {
-		fireGetProduct(searchMe);
+		Product p = store.getProductDetails(searchMe);
+		if (p == null)
+			fireOperationFailed("error, product not in database", "bla");
+		else
+			fireGetProduct(searchMe);
+
 	}
 
 	private void fireGetProduct(String id) {
 		for (LogicListenable l : allListeners) {
-			if (store.getProductDetails(id) != null)
-				l.modelSendProduct(store.getProductDetails(id));
+			l.modelSendProduct(store.getProductDetails(id));
 		}
 	}
 }

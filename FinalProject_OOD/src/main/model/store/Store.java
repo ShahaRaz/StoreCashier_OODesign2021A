@@ -65,7 +65,10 @@ public class Store {
 	}
 
 	public Product getProductDetails(String id) {
-		return productsMap.get(id); // if not exists. return null
+		if (productsMap.containsKey(id))
+			return productsMap.get(id); // if not exists. return null
+		else
+			return null;
 	}
 
 	public void addNewProduct(Product p) {

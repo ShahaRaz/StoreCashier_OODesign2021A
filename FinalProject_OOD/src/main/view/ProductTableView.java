@@ -74,10 +74,8 @@ public class ProductTableView extends GridPane {
 	}
 
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
-//		TODO: add without clear.
 		data.clear();
 		for (Map.Entry<String, Product> e : products) {
-//			if (!data.contains(e.getValue()))
 			data.addAll(e.getValue());
 		}
 	}
@@ -111,7 +109,7 @@ public class ProductTableView extends GridPane {
 		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
 		// TODO: Change HardCode to read from File.
 
-		view.fireListOfProducts();
+		view.fireListOfProductsAfterRemove();
 		add(table, 0, 3, 5, 1);
 
 //		final ObservableList<Product> data = FXCollections.observableArrayList();

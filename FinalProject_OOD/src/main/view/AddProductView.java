@@ -45,7 +45,9 @@ public class AddProductView extends GridPane {
 	/* Customer */
 	private TextField txtFldCustomer;
 	// TODO: Add TaxtField of phoneNum and isAcceptingPromotions.
+	/* Customer's Phone */
 	private TextField txtFldCustomerPhone;
+	/* Promotion Customer */
 	private CheckBox checkBoxPromotion;
 	/* Status */
 	private Label lblStatus;
@@ -53,6 +55,8 @@ public class AddProductView extends GridPane {
 	private Button btnAdd;
 	/* Clear button */
 	private Button btnClear;
+	/* Undo button */
+	private Button btnUndo;
 
 	private Stage stage;
 
@@ -100,14 +104,15 @@ public class AddProductView extends GridPane {
 
 	private void initAddProduct() {
 		initFldName();
-		initFldPrice();
 		initFldBarcode();
+		initFldPrice();
 		initFldPriceToStore();
 		initFldCustomer();
 		initFldCustomerPhone();
 		initCheckBox();
 		initAddButton();
 		initClearButton();
+		initUndoButton();
 	}
 
 	private void initFldName() {
@@ -152,7 +157,7 @@ public class AddProductView extends GridPane {
 		add(cboxPrdctBarCode, 1, 3);
 		add(new Label("Product Barcode: "), 0, 3);
 
-		view.fireListOfProducts();
+		view.fireListOfProductsAfterRemove();
 
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
@@ -167,10 +172,17 @@ public class AddProductView extends GridPane {
 		});
 	}
 
-	public void updateComboBox(Set<Entry<String, Product>> products) {
+	public void updateComboBoxAfterAdded(Set<Entry<String, Product>> products) {
 		for (Map.Entry<String, Product> e : products) {
 			if (!cboxPrdctBarCode.getItems().contains(e.getKey()))
 				cboxPrdctBarCode.getItems().add(e.getKey());
+		}
+	}
+
+	public void updateComboBoxAfterRemoved(Set<Entry<String, Product>> products) {
+		cboxPrdctBarCode.getItems().clear();
+		for (Map.Entry<String, Product> e : products) {
+			cboxPrdctBarCode.getItems().add(e.getKey());
 		}
 	}
 
@@ -179,6 +191,7 @@ public class AddProductView extends GridPane {
 		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
 		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
 		txtFldCustomer.setText(productDetails.getCustomer().getName());
+		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());///////////////
 	}
 
 	private void initFldPriceToStore() {
@@ -212,7 +225,7 @@ public class AddProductView extends GridPane {
 			}
 		});
 	}
-	
+
 	private void initFldCustomerPhone() {
 		txtFldCustomerPhone = new TextField();
 		txtFldCustomerPhone.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -228,25 +241,34 @@ public class AddProductView extends GridPane {
 			}
 		});
 	}
-	
+
 	private void initCheckBox() {
 		checkBoxPromotion = new CheckBox();
 		add(new Label("Promotion: "), 0, 9);
 		add(checkBoxPromotion, 1, 9);
 	}
-	
+
 	private void initClearButton() {
 		btnClear = new Button("Clear Product");
-		btnClear.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;"); 
+		btnClear.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnClear.setOnAction(e -> {
 			cleanValueFields();
 		});
 		add(btnClear, 1, 12);
 	}
-	
+
+	private void initUndoButton() {
+		btnUndo = new Button("Undo");
+		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btnUndo.setOnAction(e -> {
+			view.fireUndo();
+		});
+		add(btnUndo, 1, 13);
+	}
+
 	private void initAddButton() {
 		btnAdd = new Button("Add Product");
-		btnAdd.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;"); 
+		btnAdd.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnAdd.setOnAction(e -> {
 			// Store the data.
 
@@ -277,11 +299,12 @@ public class AddProductView extends GridPane {
 			id = id.equals("") ? "0000" : id;
 
 			// Product's Customer who bought it.
-			Customer c = new Customer(txtFldCustomer.getText(), txtFldCustomerPhone.getText(), checkBoxPromotion.isSelected());///
+			Customer c = new Customer(txtFldCustomer.getText(), txtFldCustomerPhone.getText(),
+					checkBoxPromotion.isSelected());///
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
 
-			cboxPrdctBarCode.requestFocus();
-			view.fireListOfProducts();
+//			cboxPrdctBarCode.requestFocus();
+			view.fireListOfProductsAfterAdd();
 		});
 		add(btnAdd, 1, 11);
 	}
@@ -356,5 +379,6 @@ public class AddProductView extends GridPane {
 		txtFldPrdctName.setText("");
 		txtFldPrdctPriceToStore.setText("");
 		txtFldPrdctPrice.setText("");
+		txtFldCustomerPhone.setText("");
 	}
 }

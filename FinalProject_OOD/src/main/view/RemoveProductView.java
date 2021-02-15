@@ -96,12 +96,7 @@ public class RemoveProductView extends GridPane {
 		add(cboxPrdctBarCode, 1, 5);
 		add(new Label("Product Barcode: "), 0, 5);
 
-		view.fireListOfProducts();
-
-		cboxPrdctBarCode.setOnAction(e -> {
-			String selectedValue = (String) cboxPrdctBarCode.getValue();
-			view.fireSearchProduct(selectedValue);
-		});
+		view.fireListOfProductsAfterRemove();
 
 		// Make the Enter available from the txt field
 		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
@@ -113,22 +108,22 @@ public class RemoveProductView extends GridPane {
 	}
 
 	public void updateComboBox(Set<Entry<String, Product>> products) {
+		cboxPrdctBarCode.getItems().clear();
 		for (Map.Entry<String, Product> e : products) {
-			if (!cboxPrdctBarCode.getItems().contains(e.getKey()))
-				cboxPrdctBarCode.getItems().add(e.getKey());
+			cboxPrdctBarCode.getItems().add(e.getKey());
 		}
 	}
 
 	// init Button.
 	private void initRemoveButton() {
 		btnRemove = new Button("Remove Product");
-		btnRemove.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;"); 
+		btnRemove.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnRemove.setOnAction(e -> {
 			String pID = cboxPrdctBarCode.getValue();
 			view.fireRemoveProduct(new Product(pID));
 			cleanValueFields();
 			cboxPrdctBarCode.requestFocus();
-			view.fireListOfProducts();
+			view.fireListOfProductsAfterRemove();
 		});
 		add(btnRemove, 1, 9);
 	}
