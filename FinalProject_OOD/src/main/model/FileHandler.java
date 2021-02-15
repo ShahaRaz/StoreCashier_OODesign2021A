@@ -9,8 +9,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class FileHandler {
+public class FileHandler implements Iterable<Product>{
     private File file;
 
     public FileHandler() {
@@ -196,6 +198,38 @@ public class FileHandler {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new ConcreteIterator();
+    }
+
+    private class ConcreteIterator implements Iterator<Product>{
+        private int cur=0; // the element to be retrieved now with next
+        private int last = -1; // the element to be removed
+        @Override
+        public boolean hasNext() {
+            // return cur < size
+            return false;
+        }
+
+        @Override
+        public Product next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+//            Product tmp = a[cur];
+            // last = cur
+            // cur++
+//            return temp;
+            return new Product("blabla", 5 , 3, new Customer("hagy","050",true),"df");
+
+        }
+
+        @Override
+        public void remove() {
+
+        }
     }
 }
 
