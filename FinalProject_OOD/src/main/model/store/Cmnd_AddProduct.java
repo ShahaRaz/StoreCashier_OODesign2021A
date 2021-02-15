@@ -1,5 +1,6 @@
 package main.model.store;
 
+import main.model.FileHandler;
 import main.model.Product;
 
 import java.util.ArrayList;
@@ -11,11 +12,15 @@ public class Cmnd_AddProduct implements Command{
     private ArrayList<Product> soldProductsArr_ref; // reference
     private Product product;
     private SortedMap<String, Product> map_ref;
+    private FileHandler theFile;
 
-    public Cmnd_AddProduct(Product product,  SortedMap<String, Product> map_ref, ArrayList<Product> soldProductsArr_ref) {
+
+    public Cmnd_AddProduct(Product product,  SortedMap<String, Product> map_ref, ArrayList<Product> soldProductsArr_ref, FileHandler theFile) {
         this.product = product;
         this.map_ref = map_ref; // reference to the main map
         this.soldProductsArr_ref = soldProductsArr_ref; // A Reference!
+        this.theFile = theFile; // A Reference!
+
     }
 
     @Override
@@ -29,6 +34,8 @@ public class Cmnd_AddProduct implements Command{
             wasProductInMapB4thisCmnd = false;
 
         map_ref.put(product.getBarcode(),product);
+        theFile.addProductToFile(product);
+
     }
 
     @Override
@@ -37,6 +44,8 @@ public class Cmnd_AddProduct implements Command{
         if(wasProductInMapB4thisCmnd) {
             map_ref.remove(product); // TODO delete me if im unnecessary
             map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
+            theFile.removeProductFromFile(product);
+            theFile.addProductToFile(oldProductInMap);
 
         }
     }

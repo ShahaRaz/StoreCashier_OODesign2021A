@@ -73,21 +73,22 @@ public class Store {
 
 	public void addNewProduct(Product p) {
 		// Access only from command
-		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr);
-
+		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr,theFile);
 		commandStack.add(commandAdd);
 		commandAdd.execute();
+		theFile.addProductToFile(p);
 	}
 
 	public void removeProduct(Product p) {
-		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, productsMap, soldProductsArr);
+		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, soldProductsArr,productsMap ,theFile);
 		commandStack.add(commandRemove);
 		commandRemove.execute();
+		theFile.removeProductFromFile(p);
 	}
 
 	public void undoLastAction() {
 		if (commandStack.empty())
-			model.fireOperationFailed("Unable to undo action", "UNDO FAILED");
+			model.fireOperationFailed("UNDO FAILED", "No Actions were recorded");
 		commandStack.pop().undo(); // popping the last command entered the queue and undoing it.
 	}
 

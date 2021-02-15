@@ -110,15 +110,15 @@ public class Model {
 	public void getProduct(String searchMe) {
 		Product p = store.getProductDetails(searchMe);
 		if (p == null)
-			fireOperationFailed("error, product not in database", "bla");
+			fireOperationFailed("Error, product not in database", "bla");
 		else
-			fireGetProduct(searchMe);
+			fireGetProduct(p);
 
 	}
 
-	private void fireGetProduct(String id) {
+	private void fireGetProduct(Product productFound) {
 		for (LogicListenable l : allListeners) {
-			l.modelSendProduct(store.getProductDetails(id));
+			l.modelSendProduct(productFound);
 		}
 	}
 }
