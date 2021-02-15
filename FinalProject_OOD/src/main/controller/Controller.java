@@ -76,6 +76,22 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
+	public void modelSendsMessage(String headline, String Content) {
+		/**
+		 * send message to the user
+		 *
+		 * use cases:
+		 * announce successful undo (headline will contain the word "Undo"
+		 * check by:
+		 * 	if(headline.containsIgnoreCase("Undo")
+		 * 		popup(headline,message)
+		 * 		fireAskForProductsList
+		 *
+		 */
+		//theView.
+	}
+
+	@Override
 	public void viewAskForProduct(String searchMe) {
 		theModel.getProduct(searchMe);
 	}
@@ -92,7 +108,7 @@ public class Controller implements ViewListenable, LogicListenable {
 
 	@Override
 	public void viewAskForUndo() {
-//		theModel.
+		theModel.undoLastAction();
 	}
 
 	@Override

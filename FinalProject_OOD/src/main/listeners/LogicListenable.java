@@ -13,7 +13,7 @@ public interface LogicListenable {
 
 	void modelRemovedProduct(Product p);
 
-	void modelSendProductsListAfterRemove(Set<Map.Entry<String, Product>> products);
+	void modelSendProductsListAfterRemove(Set<Map.Entry<String, Product>> products); /////
 
 	void notifyProductNotExist(Product p, String string);
 
@@ -21,6 +21,7 @@ public interface LogicListenable {
 
 	void modelSendProduct(Product productDetails);
 
-	void modelSendProductsListAfterAdd(Set<Entry<String, Product>> products);
+	void modelSendProductsListAfterAdd(Set<Entry<String, Product>> products); /////
 
+	void modelSendsMessage(String headline, String Content);
 }

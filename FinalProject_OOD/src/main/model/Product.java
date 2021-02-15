@@ -7,7 +7,7 @@ package main.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Product {
+public class Product implements Comparable{
 	private long timeAdded;
 
 	private SimpleStringProperty description;
@@ -105,4 +105,9 @@ public class Product {
 				+ "]";
 	}
 
+	@Override
+	public int compareTo(Object o) {
+		Product other = (Product)o;
+		return (int)this.getTimeMilis()-(int)other.getTimeMilis();
+	}
 }

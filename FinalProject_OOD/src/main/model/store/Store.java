@@ -65,6 +65,8 @@ public class Store {
 	}
 
 	public Product getProductDetails(String id) {
+		if (id == null)
+			System.err.println(" String ID IS NULL!");
 		if (productsMap.containsKey(id))
 			return productsMap.get(id); // if not exists. return null
 		else
@@ -86,10 +88,14 @@ public class Store {
 		theFile.removeProductFromFile(p);
 	}
 
-	public void undoLastAction() {
-		if (commandStack.empty())
-			model.fireOperationFailed("UNDO FAILED", "No Actions were recorded");
-		commandStack.pop().undo(); // popping the last command entered the queue and undoing it.
+	public String undoLastAction() {
+		if (commandStack.empty()) {
+			return "UNDO FAILED";
+		}
+		else {
+			commandStack.pop().undo(); // popping the last command entered the queue and undoing it.
+			return "Successfully reverted last action";
+		}
 	}
 
 	// Implement Observable Pattern, notify all the subscribed customers.

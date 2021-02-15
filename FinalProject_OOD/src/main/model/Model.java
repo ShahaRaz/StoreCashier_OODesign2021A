@@ -60,7 +60,20 @@ public class Model {
 	}
 
 	public void undoLastAction() {
-		store.undoLastAction();
+		String isGood = store.undoLastAction();
+		if (isGood.equalsIgnoreCase("UNDO FAILED")) {
+			fireOperationFailed("UNDO FAILED", "No Actions were recorded");
+		}
+		else {
+			fireSendMessageToUser("Undo completed!", "product list has been updated");
+		}
+	}
+
+	private void fireSendMessageToUser(String headline, String content) {
+
+		for (LogicListenable l : allListeners) {
+			l.modelSendsMessage(headline,content);
+		}
 	}
 
 	private void fireProductAdded(Product p) {

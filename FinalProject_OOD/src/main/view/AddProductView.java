@@ -160,7 +160,11 @@ public class AddProductView extends GridPane {
 
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
-			view.fireSearchProduct(selectedValue);
+			// TODO MANY TIMES selectedValue holds null value, fix it
+			if (selectedValue==null)
+				view.fireSearchProduct("");
+			else
+				view.fireSearchProduct(selectedValue);
 		});
 
 		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
