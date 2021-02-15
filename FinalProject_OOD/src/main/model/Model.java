@@ -42,11 +42,21 @@ public class Model {
 	}
 
 	public void removedProduct(Product p) {
-		if (store.getProductDetails(p.getBarcode()) == null) // product not in store.
+		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
+			fireOperationFailed("No product with such id", "product wasn't found");
+		}
+		else { // product is in our database
 			store.removeProduct(p);
-
+			fireProductRemoved(p);
+		}
 		// TODO: Return fireProductRemoved
 		// firing a return statement from within the store.
+	}
+
+	private void fireProductRemoved(Product p) {
+		for (LogicListenable l : allListeners) {
+			l.modelRemovedProduct(p);
+		}
 	}
 
 	public void undoLastAction() {

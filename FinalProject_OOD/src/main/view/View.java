@@ -101,6 +101,7 @@ public class View extends GridPane {
 	public void notifyProductRemoved(Product p) {
 		// Display removed massage.
 		removeWindow.updateStatus("The product " + p.getBarcode() + " removed!", "green");
+
 	}
 
 	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
