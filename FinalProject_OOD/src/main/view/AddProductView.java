@@ -110,8 +110,8 @@ public class AddProductView extends GridPane {
 		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
 		txtFldPrdctName.setPromptText("Product Name");
 
-		add(new Label("Product Name: "), 0, 3);
-		add(txtFldPrdctName, 1, 3);
+		add(new Label("Product Name: "), 0, 4);
+		add(txtFldPrdctName, 1, 4);
 		// Switch to the next txtField after pressing Enter.
 		txtFldPrdctName.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
@@ -126,12 +126,12 @@ public class AddProductView extends GridPane {
 		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
 		txtFldPrdctPrice.setPromptText("Price");
 
-		add(new Label("Product Price: "), 0, 4);
-		add(txtFldPrdctPrice, 1, 4);
+		add(new Label("Product Price: "), 0, 5);
+		add(txtFldPrdctPrice, 1, 5);
 		// Switch to the next txtField after pressing Enter.
 		txtFldPrdctPrice.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
-				cboxPrdctBarCode.requestFocus();
+				txtFldPrdctPriceToStore.requestFocus();
 				ev.consume();
 			}
 		});
@@ -144,8 +144,8 @@ public class AddProductView extends GridPane {
 		cboxPrdctBarCode.setEditable(true);
 		cboxPrdctBarCode.setPromptText("Barcode");
 
-		add(cboxPrdctBarCode, 1, 5);
-		add(new Label("Product Barcode: "), 0, 5);
+		add(cboxPrdctBarCode, 1, 3);
+		add(new Label("Product Barcode: "), 0, 3);
 
 		view.fireListOfProducts();
 
@@ -156,7 +156,7 @@ public class AddProductView extends GridPane {
 
 		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
-				txtFldPrdctPriceToStore.requestFocus();
+				txtFldPrdctName.requestFocus();
 				ev.consume();
 			}
 		});
@@ -253,7 +253,7 @@ public class AddProductView extends GridPane {
 			Customer c = new Customer(txtFldCustomer.getText());
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
 
-			txtFldPrdctName.requestFocus();
+			cboxPrdctBarCode.requestFocus();
 			view.fireListOfProducts();
 		});
 		add(btnAdd, 1, 9);
