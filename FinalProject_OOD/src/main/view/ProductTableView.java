@@ -65,12 +65,8 @@ public class ProductTableView extends GridPane {
 	}
 
 	private void initTableProducts() {
-		createTable();
-		stage.show();
-	}
-
-	public void createTable() {
 		initTable();
+		stage.show();
 	}
 
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
@@ -92,33 +88,27 @@ public class ProductTableView extends GridPane {
 		TableColumn barcodeCol = new TableColumn("Barcode");
 		barcodeCol.setCellValueFactory(new PropertyValueFactory("barcode"));
 
-		TableColumn priceCol = new TableColumn("Price");
+		
 		TableColumn storePrice = new TableColumn("Store Price");
-		TableColumn customerPrice = new TableColumn("Customer price");
-		priceCol.getColumns().addAll(storePrice, customerPrice);
 		storePrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("costToStore"));
+		
+		TableColumn customerPrice = new TableColumn("Customer price");
 		customerPrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("priceSold"));
 
+		TableColumn priceCol = new TableColumn("Price");
+		priceCol.getColumns().addAll(storePrice, customerPrice);
+		
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
 		// Hard Code. will be from File.
-		Store.getInstance(null).addNewProduct(new Product("Cola", 1, 4, new Customer("Mama"), "Co7736"));
-		Store.getInstance(null).addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili"), "Sp9187"));
-		Store.getInstance(null).addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga"), "Ne1658"));
-		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo"), "Mi982"));
+		Store.getInstance(null).addNewProduct(new Product("Cola", 1, 4, new Customer("Mama", "054789654", false), "Co7736"));
+		Store.getInstance(null).addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili", "0524756987", false), "Sp9187"));
+		Store.getInstance(null).addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga", "0549512365", true), "Ne1658"));
+		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo", "0541236549", false), "Mi982"));
 		// TODO: Change HardCode to read from File.
 
 		view.fireListOfProductsAfterRemove();
 		add(table, 0, 3, 5, 1);
-
-//		final ObservableList<Product> data = FXCollections.observableArrayList();
-//				new Product("Bamba", 1, 4, new Customer("Momo"), "BA536"),
-//				new Product("Bisli", 12, 16, new Customer("Lulu"), "BI987"),
-//				new Product("Apropo", 8, 10, new Customer("Gogo"), "AP3658"),
-//				new Product("Banana", 1, 3, new Customer("Bilbi"), "BA4862"));
-//		for (Map.Entry<String, Product> e : Store.getInstance().getProductsMap().entrySet()) {
-//			data.addAll(e.getValue());
-//		}
 	}
 }

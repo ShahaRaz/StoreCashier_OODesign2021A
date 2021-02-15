@@ -77,8 +77,6 @@ public class Controller implements ViewListenable, LogicListenable {
 
 	@Override
 	public void viewAskForProduct(String searchMe) {
-		// TODO: theModel.getProduct(searchMe); and return to the view to show other
-		// fields of searchMe.
 		theModel.getProduct(searchMe);
 	}
 

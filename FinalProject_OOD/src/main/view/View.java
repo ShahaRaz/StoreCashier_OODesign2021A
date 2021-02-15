@@ -49,9 +49,15 @@ public class View extends GridPane {
 
 	public void creatTabPane() {
 		TabPane tbPane = new TabPane();
-		Tab tab1 = new Tab("Table Of All Products", tableView = new ProductTableView(stage, this));
-		Tab tab2 = new Tab("Add Product", addWindow = new AddProductView(stage, this));
-		Tab tab3 = new Tab("Remove Product", removeWindow = new RemoveProductView(stage, this));
+		
+		tableView = new ProductTableView(stage, this);
+		addWindow = new AddProductView(stage, this);
+		removeWindow = new RemoveProductView(stage, this);
+		
+		Tab tab1 = new Tab("Table Of All Products", tableView);
+		Tab tab2 = new Tab("Add Product", addWindow);
+		Tab tab3 = new Tab("Remove Product", removeWindow);
+		
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);

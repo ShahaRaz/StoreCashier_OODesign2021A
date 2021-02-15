@@ -379,5 +379,6 @@ public class AddProductView extends GridPane {
 		txtFldPrdctPriceToStore.setText("");
 		txtFldPrdctPrice.setText("");
 		txtFldCustomerPhone.setText("");
+		checkBoxPromotion.setSelected(false);
 	}
 }
