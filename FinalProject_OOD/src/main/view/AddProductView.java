@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -44,6 +45,8 @@ public class AddProductView extends GridPane {
 	/* Customer */
 	private TextField txtFldCustomer;
 	// TODO: Add TaxtField of phoneNum and isAcceptingPromotions.
+	private TextField txtFldCustomerPhone;
+	private CheckBox checkBoxPromotion;
 	/* Status */
 	private Label lblStatus;
 	/* Add button */
@@ -101,6 +104,8 @@ public class AddProductView extends GridPane {
 		initFldBarcode();
 		initFldPriceToStore();
 		initFldCustomer();
+		initFldCustomerPhone();
+		initCheckBox();
 		initAddButton();
 		initClearButton();
 	}
@@ -202,10 +207,32 @@ public class AddProductView extends GridPane {
 		// Switch to the next txtField after pressing Enter.
 		txtFldCustomer.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
+				txtFldCustomerPhone.requestFocus();
+				ev.consume();
+			}
+		});
+	}
+	
+	private void initFldCustomerPhone() {
+		txtFldCustomerPhone = new TextField();
+		txtFldCustomerPhone.setOnMouseClicked(e -> updateStatus("", "black"));
+		txtFldCustomerPhone.setPromptText("Customer Phone");
+
+		add(new Label("Customer's Phone: "), 0, 8);
+		add(txtFldCustomerPhone, 1, 8);
+		// Switch to the next txtField after pressing Enter.
+		txtFldCustomerPhone.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+			if (ev.getCode() == KeyCode.ENTER) {
 				btnAdd.fire();
 				ev.consume();
 			}
 		});
+	}
+	
+	private void initCheckBox() {
+		checkBoxPromotion = new CheckBox();
+		add(new Label("Promotion: "), 0, 9);
+		add(checkBoxPromotion, 1, 9);
 	}
 	
 	private void initClearButton() {
@@ -214,7 +241,7 @@ public class AddProductView extends GridPane {
 		btnClear.setOnAction(e -> {
 			cleanValueFields();
 		});
-		add(btnClear, 1, 10);
+		add(btnClear, 1, 12);
 	}
 	
 	private void initAddButton() {
@@ -250,20 +277,20 @@ public class AddProductView extends GridPane {
 			id = id.equals("") ? "0000" : id;
 
 			// Product's Customer who bought it.
-			Customer c = new Customer(txtFldCustomer.getText());
+			Customer c = new Customer(txtFldCustomer.getText(), txtFldCustomerPhone.getText(), checkBoxPromotion.isSelected());///
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
 
 			cboxPrdctBarCode.requestFocus();
 			view.fireListOfProducts();
 		});
-		add(btnAdd, 1, 9);
+		add(btnAdd, 1, 11);
 	}
 
 	// init status
 	private void initStatus() {
 		lblStatus = new Label();
-		add(new Label("Status: "), 0, 8);
-		add(lblStatus, 1, 8, 4, 1);
+		add(new Label("Status: "), 0, 10);
+		add(lblStatus, 1, 10, 4, 1);
 	}
 
 	// update status
