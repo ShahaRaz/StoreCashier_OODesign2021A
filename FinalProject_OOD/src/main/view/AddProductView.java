@@ -77,6 +77,7 @@ public class AddProductView extends GridPane {
 		setHgap(10);
 		setAlignment(Pos.CENTER);
 		setStyle("-fx-border-color: black");
+		setStyle("-fx-background-color: BEIGE;");
 	}
 
 	private void initTitle() {
@@ -209,6 +210,7 @@ public class AddProductView extends GridPane {
 	
 	private void initClearButton() {
 		btnClear = new Button("Clear Product");
+		btnClear.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;"); 
 		btnClear.setOnAction(e -> {
 			cleanValueFields();
 		});
@@ -217,6 +219,7 @@ public class AddProductView extends GridPane {
 	
 	private void initAddButton() {
 		btnAdd = new Button("Add Product");
+		btnAdd.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;"); 
 		btnAdd.setOnAction(e -> {
 			// Store the data.
 

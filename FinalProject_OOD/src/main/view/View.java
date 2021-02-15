@@ -40,6 +40,7 @@ public class View extends GridPane {
 
 		hbButtons = getHBox();
 		creatTabPane();
+		
 		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
 		stage.setScene(scene);
 		stage.setTitle("Store Saver");
@@ -106,12 +107,6 @@ public class View extends GridPane {
 		tableView.updateTable(products);
 		addWindow.updateComboBox(products);
 		removeWindow.updateComboBox(products);
-		// send array of products (may also contain only 1 product)
-		// note! the products will be by reference, so don't change them.
-		// access elements ___________
-//        for (Product p : products){
-//            doSomthingWithP(p)
-//        }
 	}
 
 	// get new styled hbox

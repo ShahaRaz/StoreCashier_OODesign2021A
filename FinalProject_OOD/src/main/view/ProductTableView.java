@@ -50,6 +50,7 @@ public class ProductTableView extends GridPane {
 		setHgap(10);
 		setAlignment(Pos.CENTER);
 		setStyle("-fx-border-color: black");
+		setStyle("-fx-background-color: BEIGE;");
 	}
 
 	private void initTitle() {

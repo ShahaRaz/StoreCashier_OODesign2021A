@@ -62,6 +62,7 @@ public class RemoveProductView extends GridPane {
 		setHgap(10);
 		setAlignment(Pos.CENTER);
 		setStyle("-fx-border-color: black");
+		setStyle("-fx-background-color: BEIGE;");
 	}
 
 	private void initTitle() {
@@ -121,6 +122,7 @@ public class RemoveProductView extends GridPane {
 	// init Button.
 	private void initRemoveButton() {
 		btnRemove = new Button("Remove Product");
+		btnRemove.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;"); 
 		btnRemove.setOnAction(e -> {
 			String pID = cboxPrdctBarCode.getValue();
 			view.fireRemoveProduct(new Product(pID));
