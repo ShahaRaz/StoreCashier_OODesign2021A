@@ -74,10 +74,10 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void ViewAskForProduct(Product searchMe) {
+	public void viewAskForProduct(String searchMe) {
 		// TODO: theModel.getProduct(searchMe); and return to the view to show other
 		// fields of searchMe.
-//		theModel.getProduct(searchMe);
+		theModel.getProduct(searchMe);
 	}
 
 	@Override
@@ -101,6 +101,11 @@ public class Controller implements ViewListenable, LogicListenable {
 		 *
 		 */
 		// failed
+	}
+
+	@Override
+	public void modelSendProduct(Product productDetails) {
+		theView.getProductFromModel(productDetails);
 	}
 
 //    public class Controller implements ChampionshipListenable , ViewListenable {

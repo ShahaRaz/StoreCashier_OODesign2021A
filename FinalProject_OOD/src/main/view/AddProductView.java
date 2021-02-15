@@ -7,6 +7,7 @@ package main.view;
 import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
+
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,8 +38,7 @@ public class AddProductView extends GridPane {
 	/* Price */
 	private TextField txtFldPrdctPrice;
 	/* Barcode */
-	ComboBox<String> cboxPrdctBarCode;
-//	private TextField txtFldPrdctBarCode;
+	private ComboBox<String> cboxPrdctBarCode;
 	/* PriceToStore */
 	private TextField txtFldPrdctPriceToStore;
 	/* Customer */
@@ -48,6 +48,8 @@ public class AddProductView extends GridPane {
 	private Label lblStatus;
 	/* Add button */
 	private Button btnAdd;
+	/* Clear button */
+	private Button btnClear;
 
 	private Stage stage;
 
@@ -98,7 +100,8 @@ public class AddProductView extends GridPane {
 		initFldBarcode();
 		initFldPriceToStore();
 		initFldCustomer();
-		initButton();
+		initAddButton();
+		initClearButton();
 	}
 
 	private void initFldName() {
@@ -144,6 +147,12 @@ public class AddProductView extends GridPane {
 		add(new Label("Product Barcode: "), 0, 5);
 
 		view.fireListOfProducts();
+
+		cboxPrdctBarCode.setOnAction(e -> {
+			String selectedValue = (String) cboxPrdctBarCode.getValue();
+			view.fireSearchProduct(selectedValue);
+		});
+
 		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
 				txtFldPrdctPriceToStore.requestFocus();
@@ -157,6 +166,13 @@ public class AddProductView extends GridPane {
 			if (!cboxPrdctBarCode.getItems().contains(e.getKey()))
 				cboxPrdctBarCode.getItems().add(e.getKey());
 		}
+	}
+
+	public void setFields(Product productDetails) {
+		txtFldPrdctName.setText(productDetails.getDescription());
+		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
+		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
+		txtFldCustomer.setText(productDetails.getCustomer().getName());
 	}
 
 	private void initFldPriceToStore() {
@@ -190,25 +206,16 @@ public class AddProductView extends GridPane {
 			}
 		});
 	}
-
-	private void initButton() {
-
-		btnAdd = new Button("Add Product");
-		btnAdd.setOnAction(e -> {
-			// Store the data.
-			String desc = txtFldPrdctName.getText().equals("") ? "NA" : txtFldPrdctName.getText();
-			int priceToStore = Integer
-					.parseInt(txtFldPrdctPriceToStore.getText().equals("") ? "0" : txtFldPrdctPriceToStore.getText());
-			int priceSold = Integer.parseInt(txtFldPrdctPrice.getText().equals("") ? "0" : txtFldPrdctPrice.getText());
-			String id = cboxPrdctBarCode.getValue().equals("") ? "0000" : cboxPrdctBarCode.getValue();
-			Customer c = new Customer(txtFldCustomer.getText());
-			view.fireAddNewProduct(new Product(desc, priceToStore, priceSold, c, id));
+	
+	private void initClearButton() {
+		btnClear = new Button("Clear Product");
+		btnClear.setOnAction(e -> {
 			cleanValueFields();
-			txtFldPrdctName.requestFocus();
-			view.fireListOfProducts();
 		});
-		add(btnAdd, 1, 9);
-
+		add(btnClear, 1, 10);
+	}
+	
+	private void initAddButton() {
 		btnAdd = new Button("Add Product");
 		btnAdd.setOnAction(e -> {
 			// Store the data.
@@ -236,14 +243,13 @@ public class AddProductView extends GridPane {
 			}
 
 			// Product's id
-			String id = cboxPrdctBarCode.getValue().isBlank() ? "" : cboxPrdctBarCode.getValue();///////////
+			String id = cboxPrdctBarCode.getValue();
 			id = id.equals("") ? "0000" : id;
 
 			// Product's Customer who bought it.
 			Customer c = new Customer(txtFldCustomer.getText());
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
 
-			cleanValueFields();
 			txtFldPrdctName.requestFocus();
 			view.fireListOfProducts();
 		});
@@ -317,7 +323,6 @@ public class AddProductView extends GridPane {
 	public void cleanValueFields() {
 		txtFldCustomer.setText("");
 		cboxPrdctBarCode.setValue("");
-		;
 		txtFldPrdctName.setText("");
 		txtFldPrdctPriceToStore.setText("");
 		txtFldPrdctPrice.setText("");

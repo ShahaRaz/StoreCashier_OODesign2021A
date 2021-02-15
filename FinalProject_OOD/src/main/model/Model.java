@@ -86,4 +86,15 @@ public class Model {
 	public void sendAllProductsToView() {
 		fireSendProductsArrToView(store.getProductsSet());
 	}
+
+	public void getProduct(String searchMe) {
+		fireGetProduct(searchMe);
+	}
+
+	private void fireGetProduct(String id) {
+		for (LogicListenable l : allListeners) {
+			if (store.getProductDetails(id) != null)
+				l.modelSendProduct(store.getProductDetails(id));
+		}
+	}
 }

@@ -1,5 +1,9 @@
 package main.view;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
 /**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
@@ -9,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Reflection;
@@ -25,7 +30,7 @@ import main.model.Product;
 public class RemoveProductView extends GridPane {
 	private View view;
 	/* Barcode */
-	private TextField txtFldPrdctBarCode;
+	private ComboBox<String> cboxPrdctBarCode;
 	/* Remove button */
 	private Button btnRemove;
 	/* Status */
@@ -75,20 +80,30 @@ public class RemoveProductView extends GridPane {
 	}
 
 	private void initRemoveProduct() {
-		initFldPrdctBarcode();
+		initFldBarcode();
 		initRemoveButton();
 	}
 
 	// init Text Field.
-	private void initFldPrdctBarcode() {
-		txtFldPrdctBarCode = new TextField();
-		txtFldPrdctBarCode.setPromptText("Barcode");
-		txtFldPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
-		add(new Label("Product Barcode: "), 0, 3);
-		add(txtFldPrdctBarCode, 1, 3);
+	private void initFldBarcode() {
+		cboxPrdctBarCode = new ComboBox<String>();
+		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
+		cboxPrdctBarCode.getSelectionModel().select("");
+		cboxPrdctBarCode.setEditable(true);
+		cboxPrdctBarCode.setPromptText("Barcode");
+
+		add(cboxPrdctBarCode, 1, 5);
+		add(new Label("Product Barcode: "), 0, 5);
+
+		view.fireListOfProducts();
+
+		cboxPrdctBarCode.setOnAction(e -> {
+			String selectedValue = (String) cboxPrdctBarCode.getValue();
+			view.fireSearchProduct(selectedValue);
+		});
 
 		// Make the Enter available from the txt field
-		txtFldPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
 				btnRemove.fire();
 				ev.consume();
@@ -96,14 +111,21 @@ public class RemoveProductView extends GridPane {
 		});
 	}
 
+	public void updateComboBox(Set<Entry<String, Product>> products) {
+		for (Map.Entry<String, Product> e : products) {
+			if (!cboxPrdctBarCode.getItems().contains(e.getKey()))
+				cboxPrdctBarCode.getItems().add(e.getKey());
+		}
+	}
+
 	// init Button.
 	private void initRemoveButton() {
 		btnRemove = new Button("Remove Product");
 		btnRemove.setOnAction(e -> {
-			String pID = getTxtFldPrdctBarCode().getText();
+			String pID = cboxPrdctBarCode.getValue();
 			view.fireRemoveProduct(new Product(pID));
 			cleanValueFields();
-			txtFldPrdctBarCode.requestFocus();
+			cboxPrdctBarCode.requestFocus();
 			view.fireListOfProducts();
 		});
 		add(btnRemove, 1, 9);
@@ -123,12 +145,12 @@ public class RemoveProductView extends GridPane {
 	}
 
 	// Setters & Getters.
-	public TextField getTxtFldPrdctBarCode() {
-		return txtFldPrdctBarCode;
+	public ComboBox<String> getCboxPrdctBarCode() {
+		return cboxPrdctBarCode;
 	}
 
-	public void setTxtFldPrdctBarCode(TextField txtFldPrdctBarCode) {
-		this.txtFldPrdctBarCode = txtFldPrdctBarCode;
+	public void setCboxPrdctBarCode(ComboBox<String> cboxPrdctBarCode) {
+		this.cboxPrdctBarCode = cboxPrdctBarCode;
 	}
 
 	public Button getBtnRemove() {
@@ -158,6 +180,6 @@ public class RemoveProductView extends GridPane {
 
 	// clean Value Fields
 	public void cleanValueFields() {
-		txtFldPrdctBarCode.setText("");
+		cboxPrdctBarCode.setValue("");
 	}
 }

@@ -13,5 +13,6 @@ public interface LogicListenable {
 	void notifyProductNotExist(Product p, String string);
 
     void modelFailedOperation(String errorMassage,String elaborate);
+	void modelSendProduct(Product productDetails);
 
 }

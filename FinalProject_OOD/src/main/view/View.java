@@ -70,9 +70,9 @@ public class View extends GridPane {
 		}
 	}
 
-	public void fireSearchProduct(Product searchMe) {
+	public void fireSearchProduct(String searchMe) {
 		for (ViewListenable l : allListeners) {
-			l.ViewAskForProduct(searchMe);
+			l.viewAskForProduct(searchMe);
 		}
 	}
 
@@ -105,6 +105,7 @@ public class View extends GridPane {
 	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
 		tableView.updateTable(products);
 		addWindow.updateComboBox(products);
+		removeWindow.updateComboBox(products);
 		// send array of products (may also contain only 1 product)
 		// note! the products will be by reference, so don't change them.
 		// access elements ___________
@@ -144,6 +145,10 @@ public class View extends GridPane {
 
 	public void setTableView(ProductTableView tableView) {
 		this.tableView = tableView;
+	}
+
+	public void getProductFromModel(Product productDetails) {
+		addWindow.setFields(productDetails);
 	}
 
 }
