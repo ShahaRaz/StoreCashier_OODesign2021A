@@ -44,7 +44,6 @@ public class AddProductView extends GridPane {
 	private TextField txtFldPrdctPriceToStore;
 	/* Customer */
 	private TextField txtFldCustomer;
-	// TODO: Add TaxtField of phoneNum and isAcceptingPromotions.
 	/* Customer's Phone */
 	private TextField txtFldCustomerPhone;
 	/* Promotion Customer */

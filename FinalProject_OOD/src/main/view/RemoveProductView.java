@@ -32,7 +32,9 @@ public class RemoveProductView extends GridPane {
 	/* Barcode */
 	private ComboBox<String> cboxPrdctBarCode;
 	/* Remove button */
-	private Button btnRemove;
+	private Button btnRemove;	
+	/* Undo button */
+	private Button btnUndo;
 	/* Status */
 	private Label lblStatus;
 
@@ -83,6 +85,7 @@ public class RemoveProductView extends GridPane {
 	private void initRemoveProduct() {
 		initFldBarcode();
 		initRemoveButton();
+		initUndoButton();
 	}
 
 	// init Text Field.
@@ -112,6 +115,15 @@ public class RemoveProductView extends GridPane {
 		for (Map.Entry<String, Product> e : products) {
 			cboxPrdctBarCode.getItems().add(e.getKey());
 		}
+	}
+
+	private void initUndoButton() {
+		btnUndo = new Button("Undo");
+		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btnUndo.setOnAction(e -> {
+			view.fireUndo();
+		});
+		add(btnUndo, 1, 10);
 	}
 
 	// init Button.
