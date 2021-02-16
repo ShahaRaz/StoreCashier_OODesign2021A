@@ -13,10 +13,8 @@ public interface ViewListenable {
 
 	public void viewAskForProduct(String removeMe);
 
-	public void viewAskForListOfAllProductsAfterRemove();
+	public void viewAskForListOfAllProducts();
 
 	public void viewAskForUndo();
-
-	public void viewAskForListOfAllProductsAfterAdd();
 
 }

@@ -67,6 +67,7 @@ public class Store {
 	public Product getProductDetails(String id) {
 		if (id == null)
 			System.err.println(" String ID IS NULL!");
+		System.out.println(productsMap.containsKey(id));
 		if (productsMap.containsKey(id))
 			return productsMap.get(id); // if not exists. return null
 		else
