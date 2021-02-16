@@ -7,12 +7,10 @@ package main.controller;
 
 import main.listeners.LogicListenable;
 import main.listeners.ViewListenable;
-import main.model.Customer;
 import main.model.Model;
 import main.model.Product;
 import main.view.View;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class Controller implements ViewListenable, LogicListenable {
@@ -66,12 +64,12 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void modelSendProductsList(Set<Map.Entry<String, Product>> products) {
+	public void modelSendProductsSet(Set<Map.Entry<String, Product>> products) {
 		theView.nofityProductsArrived(products);
 	}
 
 	@Override
-	public void modelSendsMessage(String headline, String Content) {
+	public void modelSendsMessage(String headline, String content) {
 		/**
 		 * send message to the user
 		 *
@@ -83,7 +81,8 @@ public class Controller implements ViewListenable, LogicListenable {
 		 * 		fireAskForProductsList
 		 *
 		 */
-		//theView.
+		theView.notifyNewMessageFromModel(headline,content);
+
 	}
 
 	@Override
@@ -118,6 +117,7 @@ public class Controller implements ViewListenable, LogicListenable {
 		 *
 		 */
 		// failed
+		theView.notifyFailedOperation(errorMassage,elaborate);
 	}
 
 	@Override

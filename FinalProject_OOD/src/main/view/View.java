@@ -4,13 +4,21 @@ package main.view;
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  * */
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
@@ -20,6 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class View extends GridPane {
+	protected boolean isAddressingModel=true;
+
+
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
 
 	private ArrayList<ViewListenable> allListeners;
@@ -29,6 +40,7 @@ public class View extends GridPane {
 	private AddProductView addWindow;
 	private RemoveProductView removeWindow;
 	private ProductTableView tableView;
+	private Set<Map.Entry<String, Product>> products_set_copy;
 
 	public void registerListener(ViewListenable l) {
 		allListeners.add(l);
@@ -108,7 +120,9 @@ public class View extends GridPane {
 	public void notifyProductAdded(Product p) {
 		// show user that the massage that product was successfully added
 		addWindow.updateStatus("The product " + p.getBarcode() + " added!", "green");
+		// finished adding product
 		fireListOfProducts();
+
 	}
 
 	public void notifyProductRemoved(Product p) {
@@ -119,6 +133,7 @@ public class View extends GridPane {
 	}
 
 	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
+		this.products_set_copy = products;
 		tableView.updateTable(products);
 		addWindow.updateComboBox(products);
 		removeWindow.updateComboBox(products);
@@ -159,6 +174,73 @@ public class View extends GridPane {
 
 	public void getProductFromModel(Product productDetails) {
 		addWindow.setFields(productDetails);
+	}
+
+	public void notifyNewMessageFromModel(String headline, String content) {
+		if (headline.contains("Undo completed!")){
+			fireListOfProducts(); // ask model for new product list
+			this.removeWindow.updateStatus("undo succeeded", "green");
+			this.addWindow.updateStatus("undo succeeded", "green");
+		}
+
+	}
+
+	public void notifyFailedOperation(String errorMassage, String elaborate) {
+		if (errorMassage.contains("UNDO")){
+			popUpShortMassage(errorMassage,elaborate,400,200,20);
+			this.removeWindow.updateStatus("undo failed, no action recorded", "red");
+			this.addWindow.updateStatus("undo failed, no action recorded", "red");
+		}
+
+	}
+
+	private void popUpShortMassage(String headLine , String Massage,int Width, int Height,int fontSize) {
+		Stage miniStage = new Stage();
+		VBox vbPopup = new VBox();
+		miniStage.setTitle(headLine);
+		Label lblMiniPopup =setHeadLine(Massage,fontSize);
+		//	lblMiniPopup.setText(Massage);
+		//	lblMiniPopup.setAlignment(Pos.CENTER);
+		setStageCONSTSize(miniStage, Width, Width, Height, Height);
+		Button btnClose = new Button();
+		btnClose.setText("Ok");
+		btnClose.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				miniStage.close();
+			}
+		});
+		vbPopup.getChildren().addAll(lblMiniPopup,btnClose);
+		vbPopup.setAlignment(Pos.CENTER);
+		vbPopup.setSpacing(20*ENLRAGMENT_FACTOR);
+
+		Scene scene = new Scene(vbPopup,Width*ENLRAGMENT_FACTOR,Height*ENLRAGMENT_FACTOR);
+		miniStage.setScene(scene);
+
+		//miniStage.initStyle(StageStyle.UNDECORATED);
+		miniStage.show();
+
+		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent theEvent) {
+				if(theEvent.getCode()==KeyCode.ENTER||theEvent.getCode()== KeyCode.ESCAPE)
+					miniStage.close();
+			}
+		});
+	}
+	private void setStageCONSTSize(Stage stg,int minWidth  , int maxWidth, int minHeihgt,int maxHeight) { // height
+		stg.setMinHeight(minHeihgt*ENLRAGMENT_FACTOR);
+		stg.setMaxHeight(maxHeight*ENLRAGMENT_FACTOR);
+		stg.setMinWidth(minWidth*ENLRAGMENT_FACTOR);
+		stg.setMaxWidth(maxWidth*ENLRAGMENT_FACTOR);
+	}
+	private Label setHeadLine(String headLine,int fontSize) {
+		Label lblHeadline = new Label(headLine);
+		lblHeadline.setMinHeight(10*ENLRAGMENT_FACTOR);
+		lblHeadline.setAlignment(Pos.TOP_CENTER);
+		lblHeadline.setFont(Font.font("Cambria", fontSize));
+		return lblHeadline;
 	}
 
 }

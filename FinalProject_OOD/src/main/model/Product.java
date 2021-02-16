@@ -50,14 +50,14 @@ public class Product implements Comparable{
 		if (this.costToStore.get() < 0 || this.priceSold.get() < 0) {
 			return "Price can't be negative";
 		}
-		if (this.barcode == null) {
+		if (this.barcode == null || this.barcode.equals("")) {
 			return "Product must have Valid Barcode";
 		}
 		if (this.description.get().equals("")) {
 			return "Product's name can't be empty";
 		}
 
-		return "";
+		return ""; // product is ok, has no problems
 		// TODO: Check exist customer
 	}
 

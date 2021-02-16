@@ -73,7 +73,7 @@ public class Store {
 			return null;
 		}
 		else {
-			System.out.println(productsMap.containsKey(id));
+			System.out.println(productsMap.containsKey(id) + " Store, 76, ID is: " +id);
 			if (productsMap.containsKey(id))
 				return productsMap.get(id); // if not exists. return null
 			else

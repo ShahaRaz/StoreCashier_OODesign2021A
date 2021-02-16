@@ -19,20 +19,19 @@ import java.util.*;
 public class FileHandler implements Iterable<Product> {
     private File file;
     private boolean isAppendableFile;
-
+    private static final String FILE_NAME = "products.txt"; // Yes, it ends with .txt while its a binary file. (asked by the professor)
 
     public FileHandler() {
-        this.file = new File("products.txt");
+        this.file = new File(FILE_NAME);
         this.isAppendableFile = file.exists();
     }
 
     /**
      * writes the entire map to the file (while overwriting the existing one)
      *
-     *
      * @param theMap - Reference to it
      */
-    public void saveMapToFile(SortedMap<String, Product> theMap, boolean isClearingMapB4){
+    public void saveMapToFile(SortedMap<String, Product> theMap, boolean isClearingMapB4) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
             raf.setLength(0); // empty the file.
             for (Map.Entry<String, Product> pair : theMap.entrySet()) {
@@ -86,33 +85,10 @@ public class FileHandler implements Iterable<Product> {
         }
     }
 
-//    public static void save(Product[] a) throws FileNotFoundException, IOException {
-//
-//        try (RandomAccessFile f = new RandomAccessFile(F_NAME, "rw")) {
-//            f.setLength(0);
-//            for (Product p : a) {
-//                f.writeUTF(p.getName());
-//                f.writeInt(p.getPrice());
-//            }
-//        }
-//    }
-
-    public void addProductToFile(Product p) {
-        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            // TODO implement addProductToFile
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @Override
     public Iterator iterator() {
-        return new ConcreteIterator();
+        return new ConcreteIterator(file);
     }
 
 
@@ -120,17 +96,26 @@ public class FileHandler implements Iterable<Product> {
     private class ConcreteIterator implements Iterator<Product> {
         private int cur = 0; // the element to be retrieved now with next
         private int last = -1; // the element to be removed
+        RandomAccessFile raf_iterator;
+
+        public ConcreteIterator(File file) {
+        }
 
         @Override
         public boolean hasNext() {
-
-            return false;
+                return false;
+//            return (raf_iterator.getFilePointer() < raf_iterator.length());
         }
 
         @Override
         public Product next() {
             if (!hasNext())
                 throw new NoSuchElementException();
+            else {
+//                raf_iterator.seek(0); // go to beelining of file
+
+
+            }
 //            Product tmp = a[cur];
             // last = cur
             // cur++
@@ -145,6 +130,7 @@ public class FileHandler implements Iterable<Product> {
         }
 
     }
+
 }
 
 

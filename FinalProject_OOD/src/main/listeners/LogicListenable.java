@@ -12,7 +12,7 @@ public interface LogicListenable {
 
 	void modelRemovedProduct(Product p);
 
-	void modelSendProductsList(Set<Map.Entry<String, Product>> products); /////
+	void modelSendProductsSet(Set<Map.Entry<String, Product>> products); /////
 
 	void notifyProductNotExist(Product p, String string);
 

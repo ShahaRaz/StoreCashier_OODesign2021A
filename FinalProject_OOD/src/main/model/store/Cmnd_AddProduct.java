@@ -34,7 +34,7 @@ public class Cmnd_AddProduct implements Command{
             wasProductInMapB4thisCmnd = false;
 
         map_ref.put(product.getBarcode(),product);
-        theFile.addProductToFile(product);
+//        theFile.addProductToFile(product);
 
     }
 
@@ -42,11 +42,14 @@ public class Cmnd_AddProduct implements Command{
     public void undo() {
         soldProductsArr_ref.remove(product);
         if(wasProductInMapB4thisCmnd) {
-            map_ref.remove(product); // TODO delete me if im unnecessary
+//            map_ref.remove(product); // TODO delete me if im unnecessary
             map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
 //            theFile.removeProductFromFile(product);
 //            theFile.addProductToFile(oldProductInMap);
 
+        }
+        else{
+            map_ref.remove(product.getBarcode());
         }
     }
 }

@@ -111,7 +111,9 @@ public class RemoveProductView extends GridPane {
 	}
 
 	public void updateComboBox(Set<Entry<String, Product>> products) {
+
 		cboxPrdctBarCode.getItems().clear();
+
 		for (Map.Entry<String, Product> e : products) {
 			cboxPrdctBarCode.getItems().add(e.getKey());
 		}

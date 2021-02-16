@@ -9,6 +9,7 @@ import main.listeners.LogicListenable;
 import main.model.store.Store;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ public class Model {
 				fireProductAdded(p);
 			} else {
 				fireProductNotGood(p, problemsWithProduct);
+				return;
 			}
 		} else { // note! (got here if) product is already in map already, which means it's valid
 			store.addNewProduct(p);
@@ -61,7 +63,7 @@ public class Model {
 	public void undoLastAction() {
 		String isGood = store.undoLastAction();
 		if (isGood.equalsIgnoreCase("UNDO FAILED")) {
-			fireOperationFailed("UNDO FAILED", "No Actions were recorded");
+			fireOperationFailed("UNDO FAILED", "No Actions to undo");
 		} else {
 			fireSendMessageToUser("Undo completed!", "product list has been updated");
 		}
@@ -87,8 +89,11 @@ public class Model {
 	}
 
 	private void fireSendProductsArrToView(Set<Map.Entry<String, Product>> products) {
+//		Set<Map.Entry<String, Product>> aCopy =
+//
+//		Collections.copy(aCopy,products);
 		for (LogicListenable l : allListeners) {
-			l.modelSendProductsList(products);
+			l.modelSendProductsSet(products);
 		}
 	}
 
