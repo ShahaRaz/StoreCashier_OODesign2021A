@@ -12,6 +12,14 @@ import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * references:
+ * Lectures_Arnon.03 - 03.11.2020 Q3 (save objects to random access file)
+ * Lectures_Arnon.10 - 22.12.2020 Q2 (Iterator & Remove products from collection)
+ *
+ *
+ *
+ */
 public class FileHandler implements Iterable<Product>{
     private File file;
 
