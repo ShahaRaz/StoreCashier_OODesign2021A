@@ -149,7 +149,7 @@ public class AddProductView extends GridPane {
 	private void initFldBarcode() {
 		cboxPrdctBarCode = new ComboBox<String>();
 		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
-		cboxPrdctBarCode.getSelectionModel().select("");
+		cboxPrdctBarCode.getSelectionModel().select(" ");
 		cboxPrdctBarCode.setEditable(true);
 		cboxPrdctBarCode.setPromptText("Barcode");
 
@@ -160,10 +160,7 @@ public class AddProductView extends GridPane {
 
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
-			// TODO MANY TIMES selectedValue holds null value, fix it
-			if (selectedValue == null)
-				view.fireSearchProduct("");
-			else
+			if (selectedValue != null)
 				view.fireSearchProduct(selectedValue);
 		});
 
@@ -294,7 +291,11 @@ public class AddProductView extends GridPane {
 
 			// Product's id
 			String id = cboxPrdctBarCode.getValue();
-			id = id.equals("") ? "0000" : id;
+			try {
+				id = id.equals("") ? null : id;
+			} catch (Exception e2) {
+				System.err.println("Letting Bercode be null");
+			}
 
 			// Product's Customer who bought it.
 			Customer c = new Customer(txtFldCustomer.getText(), txtFldCustomerPhone.getText(),
