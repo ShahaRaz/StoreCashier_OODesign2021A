@@ -3,7 +3,6 @@ package main.listeners;
 import main.model.Product;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public interface LogicListenable {
@@ -13,7 +12,7 @@ public interface LogicListenable {
 
 	void modelRemovedProduct(Product p);
 
-	void modelSendProductsListAfterRemove(Set<Map.Entry<String, Product>> products); /////
+	void modelSendProductsList(Set<Map.Entry<String, Product>> products); /////
 
 	void notifyProductNotExist(Product p, String string);
 
@@ -21,7 +20,7 @@ public interface LogicListenable {
 
 	void modelSendProduct(Product productDetails);
 
-	void modelSendProductsListAfterAdd(Set<Entry<String, Product>> products); /////
-
 	void modelSendsMessage(String headline, String Content);
+
+	void viewAskForListOfAllProducts();
 }

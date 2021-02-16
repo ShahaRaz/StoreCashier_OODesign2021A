@@ -156,12 +156,12 @@ public class AddProductView extends GridPane {
 		add(cboxPrdctBarCode, 1, 3);
 		add(new Label("Product Barcode: "), 0, 3);
 
-		view.fireListOfProductsAfterRemove();
+		view.fireListOfProducts();
 
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
 			// TODO MANY TIMES selectedValue holds null value, fix it
-			if (selectedValue==null)
+			if (selectedValue == null)
 				view.fireSearchProduct("");
 			else
 				view.fireSearchProduct(selectedValue);
@@ -175,14 +175,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
-	public void updateComboBoxAfterAdded(Set<Entry<String, Product>> products) {
-		for (Map.Entry<String, Product> e : products) {
-			if (!cboxPrdctBarCode.getItems().contains(e.getKey()))
-				cboxPrdctBarCode.getItems().add(e.getKey());
-		}
-	}
-
-	public void updateComboBoxAfterRemoved(Set<Entry<String, Product>> products) {
+	public void updateComboBox(Set<Entry<String, Product>> products) {
 		cboxPrdctBarCode.getItems().clear();
 		for (Map.Entry<String, Product> e : products) {
 			cboxPrdctBarCode.getItems().add(e.getKey());
@@ -193,6 +186,8 @@ public class AddProductView extends GridPane {
 		txtFldPrdctName.setText(productDetails.getDescription());
 		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
 		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
+
+//		TODO: check insertion to Customer's fields.
 		txtFldCustomer.setText(productDetails.getCustomer().getName());
 		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());///////////////
 	}
@@ -306,8 +301,8 @@ public class AddProductView extends GridPane {
 					checkBoxPromotion.isSelected());///
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
 
-//			cboxPrdctBarCode.requestFocus();
-			view.fireListOfProductsAfterAdd();
+			cboxPrdctBarCode.requestFocus();
+			cleanValueFields();
 		});
 		add(btnAdd, 1, 11);
 	}

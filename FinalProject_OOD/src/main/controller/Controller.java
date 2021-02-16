@@ -27,7 +27,7 @@ public class Controller implements ViewListenable, LogicListenable {
 		theView.registerListener(this); // throws
 
 		// Send list to view after registerListener.
-		theView.fireListOfProductsAfterRemove();
+		theView.fireListOfProducts();
 	}
 
 	// View wants to add product.
@@ -66,13 +66,8 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void modelSendProductsListAfterRemove(Set<Map.Entry<String, Product>> products) {
-		theView.nofityProductsArrivedAfterRemove(products);
-	}
-
-	@Override
-	public void modelSendProductsListAfterAdd(Set<Entry<String, Product>> products) {
-		theView.nofityProductsArrivedAfterAdd(products);
+	public void modelSendProductsList(Set<Map.Entry<String, Product>> products) {
+		theView.nofityProductsArrived(products);
 	}
 
 	@Override
@@ -97,13 +92,8 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void viewAskForListOfAllProductsAfterRemove() {
-		theModel.sendAllProductsToViewAfterRemove();
-	}
-
-	@Override
-	public void viewAskForListOfAllProductsAfterAdd() {
-		theModel.sendAllProductsToViewAfterAdd();
+	public void viewAskForListOfAllProducts() {
+		theModel.sendAllProductsToView();
 	}
 
 	@Override

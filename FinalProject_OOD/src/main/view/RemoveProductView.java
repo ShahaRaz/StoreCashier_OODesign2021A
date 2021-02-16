@@ -99,7 +99,7 @@ public class RemoveProductView extends GridPane {
 		add(cboxPrdctBarCode, 1, 5);
 		add(new Label("Product Barcode: "), 0, 5);
 
-		view.fireListOfProductsAfterRemove();
+		view.fireListOfProducts();
 
 		// Make the Enter available from the txt field
 		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
@@ -133,9 +133,9 @@ public class RemoveProductView extends GridPane {
 		btnRemove.setOnAction(e -> {
 			String pID = cboxPrdctBarCode.getValue();
 			view.fireRemoveProduct(new Product(pID));
+			
 			cleanValueFields();
 			cboxPrdctBarCode.requestFocus();
-			view.fireListOfProductsAfterRemove();
 		});
 		add(btnRemove, 1, 9);
 	}

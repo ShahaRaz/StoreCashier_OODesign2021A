@@ -108,7 +108,7 @@ public class ProductTableView extends GridPane {
 		Store.getInstance(null).addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo", "0541236549", false), "Mi982"));
 		// TODO: Change HardCode to read from File.
 
-		view.fireListOfProductsAfterRemove();
+		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);
 	}
 }

@@ -10,7 +10,6 @@ import main.model.store.Store;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class Model {
@@ -63,8 +62,7 @@ public class Model {
 		String isGood = store.undoLastAction();
 		if (isGood.equalsIgnoreCase("UNDO FAILED")) {
 			fireOperationFailed("UNDO FAILED", "No Actions were recorded");
-		}
-		else {
+		} else {
 			fireSendMessageToUser("Undo completed!", "product list has been updated");
 		}
 	}
@@ -72,7 +70,7 @@ public class Model {
 	private void fireSendMessageToUser(String headline, String content) {
 
 		for (LogicListenable l : allListeners) {
-			l.modelSendsMessage(headline,content);
+			l.modelSendsMessage(headline, content);
 		}
 	}
 
@@ -88,15 +86,9 @@ public class Model {
 		}
 	}
 
-//	private void fireSendProductsArrToView(ArrayList<Product> products) {
-//		for (LogicListenable l : allListeners) {
-//			l.modelSendProductsList(products);
-//		}
-//	}
-
-	private void fireSendProductsArrToViewAfterRemove(Set<Map.Entry<String, Product>> products) {
+	private void fireSendProductsArrToView(Set<Map.Entry<String, Product>> products) {
 		for (LogicListenable l : allListeners) {
-			l.modelSendProductsListAfterRemove(products);
+			l.modelSendProductsList(products);
 		}
 	}
 
@@ -106,18 +98,8 @@ public class Model {
 		}
 	}
 
-	public void sendAllProductsToViewAfterRemove() {
-		fireSendProductsArrToViewAfterRemove(store.getProductsSet());
-	}
-
-	public void sendAllProductsToViewAfterAdd() {
-		fireSendProductsArrToViewAfterAdd(store.getProductsSet());
-	}
-
-	private void fireSendProductsArrToViewAfterAdd(Set<Entry<String, Product>> products) {
-		for (LogicListenable l : allListeners) {
-			l.modelSendProductsListAfterAdd(products);
-		}
+	public void sendAllProductsToView() {
+		fireSendProductsArrToView(store.getProductsSet());
 	}
 
 	public void getProduct(String searchMe) {

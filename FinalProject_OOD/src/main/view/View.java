@@ -49,15 +49,15 @@ public class View extends GridPane {
 
 	public void creatTabPane() {
 		TabPane tbPane = new TabPane();
-		
+
 		tableView = new ProductTableView(stage, this);
 		addWindow = new AddProductView(stage, this);
 		removeWindow = new RemoveProductView(stage, this);
-		
+
 		Tab tab1 = new Tab("Table Of All Products", tableView);
 		Tab tab2 = new Tab("Add Product", addWindow);
 		Tab tab3 = new Tab("Remove Product", removeWindow);
-		
+
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);
@@ -83,15 +83,9 @@ public class View extends GridPane {
 		}
 	}
 
-	public void fireListOfProductsAfterRemove() {
+	public void fireListOfProducts() {
 		for (ViewListenable l : allListeners) {
-			l.viewAskForListOfAllProductsAfterRemove();
-		}
-	}
-
-	public void fireListOfProductsAfterAdd() {
-		for (ViewListenable l : allListeners) {
-			l.viewAskForListOfAllProductsAfterAdd();
+			l.viewAskForListOfAllProducts();
 		}
 	}
 
@@ -114,26 +108,19 @@ public class View extends GridPane {
 	public void notifyProductAdded(Product p) {
 		// show user that the massage that product was successfully added
 		addWindow.updateStatus("The product " + p.getBarcode() + " added!", "green");
-		//////// ask for product list (after added)
-		//// fireAskForListOfProducts();
+		fireListOfProducts();
 	}
 
 	public void notifyProductRemoved(Product p) {
 		// Display removed massage.
 		removeWindow.updateStatus("The product " + p.getBarcode() + " removed!", "green");
-		////// Ask for product list (after remove)
-		//// fireAskForListOfProducts();
+		fireListOfProducts();
+		addWindow.cleanValueFields();
 	}
 
-	public void nofityProductsArrivedAfterRemove(Set<Map.Entry<String, Product>> products) {
+	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
 		tableView.updateTable(products);
-		addWindow.updateComboBoxAfterRemoved(products);
-		removeWindow.updateComboBox(products);
-	}
-
-	public void nofityProductsArrivedAfterAdd(Set<Map.Entry<String, Product>> products) {
-		tableView.updateTable(products);
-		addWindow.updateComboBoxAfterAdded(products);
+		addWindow.updateComboBox(products);
 		removeWindow.updateComboBox(products);
 	}
 
