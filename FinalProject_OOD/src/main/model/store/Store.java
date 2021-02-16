@@ -12,7 +12,7 @@ import main.model.Model;
 import main.model.Product;
 
 public class Store {
-
+	private static final String TAG = "Store";
 	public interface KEYS {
 		final int ORDER_BY_ABC_UP = 1;
 		final int ORDER_BY_ABC_DOWN = 2;
@@ -32,13 +32,16 @@ public class Store {
 	protected ArrayList<saleEventListener> subscribedCustomers;
 
 	private Model model;
-	FileHandler theFile;
+
+
+	protected FileHandler theFile;
 
 	private Store(Model model) {
 		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
-		soldProductsArr = new ArrayList<Product>(); // am i needed?
+		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
 		this.model = model;
-		theFile = new FileHandler();
+		this.theFile = new FileHandler();
+		theFile.readMapFromFile(this.productsMap,true);
 	}
 
 	public static Store getInstance(Model model) {
@@ -65,13 +68,17 @@ public class Store {
 	}
 
 	public Product getProductDetails(String id) {
-		if (id == null)
+		if (id == null) {
 			System.err.println(" String ID IS NULL!");
-		System.out.println(productsMap.containsKey(id));
-		if (productsMap.containsKey(id))
-			return productsMap.get(id); // if not exists. return null
-		else
 			return null;
+		}
+		else {
+			System.out.println(productsMap.containsKey(id));
+			if (productsMap.containsKey(id))
+				return productsMap.get(id); // if not exists. return null
+			else
+				return null;
+		}
 	}
 
 	public void addNewProduct(Product p) {
@@ -79,7 +86,7 @@ public class Store {
 		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr,theFile);
 		commandStack.add(commandAdd);
 		commandAdd.execute();
-		theFile.addProductToFile(p);
+		theFile.saveMapToFile(this.productsMap, true);
 	}
 
 	public void removeProduct(Product p) {
@@ -98,6 +105,7 @@ public class Store {
 			return "Successfully reverted last action";
 		}
 	}
+
 
 	// Implement Observable Pattern, notify all the subscribed customers.
 	public void notifyAllCustomers() {

@@ -5,42 +5,79 @@ package main.model;
  * @author Shahar Raz.
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.SortedMap;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * references:
  * Lectures_Arnon.03 - 03.11.2020 Q3 (save objects to random access file)
  * Lectures_Arnon.10 - 22.12.2020 Q2 (Iterator & Remove products from collection)
- *
- *
- *
  */
-public class FileHandler implements Iterable<Product>{
+public class FileHandler implements Iterable<Product> {
     private File file;
+    private boolean isAppendableFile;
+
 
     public FileHandler() {
         this.file = new File("products.txt");
-
+        this.isAppendableFile = file.exists();
     }
 
-
-    public void saveMapToFile(SortedMap<String, Product> theMap) {
+    /**
+     * writes the entire map to the file (while overwriting the existing one)
+     *
+     *
+     * @param theMap - Reference to it
+     */
+    public void saveMapToFile(SortedMap<String, Product> theMap, boolean isClearingMapB4){
         try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
             raf.setLength(0); // empty the file.
-            for (Map.Entry<String,Product> pair : theMap.entrySet()){
-                Product tmp = (Product)pair.getValue();
+            for (Map.Entry<String, Product> pair : theMap.entrySet()) {
+                Product tmp = (Product) pair.getValue(); // gets the product
                 raf.writeUTF(tmp.getBarcode()); // Barcode
-
-
+                raf.writeUTF(tmp.getDescription()); // DESCRIPTION
+                raf.writeInt(tmp.getPriceSold()); // Price sold
+                raf.writeInt(tmp.getCostToStore()); // Cost to store
+                raf.writeLong(tmp.getTimeAdded()); // Time Added
+                // _______ Write Costumer ____
+                raf.writeUTF(tmp.getCustomer().getName()); // customer's name
+                raf.writeUTF(tmp.getCustomer().getMobileNumber()); // customer's mobile num
+                raf.writeBoolean(tmp.getCustomer().getIsAcceptingPromotions()); // customer's is accepting
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void readMapFromFile(SortedMap<String, Product> theMap, boolean isClearingMapB4) {
+        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+            if (isClearingMapB4) {
+                theMap.clear(); // remove all elements from map
+            }
+            raf.seek(0); // go to beelining of file
+            while (raf.getFilePointer() < raf.length()) {
+                String barcode = raf.readUTF(); // Barcode
+                String desc = raf.readUTF(); // DESCRIPTION
+                int priceSold = raf.readInt(); // Price sold
+                int costToStore = raf.readInt(); // Cost to store
+                long timeAdded = raf.readLong(); // Time Added
+                // _______ Read Costumer ____
+                String cName = raf.readUTF(); // customer's name
+                String cMobileNum = raf.readUTF(); // customer's mobile num
+                boolean cAcceptAds = raf.readBoolean(); // customer's is accepting
+
+                // creating the product
+                Product addMe = new Product(timeAdded, desc, barcode,
+                        costToStore, priceSold, new Customer(cName, cMobileNum, cAcceptAds));
+                // adding the product
+                System.out.println("adding: " + addMe.toString());
+                theMap.put(addMe.getBarcode(), addMe);
+            }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -62,9 +99,7 @@ public class FileHandler implements Iterable<Product>{
 
     public void addProductToFile(Product p) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-			// TODO implement addProductToFile
-
-
+            // TODO implement addProductToFile
 
 
         } catch (FileNotFoundException e) {
@@ -81,12 +116,11 @@ public class FileHandler implements Iterable<Product>{
     }
 
 
-
-
     // TODO complete this iterator later
-    private class ConcreteIterator implements Iterator<Product>{
-        private int cur=0; // the element to be retrieved now with next
+    private class ConcreteIterator implements Iterator<Product> {
+        private int cur = 0; // the element to be retrieved now with next
         private int last = -1; // the element to be removed
+
         @Override
         public boolean hasNext() {
 
@@ -101,7 +135,7 @@ public class FileHandler implements Iterable<Product>{
             // last = cur
             // cur++
 //            return temp;
-            return new Product("blabla", 5 , 3, new Customer("hagy","050",true),"df");
+            return new Product("blabla", 5, 3, new Customer("hagy", "050", true), "df");
 
         }
 

@@ -44,8 +44,8 @@ public class Cmnd_AddProduct implements Command{
         if(wasProductInMapB4thisCmnd) {
             map_ref.remove(product); // TODO delete me if im unnecessary
             map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
-            theFile.removeProductFromFile(product);
-            theFile.addProductToFile(oldProductInMap);
+//            theFile.removeProductFromFile(product);
+//            theFile.addProductToFile(oldProductInMap);
 
         }
     }

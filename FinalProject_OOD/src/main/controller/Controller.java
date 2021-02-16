@@ -76,7 +76,7 @@ public class Controller implements ViewListenable, LogicListenable {
 		 * send message to the user
 		 *
 		 * use cases:
-		 * announce successful undo (headline will contain the word "Undo"
+		 * announce successful undo (headline will contain the word "Undo")
 		 * check by:
 		 * 	if(headline.containsIgnoreCase("Undo")
 		 * 		popup(headline,message)

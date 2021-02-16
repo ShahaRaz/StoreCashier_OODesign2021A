@@ -17,6 +17,17 @@ public class Product implements Comparable{
 	private SimpleIntegerProperty priceSold;
 	private Customer customer;
 
+	public Product(long timeAdded, String description, String barcode,
+				   int costToStore, int priceSold, Customer customer) {
+		// CALL ME ONLY WHEN INSERT FROM FILE (time added already determined)
+		this.timeAdded = timeAdded;
+		this.description = new SimpleStringProperty(description);
+		this.barcode = new SimpleStringProperty(barcode);
+		this.costToStore = new SimpleIntegerProperty(costToStore);
+		this.priceSold = new SimpleIntegerProperty(priceSold);
+		this.customer = customer;
+	}
+
 	public Product(String description, int costToStore, int priceSold, Customer customer, String pID) {
 		this.timeAdded = System.currentTimeMillis();
 		this.description = new SimpleStringProperty(description);
@@ -39,9 +50,13 @@ public class Product implements Comparable{
 		if (this.costToStore.get() < 0 || this.priceSold.get() < 0) {
 			return "Price can't be negative";
 		}
+		if (this.barcode == null) {
+			return "Product must have Valid Barcode";
+		}
 		if (this.description.get().equals("")) {
 			return "Product's name can't be empty";
 		}
+
 		return "";
 		// TODO: Check exist customer
 	}

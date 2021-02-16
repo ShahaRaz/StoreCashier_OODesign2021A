@@ -25,7 +25,7 @@ public class Cmnd_removeProduct implements Command {
     public void execute() {
         soldProductsArr_ref.remove(product);
         map_ref.remove(product.getBarcode());
-        theFile.removeProductFromFile(product);
+//        theFile.removeProductFromFile(product);
 
     }
 
