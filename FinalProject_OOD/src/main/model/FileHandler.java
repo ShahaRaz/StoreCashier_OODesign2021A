@@ -10,7 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.SortedMap;
 
 /**
  * references:
@@ -28,162 +30,16 @@ public class FileHandler implements Iterable<Product>{
 
     }
 
-    // remove string from file
-    public void deleteStrFromFile(String find) {
+
+    public void saveMapToFile(SortedMap<String, Product> theMap) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            // create readPointer for reading and writePointer for writing
-            int readPointer = 0, writePointer = 0;
+            raf.setLength(0); // empty the file.
+            for (Map.Entry<String,Product> pair : theMap.entrySet()){
+                Product tmp = (Product)pair.getValue();
+                raf.writeUTF(tmp.getBarcode()); // Barcode
 
-            // array for reading bytes in file
-            byte[] data = new byte[find.length()];
 
-            // while it is not end of file
-            while (raf.read(data) != -1) {
-                // read string bytes
-                String readText = new String(data);
-
-                // if read string need be removed from file
-                if (readText.equals(find)) {
-                    readPointer += find.length();
-                    // if not, rewrite first char and check next string from second char
-                } else {
-                    readPointer++;
-                    raf.seek(writePointer++);
-                    raf.write(readText.charAt(0));
-                }
-                // set file pointer for reading
-                raf.seek(readPointer);
             }
-            // delete copied string from the end
-            raf.setLength(writePointer);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void deleteStrFromFile2(String find) {
-        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            int readPointer = 0;
-            byte[] data = new byte[find.length()];
-            while (raf.read(data) != -1) {
-                String readText = new String(data);
-                if (readText.equals(find)) {
-                    byte[] temp = new byte[(int) (raf.length() - readPointer + find.length())];
-                    raf.read(temp);
-                    raf.setLength(readPointer);
-                    raf.write(temp);
-                } else {
-                    raf.seek(readPointer++);
-                }
-                raf.seek(readPointer);
-            }
-            raf.setLength(readPointer);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void deleteStrFromFile3(String find) {
-        byte[] data = new byte[find.length()];
-        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            int read = 0;
-            while (raf.read(data) != -1) {
-                String readText = new String(data);
-                if (find.equals(readText)) {
-                    int i = (int) (raf.getFilePointer() - find.length());
-                    for (int j = (int) raf.getFilePointer(); j < raf.length(); i++, j++) {
-                        raf.seek(j);
-                        int chr = raf.read();
-                        raf.seek(i);
-                        raf.write(chr);
-                    }
-                    raf.setLength(i);
-                }
-                raf.seek(++read);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // read string from file by position and string size
-    public byte[] readStrFromFile(int pos, int size) {
-        byte[] temp = null;
-
-        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            // set pointer to read position
-            raf.seek(pos);
-
-            // set size of array for reading
-            // if zero read all strings in right side
-            if (size == 0)
-                temp = new byte[(int) (raf.length() - pos)];
-                // read only size chars
-            else
-                temp = new byte[size];
-
-            // copy chars to array
-            raf.read(temp);
-
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return temp;
-    }
-
-    // add fixed text to file
-    public void addFixedStrToFile(String text) {
-        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            // set pointer to end position
-            raf.seek(raf.length());
-            int writeIndex = 0;
-            while (text.length() > writeIndex) {
-                // write char to file
-                raf.write(text.charAt(writeIndex++));
-            }
-            // write spaces
-            raf.write(' ');
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void addStrToFile(String txt, int pos) {
-        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            // go to position:
-            raf.seek(pos);
-
-            // backup data from pointer to the end of the file
-            byte[] temp = new byte[(int) (raf.length() - pos)];
-            raf.read(temp);
-
-            // return to the position
-            raf.seek(pos);
-
-            //write new text and backup text to file
-            raf.write((txt.getBytes()));
-            raf.write(temp);
-
-            System.out.println("String \"" + txt + "\" added to the file" + file.getName() + "! :D");
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public void removeProductFromFile(Product p) {
-        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-			// TODO implement removeProductFromFile
 
 
         } catch (FileNotFoundException e) {
@@ -192,6 +48,17 @@ public class FileHandler implements Iterable<Product>{
             e.printStackTrace();
         }
     }
+
+//    public static void save(Product[] a) throws FileNotFoundException, IOException {
+//
+//        try (RandomAccessFile f = new RandomAccessFile(F_NAME, "rw")) {
+//            f.setLength(0);
+//            for (Product p : a) {
+//                f.writeUTF(p.getName());
+//                f.writeInt(p.getPrice());
+//            }
+//        }
+//    }
 
     public void addProductToFile(Product p) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
@@ -213,12 +80,16 @@ public class FileHandler implements Iterable<Product>{
         return new ConcreteIterator();
     }
 
+
+
+
+    // TODO complete this iterator later
     private class ConcreteIterator implements Iterator<Product>{
         private int cur=0; // the element to be retrieved now with next
         private int last = -1; // the element to be removed
         @Override
         public boolean hasNext() {
-            // return cur < size
+
             return false;
         }
 
@@ -238,6 +109,161 @@ public class FileHandler implements Iterable<Product>{
         public void remove() {
 
         }
+
     }
 }
+
+
+//    // remove string from file
+//    public void deleteStrFromFile(String find) {
+//        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+//            // create readPointer for reading and writePointer for writing
+//            int readPointer = 0, writePointer = 0;
+//
+//            // array for reading bytes in file
+//            byte[] data = new byte[find.length()];
+//
+//            // while it is not end of file
+//            while (raf.read(data) != -1) {
+//                // read string bytes
+//                String readText = new String(data);
+//
+//                // if read string need be removed from file
+//                if (readText.equals(find)) {
+//                    readPointer += find.length();
+//                    // if not, rewrite first char and check next string from second char
+//                } else {
+//                    readPointer++;
+//                    raf.seek(writePointer++);
+//                    raf.write(readText.charAt(0));
+//                }
+//                // set file pointer for reading
+//                raf.seek(readPointer);
+//            }
+//            // delete copied string from the end
+//            raf.setLength(writePointer);
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
+//
+//    public void deleteStrFromFile2(String find) {
+//        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+//            int readPointer = 0;
+//            byte[] data = new byte[find.length()];
+//            while (raf.read(data) != -1) {
+//                String readText = new String(data);
+//                if (readText.equals(find)) {
+//                    byte[] temp = new byte[(int) (raf.length() - readPointer + find.length())];
+//                    raf.read(temp);
+//                    raf.setLength(readPointer);
+//                    raf.write(temp);
+//                } else {
+//                    raf.seek(readPointer++);
+//                }
+//                raf.seek(readPointer);
+//            }
+//            raf.setLength(readPointer);
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
+//
+//    public void deleteStrFromFile3(String find) {
+//        byte[] data = new byte[find.length()];
+//        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+//            int read = 0;
+//            while (raf.read(data) != -1) {
+//                String readText = new String(data);
+//                if (find.equals(readText)) {
+//                    int i = (int) (raf.getFilePointer() - find.length());
+//                    for (int j = (int) raf.getFilePointer(); j < raf.length(); i++, j++) {
+//                        raf.seek(j);
+//                        int chr = raf.read();
+//                        raf.seek(i);
+//                        raf.write(chr);
+//                    }
+//                    raf.setLength(i);
+//                }
+//                raf.seek(++read);
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    // read string from file by position and string size
+//    public byte[] readStrFromFile(int pos, int size) {
+//        byte[] temp = null;
+//
+//        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+//            // set pointer to read position
+//            raf.seek(pos);
+//
+//            // set size of array for reading
+//            // if zero read all strings in right side
+//            if (size == 0)
+//                temp = new byte[(int) (raf.length() - pos)];
+//                // read only size chars
+//            else
+//                temp = new byte[size];
+//
+//            // copy chars to array
+//            raf.read(temp);
+//
+//        } catch (FileNotFoundException e) {
+//            System.out.println(e.getMessage());
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+//        return temp;
+//    }
+//
+//    // add fixed text to file
+//    public void addFixedStrToFile(String text) {
+//        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+//            // set pointer to end position
+//            raf.seek(raf.length());
+//            int writeIndex = 0;
+//            while (text.length() > writeIndex) {
+//                // write char to file
+//                raf.write(text.charAt(writeIndex++));
+//            }
+//            // write spaces
+//            raf.write(' ');
+//        } catch (FileNotFoundException e) {
+//            System.out.println(e.getMessage());
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
+//
+//    public void addStrToFile(String txt, int pos) {
+//        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+//            // go to position:
+//            raf.seek(pos);
+//
+//            // backup data from pointer to the end of the file
+//            byte[] temp = new byte[(int) (raf.length() - pos)];
+//            raf.read(temp);
+//
+//            // return to the position
+//            raf.seek(pos);
+//
+//            //write new text and backup text to file
+//            raf.write((txt.getBytes()));
+//            raf.write(temp);
+//
+//            System.out.println("String \"" + txt + "\" added to the file" + file.getName() + "! :D");
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 

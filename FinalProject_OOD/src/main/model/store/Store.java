@@ -85,7 +85,7 @@ public class Store {
 		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, soldProductsArr,productsMap ,theFile);
 		commandStack.add(commandRemove);
 		commandRemove.execute();
-		theFile.removeProductFromFile(p);
+//		theFile.removeProductFromFile(p);
 	}
 
 	public String undoLastAction() {
