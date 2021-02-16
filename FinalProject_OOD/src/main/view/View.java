@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class View extends GridPane {
-	protected boolean isAddressingModel=true;
-
 
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
 
@@ -177,7 +175,7 @@ public class View extends GridPane {
 	}
 
 	public void notifyNewMessageFromModel(String headline, String content) {
-		if (headline.contains("Undo completed!")){
+		if (headline.contains("Undo completed!")) {
 			fireListOfProducts(); // ask model for new product list
 			this.removeWindow.updateStatus("undo succeeded", "green");
 			this.addWindow.updateStatus("undo succeeded", "green");
@@ -186,21 +184,21 @@ public class View extends GridPane {
 	}
 
 	public void notifyFailedOperation(String errorMassage, String elaborate) {
-		if (errorMassage.contains("UNDO")){
-			popUpShortMassage(errorMassage,elaborate,400,200,20);
+		if (errorMassage.contains("UNDO")) {
+			popUpShortMassage(errorMassage, elaborate, 400, 200, 20);
 			this.removeWindow.updateStatus("undo failed, no action recorded", "red");
 			this.addWindow.updateStatus("undo failed, no action recorded", "red");
 		}
 
 	}
 
-	private void popUpShortMassage(String headLine , String Massage,int Width, int Height,int fontSize) {
+	private void popUpShortMassage(String headLine, String Massage, int Width, int Height, int fontSize) {
 		Stage miniStage = new Stage();
 		VBox vbPopup = new VBox();
 		miniStage.setTitle(headLine);
-		Label lblMiniPopup =setHeadLine(Massage,fontSize);
-		//	lblMiniPopup.setText(Massage);
-		//	lblMiniPopup.setAlignment(Pos.CENTER);
+		Label lblMiniPopup = setHeadLine(Massage, fontSize);
+		// lblMiniPopup.setText(Massage);
+		// lblMiniPopup.setAlignment(Pos.CENTER);
 		setStageCONSTSize(miniStage, Width, Width, Height, Height);
 		Button btnClose = new Button();
 		btnClose.setText("Ok");
@@ -210,34 +208,36 @@ public class View extends GridPane {
 				miniStage.close();
 			}
 		});
-		vbPopup.getChildren().addAll(lblMiniPopup,btnClose);
+		vbPopup.getChildren().addAll(lblMiniPopup, btnClose);
 		vbPopup.setAlignment(Pos.CENTER);
-		vbPopup.setSpacing(20*ENLRAGMENT_FACTOR);
+		vbPopup.setSpacing(20 * ENLRAGMENT_FACTOR);
 
-		Scene scene = new Scene(vbPopup,Width*ENLRAGMENT_FACTOR,Height*ENLRAGMENT_FACTOR);
+		Scene scene = new Scene(vbPopup, Width * ENLRAGMENT_FACTOR, Height * ENLRAGMENT_FACTOR);
 		miniStage.setScene(scene);
 
-		//miniStage.initStyle(StageStyle.UNDECORATED);
+		// miniStage.initStyle(StageStyle.UNDECORATED);
 		miniStage.show();
 
 		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent theEvent) {
-				if(theEvent.getCode()==KeyCode.ENTER||theEvent.getCode()== KeyCode.ESCAPE)
+				if (theEvent.getCode() == KeyCode.ENTER || theEvent.getCode() == KeyCode.ESCAPE)
 					miniStage.close();
 			}
 		});
 	}
-	private void setStageCONSTSize(Stage stg,int minWidth  , int maxWidth, int minHeihgt,int maxHeight) { // height
-		stg.setMinHeight(minHeihgt*ENLRAGMENT_FACTOR);
-		stg.setMaxHeight(maxHeight*ENLRAGMENT_FACTOR);
-		stg.setMinWidth(minWidth*ENLRAGMENT_FACTOR);
-		stg.setMaxWidth(maxWidth*ENLRAGMENT_FACTOR);
+
+	private void setStageCONSTSize(Stage stg, int minWidth, int maxWidth, int minHeihgt, int maxHeight) { // height
+		stg.setMinHeight(minHeihgt * ENLRAGMENT_FACTOR);
+		stg.setMaxHeight(maxHeight * ENLRAGMENT_FACTOR);
+		stg.setMinWidth(minWidth * ENLRAGMENT_FACTOR);
+		stg.setMaxWidth(maxWidth * ENLRAGMENT_FACTOR);
 	}
-	private Label setHeadLine(String headLine,int fontSize) {
+
+	private Label setHeadLine(String headLine, int fontSize) {
 		Label lblHeadline = new Label(headLine);
-		lblHeadline.setMinHeight(10*ENLRAGMENT_FACTOR);
+		lblHeadline.setMinHeight(10 * ENLRAGMENT_FACTOR);
 		lblHeadline.setAlignment(Pos.TOP_CENTER);
 		lblHeadline.setFont(Font.font("Cambria", fontSize));
 		return lblHeadline;
