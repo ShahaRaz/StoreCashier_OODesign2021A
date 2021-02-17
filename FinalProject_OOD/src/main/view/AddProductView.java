@@ -33,6 +33,7 @@ import main.model.Product;
 
 public class AddProductView extends GridPane {
 	private static final String TAG = "AddProductView";
+	protected boolean isAddressingModel=true;
 
 	//	  	Variables
 
@@ -164,9 +165,10 @@ public class AddProductView extends GridPane {
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
 
-			if (selectedValue != null  && view.isAddressingModel==true){
+			if (selectedValue != null  && isAddressingModel==true){
 				view.fireSearchProduct(selectedValue);
 			}
+			isAddressingModel = true; // don't go to model for searching empty product
 		});
 
 		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
@@ -178,14 +180,12 @@ public class AddProductView extends GridPane {
 	}
 
 	public void updateComboBox(Set<Entry<String, Product>> products) {
-		view.isAddressingModel = false; // don't go to model for searching empty product
 		cboxPrdctBarCode.getItems().clear(); // SetOnAction->FireSearchProducct (AVOID ME!)
 
 //		isAddressingModel = true; // don't go to model for searching empty product
 		for (Map.Entry<String, Product> e : products) {
 			cboxPrdctBarCode.getItems().add(e.getKey());
 		}
-		view.isAddressingModel = true; // don't go to model for searching empty product
 	}
 
 	public void setFields(Product productDetails) {
@@ -310,7 +310,7 @@ public class AddProductView extends GridPane {
 			Customer c = new Customer(txtFldCustomer.getText(), txtFldCustomerPhone.getText(),
 					checkBoxPromotion.isSelected());///
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
-			view.isAddressingModel = true;
+			isAddressingModel = false;
 			cboxPrdctBarCode.requestFocus();
 			cleanValueFields();
 		});

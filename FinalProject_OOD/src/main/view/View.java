@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class View extends GridPane {
-	protected boolean isAddressingModel=true;
+
 
 
 	private static final double ENLRAGMENT_FACTOR = 1; // constant
