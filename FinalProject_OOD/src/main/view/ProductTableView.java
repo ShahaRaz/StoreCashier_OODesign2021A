@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +28,7 @@ import main.model.Product;
 import main.model.store.Store;
 
 public class ProductTableView extends GridPane {
+	private Button btnUndo;
 	private Stage stage;
 	private View view;
 	private final ObservableList<Product> data = FXCollections.observableArrayList();
@@ -41,6 +43,7 @@ public class ProductTableView extends GridPane {
 		initRoot();
 		initTitle();
 		initTableProducts();
+		initUndoButton();
 	}
 
 	private void initRoot() {
@@ -60,8 +63,19 @@ public class ProductTableView extends GridPane {
 		title.setFont(Font.font("ariel", FontWeight.BOLD, 25));
 		title.setFill(Color.RED);
 		title.setEffect(r);
-		GridPane.setHalignment(title, HPos.CENTER);
+		setHalignment(title, HPos.CENTER);
 		add(title, 0, 0, 5, 1);
+	}
+
+	private void initUndoButton() {
+		btnUndo = new Button("Undo");
+		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btnUndo.setOnAction(e -> {
+			// TODO: change from undo to memento.
+			view.fireUndo();
+		});
+		setHalignment(btnUndo, HPos.CENTER);
+		add(btnUndo, 0, 6, 5, 1);
 	}
 
 	private void initTableProducts() {

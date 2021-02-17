@@ -74,10 +74,10 @@ public class RemoveProductView extends GridPane {
 		title.setFont(Font.font("ariel", FontWeight.BOLD, 25));
 		title.setFill(Color.RED);
 		title.setEffect(r);
-		GridPane.setHalignment(title, HPos.CENTER);
+		setHalignment(title, HPos.CENTER);
 		Label lblTitle = new Label("ENTER Product TO REMOVE:");
 		lblTitle.setStyle("-fx-text-alignment: center;-fx-text-fill: black;-fx-font-weight: bold");
-		GridPane.setHalignment(lblTitle, HPos.CENTER);
+		setHalignment(lblTitle, HPos.CENTER);
 		add(title, 0, 0, 5, 1);
 		add(lblTitle, 0, 1, 5, 1);
 	}

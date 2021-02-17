@@ -5,9 +5,6 @@ package main.model;
  * @author Shahar Raz.
  */
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 import java.io.*;
 import java.util.*;
 
@@ -72,7 +69,7 @@ public class FileHandler implements Iterable<Product> {
 
 
     @Override
-    public Iterator iterator() {
+    public Iterator<Product> iterator() {
         return new ConcreteIterator(file);
     }
 

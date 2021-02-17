@@ -83,7 +83,7 @@ public class Store {
 
 	public void addNewProduct(Product p) {
 		// Access only from command
-		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr,theFile);
+		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr, theFile);
 		commandStack.add(commandAdd);
 		commandAdd.execute();
 		theFile.saveMapToFile(this.productsMap, true);

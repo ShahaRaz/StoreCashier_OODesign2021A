@@ -33,9 +33,9 @@ import main.model.Product;
 
 public class AddProductView extends GridPane {
 	private static final String TAG = "AddProductView";
-	protected boolean isAddressingModel=true;
+	protected boolean isAddressingModel = true;
 
-	//	  	Variables
+	// Variables
 
 	private View view;
 	/* ProductName */
@@ -97,17 +97,17 @@ public class AddProductView extends GridPane {
 		title.setFont(Font.font("ariel", FontWeight.BOLD, 25));
 		title.setFill(Color.RED);
 		title.setEffect(r);
-		GridPane.setHalignment(title, HPos.CENTER);
+		setHalignment(title, HPos.CENTER);
 		Label lblTitle = new Label("ENTER Product TO ADD:");
 		lblTitle.setStyle("-fx-text-alignment: center;-fx-text-fill: black;-fx-font-weight: bold");
-		GridPane.setHalignment(lblTitle, HPos.CENTER);
+		setHalignment(lblTitle, HPos.CENTER);
 		add(title, 0, 0, 5, 1);
 		add(lblTitle, 0, 1, 5, 1);
 	}
 
 	private void initAddProduct() {
-		initFldName();
 		initFldBarcode();
+		initFldName();
 		initFldPrice();
 		initFldPriceToStore();
 		initFldCustomer();
@@ -165,7 +165,7 @@ public class AddProductView extends GridPane {
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
 
-			if (selectedValue != null  && isAddressingModel==true){
+			if (selectedValue != null && isAddressingModel == true) {
 				view.fireSearchProduct(selectedValue);
 			}
 			isAddressingModel = true; // don't go to model for searching empty product
@@ -182,7 +182,6 @@ public class AddProductView extends GridPane {
 	public void updateComboBox(Set<Entry<String, Product>> products) {
 		cboxPrdctBarCode.getItems().clear(); // SetOnAction->FireSearchProducct (AVOID ME!)
 
-//		isAddressingModel = true; // don't go to model for searching empty product
 		for (Map.Entry<String, Product> e : products) {
 			cboxPrdctBarCode.getItems().add(e.getKey());
 		}
@@ -240,7 +239,7 @@ public class AddProductView extends GridPane {
 		// Switch to the next txtField after pressing Enter.
 		txtFldCustomerPhone.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
 			if (ev.getCode() == KeyCode.ENTER) {
-				btnAdd.fire();
+				checkBoxPromotion.requestFocus();
 				ev.consume();
 			}
 		});
@@ -250,6 +249,15 @@ public class AddProductView extends GridPane {
 		checkBoxPromotion = new CheckBox();
 		add(new Label("Promotion: "), 0, 9);
 		add(checkBoxPromotion, 1, 9);
+		checkBoxPromotion.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+			if (e.getCode() == KeyCode.ENTER) {
+				if (checkBoxPromotion.isSelected())
+					checkBoxPromotion.setSelected(false);
+				else
+					checkBoxPromotion.setSelected(true);
+				e.consume();
+			}
+		});
 	}
 
 	private void initClearButton() {
