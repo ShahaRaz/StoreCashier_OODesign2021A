@@ -100,18 +100,18 @@ public class ProductTableView extends GridPane {
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
-		// Hard Code. will be from File.
-//		Store.getInstance(null)
-//				.addNewProduct(new Product("Cola", 1, 4, new Customer("Mama", "054789654", false), "Co7736"));
-//		Store.getInstance(null)
-//				.addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili", "0524756987", false), "Sp9187"));
-//		Store.getInstance(null)
-//				.addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga", "0549512365", true), "Ne1658"));
-//		Store.getInstance(null)
-//				.addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo", "0541236549", false), "Mi982"));
-		// TODO: Change HardCode to read from File.
-
 		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);
 	}
 }
+
+// Hard Code. will be from File.
+//Store.getInstance(null)
+//		.addNewProduct(new Product("Cola", 1, 4, new Customer("Mama", "054789654", false), "Co7736"));
+//Store.getInstance(null)
+//		.addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili", "0524756987", false), "Sp9187"));
+//Store.getInstance(null)
+//		.addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga", "0549512365", true), "Ne1658"));
+//Store.getInstance(null)
+//		.addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo", "0541236549", false), "Mi982"));
+// TODO: Change HardCode to read from File.
