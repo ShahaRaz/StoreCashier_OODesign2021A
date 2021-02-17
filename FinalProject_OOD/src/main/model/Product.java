@@ -10,11 +10,11 @@ import javafx.beans.property.SimpleStringProperty;
 public class Product implements Comparable{
 	private long timeAdded;
 
-	private SimpleStringProperty description;
-	private SimpleStringProperty barcode; // MAKAT( Cytological Number )
+	private String description;
+	private String barcode; // MAKAT( Cytological Number )
 
-	private SimpleIntegerProperty costToStore;
-	private SimpleIntegerProperty priceSold;
+	private int costToStore;
+	private int priceSold;
 	private Customer customer;
 
 	public Product(long timeAdded, String description, String barcode,
@@ -34,19 +34,19 @@ public class Product implements Comparable{
 
 	public Product(String description, int costToStore, int priceSold, Customer customer, String pID) {
 		this.timeAdded = System.currentTimeMillis();
-		this.description = new SimpleStringProperty(description);
-		this.costToStore = new SimpleIntegerProperty(costToStore);
-		this.priceSold = new SimpleIntegerProperty(priceSold);
+		this.description = description;
+		this.costToStore = costToStore;
+		this.priceSold = priceSold;
 		this.customer = customer;
-		this.barcode = new SimpleStringProperty(pID);
+		this.barcode = pID;
 	}
 
 	public Product(String pID) {
-		this.barcode = new SimpleStringProperty(pID);
+		this.barcode = pID;
 		this.timeAdded = System.currentTimeMillis();
-		this.description = new SimpleStringProperty("-1");
-		this.costToStore = new SimpleIntegerProperty(-1);
-		this.priceSold = new SimpleIntegerProperty(0);
+		this.description = "-1";
+		this.costToStore = -1;
+		this.priceSold = 0;
 		this.customer = null;
 	}
 
@@ -60,15 +60,15 @@ public class Product implements Comparable{
 //	}
 
 	public String isValidProduct(Model model) {
-		if (this.costToStore.get() < 0 || this.priceSold.get() < 0) {
+		if (this.costToStore < 0 || this.priceSold < 0) {
 			return "Price can't be negative";
 		}
 		//TODO: this.barcode.get().equals("") is unnecessary, already checked in AddProductView, line 306
 		//		when barcode null, throws Exception.
-		if (this.barcode == null || this.barcode.get().equals("")) {
+		if (this.barcode == null || this.barcode.equals("")) {
 			return "Product must have Valid Barcode";
 		}
-		if (this.description.get().equals("")) {
+		if (this.description.equals("")) {
 			return "Product's name can't be empty";
 		}
 
@@ -89,27 +89,27 @@ public class Product implements Comparable{
 	}
 
 	public String getDescription() {
-		return description.get();
+		return description;
 	}
 
 	public void setDescription(String description) {
-		this.description.set(description);
+		this.description = description;
 	}
 
 	public int getCostToStore() {
-		return costToStore.get();
+		return costToStore;
 	}
 
 	public void setCostToStore(int costToStore) {
-		this.costToStore.set(costToStore);
+		this.costToStore = costToStore;
 	}
 
 	public int getPriceSold() {
-		return priceSold.get();
+		return priceSold;
 	}
 
 	public void setPriceSold(int priceSold) {
-		this.priceSold.set(priceSold);
+		this.priceSold = priceSold;
 	}
 
 	public Customer getCustomer() {
@@ -121,17 +121,17 @@ public class Product implements Comparable{
 	}
 
 	public String getBarcode() {
-		return barcode.get();
+		return barcode;
 	}
 
 	public void setBarcode(String barcode) {
-		this.barcode.set(barcode);
+		this.barcode = barcode;
 	}
 
 	@Override
 	public String toString() {
-		return "Product [timeAdded=" + timeAdded + ", description=" + description.get() + ", barcode=" + barcode.get()
-				+ ", costToStore=" + costToStore.get() + ", priceSold=" + priceSold.get() + ", customer=" + customer
+		return "Product [timeAdded=" + timeAdded + ", description=" + description + ", barcode=" + barcode
+				+ ", costToStore=" + costToStore + ", priceSold=" + priceSold + ", customer=" + customer
 				+ "]";
 	}
 

@@ -29,7 +29,7 @@ import main.model.store.Store;
 public class ProductTableView extends GridPane {
 	private Stage stage;
 	private View view;
-	private final ObservableList<Product> data = FXCollections.observableArrayList();
+	private final ObservableList<DisplayableProduct> data = FXCollections.observableArrayList();
 
 	public ProductTableView(Stage stg, View view) {
 		this.stage = stg;
@@ -72,9 +72,9 @@ public class ProductTableView extends GridPane {
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
 		data.clear();
 		for (Map.Entry<String, Product> e : products) {
-			data.addAll(e.getValue());
-//			DisplayableProduct tmp = new DisplayableProduct(e.getValue()); // here we changed
-//			data.addAll(tmp);
+//			data.addAll(e.getValue());
+			DisplayableProduct tmp = new DisplayableProduct(e.getValue()); // here we changed
+			data.addAll(tmp);
 		}
 	}
 
