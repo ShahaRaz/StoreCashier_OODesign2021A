@@ -73,26 +73,29 @@ public class ProductTableView extends GridPane {
 		data.clear();
 		for (Map.Entry<String, Product> e : products) {
 			data.addAll(e.getValue());
+//			DisplayableProduct tmp = new DisplayableProduct(e.getValue()); // here we changed
+//			data.addAll(tmp);
 		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initTable() {
+		view.fireListOfProducts();
+
 		TableView table = new TableView();
 
 		stage.setTitle("Product's Table");
-
 		TableColumn prodctNameCol = new TableColumn("Description");
 		prodctNameCol.setCellValueFactory(new PropertyValueFactory("description"));
+
 
 		TableColumn barcodeCol = new TableColumn("Barcode");
 		barcodeCol.setCellValueFactory(new PropertyValueFactory("barcode"));
 
 		TableColumn storePrice = new TableColumn("Store Price");
-		storePrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("costToStore"));
-
+		storePrice.setCellValueFactory(new PropertyValueFactory<DisplayableProduct, Integer>("costToStore"));
 		TableColumn customerPrice = new TableColumn("Customer price");
-		customerPrice.setCellValueFactory(new PropertyValueFactory<Product, Integer>("priceSold"));
+		customerPrice.setCellValueFactory(new PropertyValueFactory<DisplayableProduct, Integer>("priceSold"));
 
 		TableColumn priceCol = new TableColumn("Price");
 		priceCol.getColumns().addAll(storePrice, customerPrice);
@@ -100,7 +103,7 @@ public class ProductTableView extends GridPane {
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
-		view.fireListOfProducts();
+//		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);
 	}
 }

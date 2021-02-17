@@ -21,8 +21,8 @@ public class Product implements Comparable{
 				   int costToStore, int priceSold, Customer customer) {
 		// CALL ME ONLY WHEN INSERT FROM FILE (time added already determined)
 
-		this(description, costToStore, priceSold, customer, barcode);
-		this.timeAdded = timeAdded;
+					this(description, costToStore, priceSold, customer, barcode);
+					this.timeAdded = timeAdded;
 		
 //		this.timeAdded = timeAdded;
 //		this.description = new SimpleStringProperty(description);
@@ -49,6 +49,15 @@ public class Product implements Comparable{
 		this.priceSold = new SimpleIntegerProperty(0);
 		this.customer = null;
 	}
+
+//	public Product(Product other) {
+//		this.barcode = new SimpleStringProperty(String.copyValueOf(other.getBarcode().toCharArray()));
+//		this.timeAdded = System.currentTimeMillis(
+//		this.description = new SimpleStringProperty;
+//		this.costToStore =
+//		this.priceSold =
+//		this.customer =
+//	}
 
 	public String isValidProduct(Model model) {
 		if (this.costToStore.get() < 0 || this.priceSold.get() < 0) {
