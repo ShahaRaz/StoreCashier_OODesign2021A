@@ -59,23 +59,8 @@ public class FileHandler implements Iterable<Product> {
                 theMap.clear(); // remove all elements from map
             }
             raf.seek(0); // go to beelining of file
-            while (raf.getFilePointer() < raf.length()) {
-                String barcode = raf.readUTF(); // Barcode
-                String desc = raf.readUTF(); // DESCRIPTION
-                int priceSold = raf.readInt(); // Price sold
-                int costToStore = raf.readInt(); // Cost to store
-                long timeAdded = raf.readLong(); // Time Added
-                // _______ Read Costumer ____
-                String cName = raf.readUTF(); // customer's name
-                String cMobileNum = raf.readUTF(); // customer's mobile num
-                boolean cAcceptAds = raf.readBoolean(); // customer's is accepting
-
-                // creating the product
-                Product addMe = new Product(timeAdded, desc, barcode,
-                        costToStore, priceSold, new Customer(cName, cMobileNum, cAcceptAds));
-                // adding the product
-                System.out.println("adding: " + addMe.toString());
-                theMap.put(addMe.getBarcode(), addMe);
+            for(Product p : this){
+                theMap.put(p.getBarcode(),p);
             }
 
         } catch (FileNotFoundException e) {
@@ -94,40 +79,93 @@ public class FileHandler implements Iterable<Product> {
 
     // TODO complete this iterator later
     private class ConcreteIterator implements Iterator<Product> {
-        private int cur = 0; // the element to be retrieved now with next
-        private int last = -1; // the element to be removed
-        RandomAccessFile raf_iterator;
+        private RandomAccessFile raf_iterator;
+        private Product lastReturnedProduct;
+        private long pointerToB4LastReturnedElement;
+
 
         public ConcreteIterator(File file) {
+            try {
+                raf_iterator = new RandomAccessFile(file, "rw");
+                pointerToB4LastReturnedElement=0;
+            } catch (FileNotFoundException e) {
+                System.err.println("Unable to open Random Access file in ConcreteIterator");
+                e.printStackTrace();
+            }
+
         }
 
         @Override
         public boolean hasNext() {
-                return false;
-//            return (raf_iterator.getFilePointer() < raf_iterator.length());
+            try {
+                return (raf_iterator.getFilePointer() < raf_iterator.length());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false; // in case that the iterator doesn't work
+            }
         }
 
         @Override
         public Product next() {
             if (!hasNext())
                 throw new NoSuchElementException();
-            else {
-//                raf_iterator.seek(0); // go to beelining of file
+            else { // we have next element!
+                try {
+                    pointerToB4LastReturnedElement = raf_iterator.getFilePointer();
+                    String barcode = raf_iterator.readUTF(); // Barcode
+                    String desc = raf_iterator.readUTF(); // DESCRIPTION
+                    int priceSold = raf_iterator.readInt(); // Price sold
+                    int costToStore = raf_iterator.readInt(); // Cost to store
+                    long timeAdded = raf_iterator.readLong(); // Time Added
+                    // _______ Read Costumer ____
+                    String cName = raf_iterator.readUTF(); // customer's name
+                    String cMobileNum = raf_iterator.readUTF(); // customer's mobile num
+                    boolean cAcceptAds = raf_iterator.readBoolean(); // customer's is accepting
 
+                    // creating the product
+                    return new Product(timeAdded, desc, barcode,
+                            costToStore, priceSold, new Customer(cName, cMobileNum, cAcceptAds));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    this.lastReturnedProduct =  new Product("__failed__ In file Iterator (line 142)");
+                    return lastReturnedProduct;
+                }
 
             }
-//            Product tmp = a[cur];
-            // last = cur
-            // cur++
-//            return temp;
-            return new Product("blabla", 5, 3, new Customer("hagy", "050", true), "df");
-
         }
 
         @Override
         public void remove() {
+            // delete the last element returned by the iterator
+            try {
+                if (raf_iterator.getFilePointer()==0L){
+                    throw new IllegalStateException();
+                }
+                // backup data from pointer to the end of the file
+                byte[] temp = new byte[(int) (raf_iterator.length() - raf_iterator.getFilePointer())]; // creating buffer
+                raf_iterator.read(temp); // reading the reset of the file into buffer
 
+                // return to the position b4 last element was read.
+                raf_iterator.seek(pointerToB4LastReturnedElement);
+
+                // overWrite over the element we deleted
+                raf_iterator.write(temp);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+//        @Override
+//        public void remove() {
+//            if (last == -1)
+//                throw new IllegalStateException();
+//            for (int i = last; i < size - 1; i++)
+//                a[i] = a[i + 1];
+//            a = Arrays.copyOf(a, --size);
+//            cur = last;
+//            last = -1;
+//        }
 
     }
 
