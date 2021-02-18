@@ -66,6 +66,10 @@ public class Store {
 		return this.productsMap.entrySet();
 	}
 
+	public ArrayList<saleEventListener> getSubscribedCustomers() {
+		return subscribedCustomers;
+	}
+
 	public Product getProductDetails(String id) {
 		if (id == null) {
 			System.err.println(" String ID IS NULL!");

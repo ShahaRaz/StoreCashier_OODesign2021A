@@ -69,7 +69,6 @@ public class Model {
 	}
 
 	private void fireSendMessageToUser(String headline, String content) {
-
 		for (LogicListenable l : allListeners) {
 			l.modelSendsMessage(headline, content);
 		}
@@ -118,6 +117,15 @@ public class Model {
 	private void fireGetProduct(Product productFound) {
 		for (LogicListenable l : allListeners) {
 			l.modelSendProduct(productFound);
+		}
+	}
+
+	public void sendSaleToCustomers() {
+		if (store.getSubscribedCustomers().isEmpty())
+			fireOperationFailed("Sale FAILED", "No Subscribed Customers");
+		else {
+			store.notifyAllCustomers();
+			fireSendMessageToUser("Sale completed!", "The Sale has been sent!");
 		}
 	}
 }

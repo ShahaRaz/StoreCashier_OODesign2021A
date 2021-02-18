@@ -34,7 +34,7 @@ import main.model.Product;
 public class AddProductView extends GridPane {
 	private static final String TAG = "AddProductView";
 	protected boolean isAddressingModel = true;
-
+	protected boolean isAddWindowSent;
 	// Variables
 
 	private View view;
@@ -153,9 +153,9 @@ public class AddProductView extends GridPane {
 	private void initFldBarcode() {
 		cboxPrdctBarCode = new ComboBox<String>();
 		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
-		cboxPrdctBarCode.getSelectionModel().select(" ");
-		cboxPrdctBarCode.setEditable(true);
 		cboxPrdctBarCode.setPromptText("Barcode");
+		cboxPrdctBarCode.getSelectionModel().select("");
+		cboxPrdctBarCode.setEditable(true);
 
 		add(cboxPrdctBarCode, 1, 3);
 		add(new Label("Product Barcode: "), 0, 3);
@@ -165,8 +165,10 @@ public class AddProductView extends GridPane {
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
 
-			if (selectedValue != null && isAddressingModel == true) {
+			if (selectedValue != null && isAddressingModel) {
+				isAddWindowSent = true;
 				view.fireSearchProduct(selectedValue);
+				isAddWindowSent = false;
 			}
 			isAddressingModel = true; // don't go to model for searching empty product
 		});
@@ -273,7 +275,9 @@ public class AddProductView extends GridPane {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnUndo.setOnAction(e -> {
+			isAddWindowSent = true;
 			view.fireUndo();
+			isAddWindowSent = false;
 		});
 		add(btnUndo, 1, 13);
 	}

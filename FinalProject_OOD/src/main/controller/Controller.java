@@ -73,15 +73,12 @@ public class Controller implements ViewListenable, LogicListenable {
 		/**
 		 * send message to the user
 		 *
-		 * use cases:
-		 * announce successful undo (headline will contain the word "Undo")
-		 * check by:
-		 * 	if(headline.containsIgnoreCase("Undo")
-		 * 		popup(headline,message)
-		 * 		fireAskForProductsList
+		 * use cases: announce successful undo (headline will contain the word "Undo")
+		 * check by: if(headline.containsIgnoreCase("Undo") popup(headline,message)
+		 * fireAskForProductsList
 		 *
 		 */
-		theView.notifyNewMessageFromModel(headline,content);
+		theView.notifyNewMessageFromModel(headline, content);
 
 	}
 
@@ -117,12 +114,17 @@ public class Controller implements ViewListenable, LogicListenable {
 		 *
 		 */
 		// failed
-		theView.notifyFailedOperation(errorMassage,elaborate);
+		theView.notifyFailedOperation(errorMassage, elaborate);
 	}
 
 	@Override
 	public void modelSendProduct(Product productDetails) {
 		theView.getProductFromModel(productDetails);
+	}
+
+	@Override
+	public void viewAskToSendSale() {
+		theModel.sendSaleToCustomers();
 	}
 
 //    public class Controller implements ChampionshipListenable , ViewListenable {
