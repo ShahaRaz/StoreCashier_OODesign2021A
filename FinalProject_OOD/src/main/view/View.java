@@ -40,6 +40,7 @@ public class View extends GridPane {
 	private AddProductView addWindow;
 	private RemoveProductView removeWindow;
 	private ProductTableView tableView;
+	private SaleWondow saleWindow;
 	private Set<Map.Entry<String, Product>> products_set_copy;
 
 	public void registerListener(ViewListenable l) {
@@ -65,15 +66,18 @@ public class View extends GridPane {
 		tableView = new ProductTableView(stage, this);
 		addWindow = new AddProductView(stage, this);
 		removeWindow = new RemoveProductView(stage, this);
+		saleWindow = new SaleWondow(stage, this);
 
 		Tab tab1 = new Tab("Table Of All Products", tableView);
 		Tab tab2 = new Tab("Add Product", addWindow);
 		Tab tab3 = new Tab("Remove Product", removeWindow);
+		Tab tab4 = new Tab("Sale", saleWindow);
 
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);
-
+		tbPane.getTabs().add(tab4);
+		
 		hbButtons.getChildren().add(tbPane);
 	}
 

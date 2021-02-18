@@ -18,7 +18,7 @@ public class Model {
 
 	public Model() {
 		this.allListeners = new ArrayList<>();
-		store = Store.getInstance(this);
+		store = Store.getInstance();
 		// TODO add here products from file
 	}
 

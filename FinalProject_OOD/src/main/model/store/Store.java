@@ -31,22 +31,21 @@ public class Store {
 	protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
 	protected ArrayList<saleEventListener> subscribedCustomers;
 
-	private Model model;
+
 
 
 	protected FileHandler theFile;
 
-	private Store(Model model) {
+	private Store() {
 		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
 		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
-		this.model = model;
 		this.theFile = new FileHandler();
 		theFile.readMapFromFile(this.productsMap,true);
 	}
 
-	public static Store getInstance(Model model) {
+	public static Store getInstance() {
 		if (instance == null) // if it is the first init of the store.
-			instance = new Store(model);
+			instance = new Store();
 		return instance;
 	}
 
@@ -168,6 +167,31 @@ public class Store {
 		}
 
 	};
+
+	public static class Memento{
+		private Stack<Command> commandStack = new Stack<>(); // hold all operations
+		// Singleton pattern.
+		private static Store instance;
+		private String storeName;
+		protected SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap// note! will be modified
+		// only by using Commands (commandStack)
+		protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
+		protected ArrayList<saleEventListener> subscribedCustomers;
+		protected FileHandler theFile;
+
+		public Memento(Stack<Command> commandStack, String storeName, SortedMap<String, Product> productsMap,
+					   ArrayList<Product> soldProductsArr, ArrayList<saleEventListener> subscribedCustomers, FileHandler theFile) {
+			Collections.copy(commandStack,this.commandStack);
+
+			this.storeName = String.copyValueOf(storeName.toCharArray());
+
+//			Map.copyOf()
+			this.productsMap = productsMap;
+			this.soldProductsArr = soldProductsArr;
+			this.subscribedCustomers = subscribedCustomers;
+			this.theFile = theFile;
+		}
+	}
 
 //	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
 //		@Override
