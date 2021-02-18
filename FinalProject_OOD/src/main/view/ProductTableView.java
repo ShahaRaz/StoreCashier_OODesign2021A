@@ -13,22 +13,30 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Reflection;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.model.Customer;
 import main.model.Product;
-import main.model.store.Store;
 
 public class ProductTableView extends GridPane {
+	protected boolean isAddWindowSent;
+	private HBox hbButtons;
+
 	private Button btnUndo;
+	private Button btnSave;
+	private Button btnRevers;
+	/* Status */
+	private Label lblStatus;
+	
 	private Stage stage;
 	private View view;
 	private final ObservableList<DisplayableProduct> data = FXCollections.observableArrayList();
@@ -43,7 +51,25 @@ public class ProductTableView extends GridPane {
 		initRoot();
 		initTitle();
 		initTableProducts();
+		initHbox();
+	}
+
+	private void initHbox() {
+		hbButtons = getHBox();
 		initUndoButton();
+		initSavaButton();
+		initReversButton();
+		hbButtons.getChildren().addAll(btnSave, btnUndo, btnRevers);
+		add(hbButtons, 0, 6);
+	}
+
+	// get new styled hbox
+	private HBox getHBox() {
+		HBox hBox = new HBox(5);
+		hBox.setMinSize(300, 50);
+		hBox.setPadding(new Insets(10, 10, 10, 10));
+		hBox.setAlignment(Pos.CENTER);
+		return hBox;
 	}
 
 	private void initRoot() {
@@ -72,21 +98,49 @@ public class ProductTableView extends GridPane {
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnUndo.setOnAction(e -> {
 			// TODO: change from undo to memento.
+			isAddWindowSent = true;
 			view.fireUndo();
+			isAddWindowSent = false;
 		});
-		setHalignment(btnUndo, HPos.CENTER);
-		add(btnUndo, 0, 6, 5, 1);
+//		setHalignment(btnUndo, HPos.CENTER);
+//		add(btnUndo, 0, 6, 5, 1);
+	}
+
+	private void initSavaButton() {
+		btnSave = new Button("Save");
+		btnSave.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btnSave.setOnAction(e -> {
+			// TODO: change from undo to memento.
+			isAddWindowSent = true;
+			view.fireSave();
+			isAddWindowSent = false;
+		});
+//		setHalignment(btnSave, HPos.CENTER);
+//		add(btnSave, 0, 6, 5, 1);
+	}
+
+	private void initReversButton() {
+		btnRevers = new Button("Revers");
+		btnRevers.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btnRevers.setOnAction(e -> {
+			// TODO: change from undo to memento.
+			isAddWindowSent = true;
+			view.fireRevers();
+			isAddWindowSent = false;
+		});
+//		setHalignment(btnRevers, HPos.CENTER);
+//		add(btnRevers, 0, 6, 5, 1);
 	}
 
 	private void initTableProducts() {
 		initTable();
+		initStatus();
 		stage.show();
 	}
 
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
 		data.clear();
 		for (Map.Entry<String, Product> e : products) {
-//			data.addAll(e.getValue());
 			DisplayableProduct tmp = new DisplayableProduct(e.getValue()); // here we changed
 			data.addAll(tmp);
 		}
@@ -102,7 +156,6 @@ public class ProductTableView extends GridPane {
 		TableColumn prodctNameCol = new TableColumn("Description");
 		prodctNameCol.setCellValueFactory(new PropertyValueFactory("description"));
 
-
 		TableColumn barcodeCol = new TableColumn("Barcode");
 		barcodeCol.setCellValueFactory(new PropertyValueFactory("barcode"));
 
@@ -117,8 +170,22 @@ public class ProductTableView extends GridPane {
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
-//		view.fireListOfProducts();
+		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);
+	}
+
+	// init status
+	private void initStatus() {
+		lblStatus = new Label();
+		add(new Label("Status: "), 0, 4);
+		add(lblStatus, 0, 4);
+		setHalignment(lblStatus, HPos.CENTER);
+	}
+
+	// update status
+	public void updateStatus(String status, String color) {
+		lblStatus.setText(status);
+		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
 	}
 }
 

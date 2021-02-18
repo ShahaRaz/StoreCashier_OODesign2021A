@@ -98,6 +98,26 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
+	public void modelSendProduct(Product productDetails) {
+		theView.getProductFromModel(productDetails);
+	}
+
+	@Override
+	public void viewAskToSendSale() {
+		theModel.sendSaleToCustomers();
+	}
+
+	@Override
+	public void viewAskToSave() {
+		theModel.saveMemento();
+	}
+
+	@Override
+	public void viewAskToRevers() {
+		theModel.revertedLastState();
+	}
+
+	@Override
 	public void modelFailedOperation(String errorMassage, String elaborate) {
 		// TODO: What operation? Remove or Add?
 		/**
@@ -115,16 +135,6 @@ public class Controller implements ViewListenable, LogicListenable {
 		 */
 		// failed
 		theView.notifyFailedOperation(errorMassage, elaborate);
-	}
-
-	@Override
-	public void modelSendProduct(Product productDetails) {
-		theView.getProductFromModel(productDetails);
-	}
-
-	@Override
-	public void viewAskToSendSale() {
-		theModel.sendSaleToCustomers();
 	}
 
 //    public class Controller implements ChampionshipListenable , ViewListenable {

@@ -26,45 +26,9 @@ public class Model {
 		allListeners.add(l);
 	}
 
-	public void addProduct(Product p) {
-		if (store.getProductDetails(p.getBarcode()) == null) { // product isn't yet in hashMap
-			String problemsWithProduct = p.isValidProduct(this); // return the first error found
-			if (problemsWithProduct.length() == 0) { // no errors found
-				store.addNewProduct(p);
-				fireProductAdded(p);
-			} else {
-				fireProductNotGood(p, problemsWithProduct);
-				return;
-			}
-		} else { // note! (got here if) product is already in map already, which means it's valid
-			store.addNewProduct(p);
-			fireProductAdded(p);
-		}
-	}
-
-	public void removedProduct(Product p) {
-		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
-			fireOperationFailed("No product with such id", "product wasn't found");
-		} else { // product is in our database
-			store.removeProduct(p);
-			fireProductRemoved(p);
-		}
-		// TODO: Return fireProductRemoved
-		// firing a return statement from within the store.
-	}
-
 	private void fireProductRemoved(Product p) {
 		for (LogicListenable l : allListeners) {
 			l.modelRemovedProduct(p);
-		}
-	}
-
-	public void undoLastAction() {
-		String isGood = store.undoLastAction();
-		if (isGood.equalsIgnoreCase("UNDO FAILED")) {
-			fireOperationFailed("UNDO FAILED", "No Actions to undo");
-		} else {
-			fireSendMessageToUser("Undo completed!", "product list has been updated");
 		}
 	}
 
@@ -101,6 +65,49 @@ public class Model {
 		}
 	}
 
+	private void fireGetProduct(Product productFound) {
+		for (LogicListenable l : allListeners) {
+			l.modelSendProduct(productFound);
+		}
+	}
+
+	public void addProduct(Product p) {
+		//TODO: Register customers as Subscribed (18/2).
+		if (store.getProductDetails(p.getBarcode()) == null) { // product isn't yet in hashMap
+			String problemsWithProduct = p.isValidProduct(this); // return the first error found
+			if (problemsWithProduct.length() == 0) { // no errors found
+				store.addNewProduct(p);
+				fireProductAdded(p);
+			} else {
+				fireProductNotGood(p, problemsWithProduct);
+				return;
+			}
+		} else { // note! (got here if) product is already in map already, which means it's valid
+			store.addNewProduct(p);
+			fireProductAdded(p);
+		}
+	}
+
+	public void removedProduct(Product p) {
+		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
+			fireOperationFailed("No product with such id", "product wasn't found");
+		} else { // product is in our database
+			store.removeProduct(p);
+			fireProductRemoved(p);
+		}
+		// TODO: Return fireProductRemoved
+		// firing a return statement from within the store.
+	}
+
+	public void undoLastAction() {
+		String isGood = store.undoLastAction();
+		if (isGood.equalsIgnoreCase("UNDO FAILED")) {
+			fireOperationFailed("UNDO FAILED", "No Actions to undo");
+		} else {
+			fireSendMessageToUser("Undo completed!", "product list has been updated");
+		}
+	}
+
 	public void sendAllProductsToView() {
 		fireSendProductsArrToView(store.getProductsSet());
 	}
@@ -114,18 +121,26 @@ public class Model {
 
 	}
 
-	private void fireGetProduct(Product productFound) {
-		for (LogicListenable l : allListeners) {
-			l.modelSendProduct(productFound);
-		}
-	}
-
 	public void sendSaleToCustomers() {
 		if (store.getSubscribedCustomers().isEmpty())
 			fireOperationFailed("Sale FAILED", "No Subscribed Customers");
 		else {
 			store.notifyAllCustomers();
 			fireSendMessageToUser("Sale completed!", "The Sale has been sent!");
+		}
+	}
+
+	public void saveMemento() {
+		store.addMemento();
+		fireSendMessageToUser("Saved completed!", "The State has been saved");
+	}
+	
+	public void revertedLastState() {
+		String isGood = store.getLastState();
+		if (isGood.equalsIgnoreCase("Reverted state FAILED")){
+			fireOperationFailed("Reverted FAILED", "No Actions to Reverted");
+		} else {
+			fireSendMessageToUser("Reverted completed!", "The State has been reverted");
 		}
 	}
 }

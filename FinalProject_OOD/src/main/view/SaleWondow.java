@@ -9,7 +9,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -48,7 +47,8 @@ public class SaleWondow extends GridPane {
 	private Button btnUndo;
 
 	private Stage stage;
-	public boolean isAddressingModel = true;
+	protected boolean isAddressingModel = true;
+	protected boolean isSaleWindowSent;
 
 	public SaleWondow(Stage stg, View view) {
 		super();
@@ -253,9 +253,9 @@ public class SaleWondow extends GridPane {
 			}
 
 			// Product's Customer who bought it.
-//			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, null, id));//Null for now
 			view.fireSale(new Product(description, priceToStore, priceSold, null, id));
 			isAddressingModel = false;
+			
 			cboxPrdctBarCode.requestFocus();
 			cleanValueFields();
 		});
@@ -266,7 +266,9 @@ public class SaleWondow extends GridPane {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnUndo.setOnAction(e -> {
+			isSaleWindowSent = true;
 			view.fireUndo();
+			isSaleWindowSent = false;
 		});
 		add(btnUndo, 1, 12);
 	}

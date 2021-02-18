@@ -19,4 +19,8 @@ public interface ViewListenable {
 
 	public void viewAskToSendSale();
 
+	public void viewAskToSave();
+
+	public void viewAskToRevers();
+
 }

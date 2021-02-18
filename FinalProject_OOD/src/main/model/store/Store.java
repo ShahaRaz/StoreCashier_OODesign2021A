@@ -5,14 +5,15 @@ package main.model.store;
  * @author Shahar Raz.
  */
 import java.util.*;
+import java.util.Map.Entry;
 
 import main.interfaces.saleEventListener;
 import main.model.FileHandler;
-import main.model.Model;
 import main.model.Product;
 
 public class Store {
 	private static final String TAG = "Store";
+
 	public interface KEYS {
 		final int ORDER_BY_ABC_UP = 1;
 		final int ORDER_BY_ABC_DOWN = 2;
@@ -20,10 +21,11 @@ public class Store {
 	}
 
 	private Stack<Command> commandStack = new Stack<>(); // hold all operations
+	private Stack<Memento> mementoStack = new Stack<>();
 
 	// Singleton pattern.
 	private static Store instance;
-	private String storeName;
+	private String storeName = "The Store";
 
 	protected SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap// note! will be modified
 														// only by using Commands (commandStack)
@@ -31,16 +33,13 @@ public class Store {
 	protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
 	protected ArrayList<saleEventListener> subscribedCustomers;
 
-
-
-
 	protected FileHandler theFile;
 
 	private Store() {
 		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
 		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
 		this.theFile = new FileHandler();
-		theFile.readMapFromFile(this.productsMap,true);
+		theFile.readMapFromFile(this.productsMap, true);
 	}
 
 	public static Store getInstance() {
@@ -74,9 +73,8 @@ public class Store {
 		if (id == null) {
 			System.err.println(" String ID IS NULL!");
 			return null;
-		}
-		else {
-			System.out.println(productsMap.containsKey(id) + " Store, 76, ID is: " +id);
+		} else {
+			System.out.println(productsMap.containsKey(id) + " Store, 76, ID is: " + id);
 			if (productsMap.containsKey(id))
 				return productsMap.get(id); // if not exists. return null
 			else
@@ -93,7 +91,7 @@ public class Store {
 	}
 
 	public void removeProduct(Product p) {
-		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, soldProductsArr,productsMap ,theFile);
+		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, soldProductsArr, productsMap, theFile);
 		commandStack.add(commandRemove);
 		commandRemove.execute();
 //		theFile.removeProductFromFile(p);
@@ -102,13 +100,41 @@ public class Store {
 	public String undoLastAction() {
 		if (commandStack.empty()) {
 			return "UNDO FAILED";
-		}
-		else {
+		} else {
 			commandStack.pop().undo(); // popping the last command entered the queue and undoing it.
 			return "Successfully reverted last action";
 		}
 	}
 
+	// Adding the current state to Stack.
+	public void addMemento() {
+		mementoStack.add(createMemento());
+	}
+
+	// Reverted state.
+	public String getLastState() {
+		if (mementoStack.isEmpty())
+			return "Reverted state FAILED";
+		else {
+			setMemento(mementoStack.pop());
+			return "Successfully reverted state";
+		}
+	}
+
+	// Creating new state.
+	private Memento createMemento() {
+		return new Memento(commandStack, storeName, productsMap, soldProductsArr, subscribedCustomers, theFile);
+	}
+
+	// Return the saved state.
+	private void setMemento(Memento m) {
+		commandStack = m.getCommandStack();
+		storeName = m.getStoreName();
+		productsMap = m.getProductsMap();
+		soldProductsArr = m.getSoldProductsArr();
+		subscribedCustomers = m.getSubscribedCustomers();
+		theFile = m.getTheFile();
+	}
 
 	// Implement Observable Pattern, notify all the subscribed customers.
 	public void notifyAllCustomers() {
@@ -139,20 +165,21 @@ public class Store {
 //		}
 	}
 
+//	public static Comparator<String> compareByPID = new Comparator<String>() {
+//		@Override
+//		public int compare(String s1, String s2) {
+//			return s1.compareTo(s2);
+//		}
+//	};
+//	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
+//		@Override
+//		public int compare(Product p1, Product p2) {
+//			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
+//		}
+//	};
 	// Inner Comparators for Sorts //
-	public static Comparator<String> compareByPID = new Comparator<String>() {
-		@Override
-		public int compare(String s1, String s2) {
-			return s1.compareTo(s2);
-		}
-	};
-
-	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
-		@Override
-		public int compare(Product p1, Product p2) {
-			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
-		}
-	};
+	public static Comparator<String> compareByPID = (s1, s2) -> s1.compareTo(s2);
+	public static Comparator<Product> compareByTimeEntered = (p1, p2) -> (int) (p1.getTimeMilis() - p2.getTimeMilis());
 
 	// Inner Comparators for Sorts //
 	public static Comparator<HashMap.Entry<String, Product>> compareByPidUp = new Comparator<>() {
@@ -163,38 +190,97 @@ public class Store {
 		}
 	};
 
-	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
-		@Override
-		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
-//			return entry1.getKey().compareTo(entry2.getKey());
-			return (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
-		}
+//	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
+//		@Override
+//		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
+////			return entry1.getKey().compareTo(entry2.getKey());
+//			return (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
+//		}
+//
+//	};
+	public static Comparator<Map.Entry<String, Product>> compareByPidDown = (entry1,
+			entry2) -> (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
 
-	};
-
-	public static class Memento{
+	public static class Memento {
 		private Stack<Command> commandStack = new Stack<>(); // hold all operations
 		// Singleton pattern.
-		private static Store instance;
+		private static Store instance = getInstance();
 		private String storeName;
-		protected SortedMap<String, Product> productsMap; // <productId,ProductObject> // treemap// note! will be modified
+		protected SortedMap<String, Product> productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>()); // <productId,ProductObject> // treemap// note! will be
+															// modified
 		// only by using Commands (commandStack)
 		protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
 		protected ArrayList<saleEventListener> subscribedCustomers;
 		protected FileHandler theFile;
 
 		public Memento(Stack<Command> commandStack, String storeName, SortedMap<String, Product> productsMap,
-					   ArrayList<Product> soldProductsArr, ArrayList<saleEventListener> subscribedCustomers, FileHandler theFile) {
-			Collections.copy(commandStack,this.commandStack);
+				ArrayList<Product> soldProductsArr, ArrayList<saleEventListener> subscribedCustomers,
+				FileHandler theFile) {
 
+			Collections.copy(commandStack, this.commandStack);
 			this.storeName = String.copyValueOf(storeName.toCharArray());
-
-//			Map.copyOf()
-			this.productsMap = productsMap;
-			this.soldProductsArr = soldProductsArr;
-			this.subscribedCustomers = subscribedCustomers;
+			initMap(productsMap.entrySet());// Copy one by one.
+			this.soldProductsArr = new ArrayList<Product>(soldProductsArr);
+//			this.subscribedCustomers = new ArrayList<saleEventListener>(subscribedCustomers);
 			this.theFile = theFile;
 		}
+
+		private void initMap(Set<Entry<String, Product>> productsMap) {
+			for (Map.Entry<String, Product> p : productsMap) {
+				if (p != null) {
+					this.productsMap.put(p.getKey(), p.getValue());
+				}
+			}
+		}
+
+		public Stack<Command> getCommandStack() {
+			return commandStack;
+		}
+
+		public void setCommandStack(Stack<Command> commandStack) {
+			this.commandStack = commandStack;
+		}
+
+		public String getStoreName() {
+			return storeName;
+		}
+
+		public void setStoreName(String storeName) {
+			this.storeName = storeName;
+		}
+
+		public SortedMap<String, Product> getProductsMap() {
+			return productsMap;
+		}
+
+		public void setProductsMap(SortedMap<String, Product> productsMap) {
+			this.productsMap = productsMap;
+		}
+
+		public ArrayList<Product> getSoldProductsArr() {
+			return soldProductsArr;
+		}
+
+		public void setSoldProductsArr(ArrayList<Product> soldProductsArr) {
+			this.soldProductsArr = soldProductsArr;
+		}
+
+		public ArrayList<saleEventListener> getSubscribedCustomers() {
+			return subscribedCustomers;
+		}
+
+		public void setSubscribedCustomers(ArrayList<saleEventListener> subscribedCustomers) {
+			this.subscribedCustomers = subscribedCustomers;
+		}
+
+		public FileHandler getTheFile() {
+			return theFile;
+		}
+
+		public void setTheFile(FileHandler theFile) {
+			this.theFile = theFile;
+		}
+
 	}
 
 //	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {

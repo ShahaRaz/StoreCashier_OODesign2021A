@@ -33,6 +33,7 @@ public class View extends GridPane {
 
 	private ArrayList<ViewListenable> allListeners;
 	private HBox hbButtons;
+
 	private Stage stage;
 
 	private AddProductView addWindow;
@@ -109,6 +110,18 @@ public class View extends GridPane {
 		}
 	}
 
+	public void fireSave() {
+		for (ViewListenable l : allListeners) {
+			l.viewAskToSave();
+		}
+	}
+
+	public void fireRevers() {
+		for (ViewListenable l : allListeners) {
+			l.viewAskToRevers();
+		}
+	}
+
 	public void fireSale(Product product) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToSendSale();
@@ -148,15 +161,6 @@ public class View extends GridPane {
 		saleWindow.updateComboBox(products);
 	}
 
-	// get new styled hbox
-	private HBox getHBox() {
-		HBox hBox = new HBox(5);
-		hBox.setMinSize(300, 50);
-		hBox.setPadding(new Insets(10, 10, 10, 10));
-		hBox.setAlignment(Pos.CENTER);
-		return hBox;
-	}
-
 	public void getProductFromModel(Product productDetails) {
 		if (addWindow.isAddWindowSent) {
 			addWindow.setFields(productDetails);
@@ -168,26 +172,49 @@ public class View extends GridPane {
 	}
 
 	public void notifyNewMessageFromModel(String headline, String content) {
+		fireListOfProducts();
 		if (headline.contains("Undo completed!")) {
-			fireListOfProducts(); // ask model for new product list
-			if (addWindow.isAddWindowSent) {
-				this.addWindow.updateStatus("undo succeeded", "green");
-			} else if (removeWindow.isAddWindowSent) {
-				this.removeWindow.updateStatus("undo succeeded", "green");
-			} else
-				this.saleWindow.updateStatus("undo succeeded", "green");
+//			fireListOfProducts(); // ask model for new product list
+			notifyNewMessage("Undo succeeded", "green");
+		} else if (headline.contains("Reverted completed!")) {
+			notifyNewMessage("Reverted succeeded", "green");
+		} else if (headline.contains("Saved completed!")) {
+			notifyNewMessage("Saved succeeded", "green");
 		}
 
+	}
+
+	private void notifyNewMessage(String status, String color) {
+		if (addWindow.isAddWindowSent) {
+			this.addWindow.updateStatus(status, color);
+		} else if (removeWindow.isRemoveWindowSent) {
+			this.removeWindow.updateStatus(status, color);
+		} else if (saleWindow.isSaleWindowSent) {
+			this.saleWindow.updateStatus(status, color);
+		} else if (tableView.isAddWindowSent)
+			this.tableView.updateStatus(status, color);
 	}
 
 	public void notifyFailedOperation(String errorMassage, String elaborate) {
 		if (errorMassage.contains("UNDO")) {
 			popUpShortMassage(errorMassage, elaborate, 400, 200, 20);
-			this.removeWindow.updateStatus("undo failed, no action recorded", "red");
-			this.addWindow.updateStatus("undo failed, no action recorded", "red");
-			this.saleWindow.updateStatus("undo failed, no action recorded", "red");
+			if (addWindow.isAddWindowSent) {
+				this.addWindow.updateStatus("undo failed, no action recorded", "red");
+			} else if (removeWindow.isRemoveWindowSent) {
+				this.removeWindow.updateStatus("undo failed, no action recorded", "red");
+			} else
+				this.saleWindow.updateStatus("undo failed, no action recorded", "red");
 		}
 
+	}
+
+	// get new styled hbox
+	private HBox getHBox() {
+		HBox hBox = new HBox(5);
+		hBox.setMinSize(300, 50);
+		hBox.setPadding(new Insets(10, 10, 10, 10));
+		hBox.setAlignment(Pos.CENTER);
+		return hBox;
 	}
 
 	public AddProductView getAddWindow() {

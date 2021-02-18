@@ -28,13 +28,13 @@ import javafx.stage.Stage;
 import main.model.Product;
 
 public class RemoveProductView extends GridPane {
-	protected boolean isAddWindowSent;
-	
+	protected boolean isRemoveWindowSent;
+
 	private View view;
 	/* Barcode */
 	private ComboBox<String> cboxPrdctBarCode;
 	/* Remove button */
-	private Button btnRemove;	
+	private Button btnRemove;
 	/* Undo button */
 	private Button btnUndo;
 	/* Status */
@@ -125,7 +125,9 @@ public class RemoveProductView extends GridPane {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnUndo.setOnAction(e -> {
+			isRemoveWindowSent = true;
 			view.fireUndo();
+			isRemoveWindowSent = false;
 		});
 		add(btnUndo, 1, 10);
 	}
@@ -137,10 +139,10 @@ public class RemoveProductView extends GridPane {
 		btnRemove.setOnAction(e -> {
 			String pID = cboxPrdctBarCode.getValue();
 
-			isAddWindowSent = true;
+			isRemoveWindowSent = true;
 			view.fireRemoveProduct(new Product(pID));
-			isAddWindowSent = false;
-			
+			isRemoveWindowSent = false;
+
 			cleanValueFields();
 			cboxPrdctBarCode.requestFocus();
 		});

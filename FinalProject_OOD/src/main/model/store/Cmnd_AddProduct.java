@@ -20,7 +20,6 @@ public class Cmnd_AddProduct implements Command{
         this.map_ref = map_ref; // reference to the main map
         this.soldProductsArr_ref = soldProductsArr_ref; // A Reference!
         this.theFile = theFile; // A Reference!
-
     }
 
     @Override
