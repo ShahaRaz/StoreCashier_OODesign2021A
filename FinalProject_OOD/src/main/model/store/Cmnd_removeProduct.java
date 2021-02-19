@@ -13,7 +13,8 @@ public class Cmnd_removeProduct implements Command {
     private SortedMap<String, Product> map_ref;
     private FileHandler theFile;
 
-    public Cmnd_removeProduct(Product product, ArrayList<Product> soldProductsArr_ref,  SortedMap<String, Product> map_ref, FileHandler theFile) {
+    public Cmnd_removeProduct(Product product, ArrayList<Product> soldProductsArr_ref,
+                              SortedMap<String, Product> map_ref, FileHandler theFile, int currentMapOrdering) {
         this.product = map_ref.get(product.getBarcode());
         this.map_ref = map_ref; // reference to the main map
         this.soldProductsArr_ref = soldProductsArr_ref; // A Reference!
@@ -33,7 +34,7 @@ public class Cmnd_removeProduct implements Command {
     public void undo() {
         soldProductsArr_ref.add(product);
         map_ref.put(product.getBarcode(),product);
-//        theFile.addProductToFile(product);
+        theFile.addProductToFile(product);
 
     }
 }

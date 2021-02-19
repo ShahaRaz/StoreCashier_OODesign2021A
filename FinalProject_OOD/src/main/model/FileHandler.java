@@ -30,8 +30,8 @@ public class FileHandler implements Iterable<Product> {
      */
     public void saveMapToFile(SortedMap<String, Product> theMap,int mapOrdering_KEYS) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
-            writeMapOrderingToFile(mapOrdering_KEYS); // First 4bytes will indicate which ordering are we using
-            raf.setLength(0); // empty the file.
+            writeMapOrderingToFile(mapOrdering_KEYS); // First 4bytes [0,3] will indicate which ordering are we using
+            raf.setLength(0); // empty the file. (overWriting)
             for (Map.Entry<String, Product> pair : theMap.entrySet()) {
                 Product tmp = (Product) pair.getValue(); // gets the product
                 raf.writeUTF(tmp.getBarcode()); // Barcode
@@ -73,10 +73,11 @@ public class FileHandler implements Iterable<Product> {
     public int readMapOrdering() {
         if (file.length() == 0)
             return -1;// -1 means the file is empty
+
         int theOrderingInTheFile = -1; // if -1, something went wrong, or empty
         try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
             raf.seek(0);
-            theOrderingInTheFile = raf.readInt();
+            theOrderingInTheFile = raf.readInt(); // raf's pointer will go to the 4th byte (after reading [0,3]
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -103,6 +104,19 @@ public class FileHandler implements Iterable<Product> {
     @Override
     public Iterator<Product> iterator() {
         return new ConcreteIterator(file);
+    }
+
+    public void removeProductFromFile(Product product) {
+
+        Iterator i = this.iterator();
+        while (i.hasNext()) {
+            Product p = (Product) i.next();
+            if (p.equals(product)) {
+                i.remove();
+                System.out.println("\nThe element " + product.getDescription() + " was deleted,  FileHandler 116");
+                break;
+            }
+        }
     }
 
 

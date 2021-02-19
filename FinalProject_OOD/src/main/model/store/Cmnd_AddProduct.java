@@ -13,13 +13,16 @@ public class Cmnd_AddProduct implements Command{
     private Product product;
     private SortedMap<String, Product> map_ref;
     private FileHandler theFile;
+    private int currentMapOrdering;
 
 
-    public Cmnd_AddProduct(Product product,  SortedMap<String, Product> map_ref, ArrayList<Product> soldProductsArr_ref, FileHandler theFile) {
+    public Cmnd_AddProduct(Product product,  SortedMap<String, Product> map_ref,
+                           ArrayList<Product> soldProductsArr_ref, FileHandler theFile, int currentMapOrdering) {
         this.product = product;
         this.map_ref = map_ref; // reference to the main map
         this.soldProductsArr_ref = soldProductsArr_ref; // A Reference!
         this.theFile = theFile; // A Reference!
+        this.currentMapOrdering = currentMapOrdering;
     }
 
     @Override
@@ -33,6 +36,7 @@ public class Cmnd_AddProduct implements Command{
             wasProductInMapB4thisCmnd = false;
 
         map_ref.put(product.getBarcode(),product);
+        theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
 //        theFile.addProductToFile(product);
 
     }

@@ -50,14 +50,15 @@ public class Product implements Comparable{
 		this.customer = null;
 	}
 
-//	public Product(Product other) {
-//		this.barcode = new SimpleStringProperty(String.copyValueOf(other.getBarcode().toCharArray()));
-//		this.timeAdded = System.currentTimeMillis(
-//		this.description = new SimpleStringProperty;
-//		this.costToStore =
-//		this.priceSold =
-//		this.customer =
-//	}
+	// Copy Constructor
+	public Product(Product other) {
+		this.barcode = new String(other.getBarcode());
+		this.timeAdded = other.getTimeAdded();
+		this.description = new String(other.getDescription());
+		this.costToStore =other.getCostToStore();
+		this.priceSold = other.getPriceSold();
+		this.customer = new Customer(other.getCustomer());
+	}
 
 	public String isValidProduct(Model model) {
 		if (this.costToStore < 0 || this.priceSold < 0) {
@@ -133,6 +134,13 @@ public class Product implements Comparable{
 		return "Product [timeAdded=" + timeAdded + ", description=" + description + ", barcode=" + barcode
 				+ ", costToStore=" + costToStore + ", priceSold=" + priceSold + ", customer=" + customer
 				+ "]";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Product other = (Product)obj;
+		// Barcode & Description
+		return (this.getBarcode().equals(other.getBarcode()) && this.getDescription().equals(other.getDescription()));
 	}
 
 	@Override

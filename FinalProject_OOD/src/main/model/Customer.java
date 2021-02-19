@@ -13,12 +13,22 @@ public class Customer implements saleEventListener{
 		this.mobileNumber = "0";
 		this.isAcceptingPromotions = false;
 	}
+
 	
 	public Customer(String name, String mobileNumber, Boolean isAcceptingPromotions) {
-		this(name);
+		this.name = name;
 		this.mobileNumber = mobileNumber;
 		this.isAcceptingPromotions = isAcceptingPromotions;
 	}
+
+	//Copy Constructor
+	public Customer(Customer other) {
+		this.name = new String(other.getName());
+		this.mobileNumber = new String(other.getMobileNumber());
+		this.isAcceptingPromotions = other.isAcceptingPromotions;
+	}
+
+
 
 	public String getName() {
 		return name;
