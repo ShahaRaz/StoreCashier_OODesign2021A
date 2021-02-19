@@ -20,6 +20,7 @@ public class Model {
 		this.allListeners = new ArrayList<>();
 		store = Store.getInstance();
 		// TODO add here products from file
+		if store.getProductsSet()
 	}
 
 	public void registerListener(LogicListenable l) {

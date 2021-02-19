@@ -13,6 +13,7 @@ import main.model.Product;
 
 public class Store {
 	private static final String TAG = "Store";
+	private int currentMapOrdering;
 
 	public interface KEYS {
 		final int ORDER_BY_ABC_UP = 1;
@@ -36,10 +37,29 @@ public class Store {
 	protected FileHandler theFile;
 
 	private Store() {
-		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
-		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
+		/**
+		 * 1. check if the file is empty
+		 * 2a. if it is, ask the user for the order he wants for the products
+		 * 		then create a new map with the wanted order
+		 *
+		 * 2b. if it contains map...????
+		 *	how would we know which kind of map is in the file??
+		 *	maybe save an integer b4 the map, that holds one of the values from KEYS.SORT_BY??
+		 *
+		 */
+
+
 		this.theFile = new FileHandler();
+		int mapFromFileOrder = theFile.readMapOrdering();
+
+		this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+		currentMapOrdering = KEYS.ORDER_BY_ABC_UP; // TODO change me and the line above to be dynamic
+
+		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
+
 		theFile.readMapFromFile(this.productsMap, true);
+//		if (this.productsMap.isEmpty())
+//			askUserForMapOrder
 	}
 
 	public static Store getInstance() {
@@ -62,11 +82,49 @@ public class Store {
 
 	public Set<Map.Entry<String, Product>> getProductsSet() {
 		/// TODO: Create a copy of this set, and move it to the controller.
+		SortedMap<String, Product> aCopyOfLocalMap = copyMap(this.productsMap,this.currentMapOrdering);
 		return this.productsMap.entrySet();
 	}
 
 	public ArrayList<saleEventListener> getSubscribedCustomers() {
 		return subscribedCustomers;
+	}
+
+	public static SortedMap<String, Product> getNewEmptyMap(int mapKind_KEYS){
+		SortedMap<String, Product>  newMap;
+		switch(mapKind_KEYS){
+			case KEYS.ORDER_BY_ABC_UP:
+				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+				break;
+			case KEYS.ORDER_BY_ABC_DOWN:
+				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>(new Comparator<String>() {
+					@Override
+					public int compare(String s1, String s2) {
+						return s2.compareTo(s1); // reversed order
+					}
+				}));
+				break;
+			case KEYS.ORDER_BY_INSERT_ORDER:
+				newMap = (SortedMap<String, Product>) new LinkedHashMap<String,Product>();
+				break;
+			default:
+				System.err.println("Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default.");
+				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+		}
+		return newMap;
+	}
+
+	public static SortedMap<String, Product>  copyMap(SortedMap<String, Product> source,int mapKind_KEYS){
+
+		SortedMap<String, Product> newCopy = getNewEmptyMap(mapKind_KEYS);
+
+
+		for (Map.Entry<String, Product> p : source.entrySet()) {
+			if (p != null) {
+				newCopy.put(p.getKey(), p.getValue());
+			}
+		}
+		return newCopy;
 	}
 
 	public Product getProductDetails(String id) {
@@ -165,39 +223,6 @@ public class Store {
 //		}
 	}
 
-//	public static Comparator<String> compareByPID = new Comparator<String>() {
-//		@Override
-//		public int compare(String s1, String s2) {
-//			return s1.compareTo(s2);
-//		}
-//	};
-//	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
-//		@Override
-//		public int compare(Product p1, Product p2) {
-//			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
-//		}
-//	};
-	// Inner Comparators for Sorts //
-	public static Comparator<String> compareByPID = (s1, s2) -> s1.compareTo(s2);
-	public static Comparator<Product> compareByTimeEntered = (p1, p2) -> (int) (p1.getTimeMilis() - p2.getTimeMilis());
-
-	// Inner Comparators for Sorts //
-	public static Comparator<HashMap.Entry<String, Product>> compareByPidUp = new Comparator<>() {
-
-		@Override
-		public int compare(Map.Entry<String, Product> stringProductEntry, Map.Entry<String, Product> t1) {
-			return 0;
-		}
-	};
-
-//	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
-//		@Override
-//		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
-////			return entry1.getKey().compareTo(entry2.getKey());
-//			return (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
-//		}
-//
-//	};
 	public static Comparator<Map.Entry<String, Product>> compareByPidDown = (entry1,
 			entry2) -> (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
 
@@ -231,6 +256,36 @@ public class Store {
 					this.productsMap.put(p.getKey(), p.getValue());
 				}
 			}
+		}
+
+		private SortedMap<String, Product>  copyMap(Set<Entry<String, Product>> source,int mapKind){
+			SortedMap<String, Product>  newCopy;
+			switch(mapKind){
+				case KEYS.ORDER_BY_ABC_UP:
+					newCopy = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+					break;
+				case KEYS.ORDER_BY_ABC_DOWN:
+					newCopy = Collections.synchronizedSortedMap(new TreeMap<String, Product>(new Comparator<String>() {
+						@Override
+						public int compare(String s1, String s2) {
+							return s2.compareTo(s1);
+						}
+					}));
+					break;
+				case KEYS.ORDER_BY_INSERT_ORDER:
+					newCopy = (SortedMap<String, Product>) new LinkedHashMap<String,Product>();
+					break;
+				default:
+					System.err.println("Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default.");
+					newCopy = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+			}
+
+			for (Map.Entry<String, Product> p : source) {
+				if (p != null) {
+					newCopy.put(p.getKey(), p.getValue());
+				}
+			}
+			return newCopy;
 		}
 
 		public Stack<Command> getCommandStack() {
@@ -383,3 +438,36 @@ public class Store {
 //					", Value = " + en.getValue());
 //		}
 //	}
+////	public static Comparator<String> compareByPID = new Comparator<String>() {
+////		@Override
+////		public int compare(String s1, String s2) {
+////			return s1.compareTo(s2);
+////		}
+////	};
+////	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
+////		@Override
+////		public int compare(Product p1, Product p2) {
+////			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
+////		}
+////	};
+//	// Inner Comparators for Sorts //
+//	public static Comparator<String> compareByPID = (s1, s2) -> s1.compareTo(s2);
+//	public static Comparator<Product> compareByTimeEntered = (p1, p2) -> (int) (p1.getTimeMilis() - p2.getTimeMilis());
+//
+//	// Inner Comparators for Sorts //
+//	public static Comparator<HashMap.Entry<String, Product>> compareByPidUp = new Comparator<>() {
+//
+//		@Override
+//		public int compare(Map.Entry<String, Product> stringProductEntry, Map.Entry<String, Product> t1) {
+//			return 0;
+//		}
+//	};
+//
+////	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
+////		@Override
+////		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
+//////			return entry1.getKey().compareTo(entry2.getKey());
+////			return (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
+////		}
+////
+////	};

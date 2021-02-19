@@ -28,8 +28,9 @@ public class FileHandler implements Iterable<Product> {
      *
      * @param theMap - Reference to it
      */
-    public void saveMapToFile(SortedMap<String, Product> theMap, boolean isClearingMapB4) {
+    public void saveMapToFile(SortedMap<String, Product> theMap,int mapOrdering_KEYS) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+            writeMapOrderingToFile(mapOrdering_KEYS); // First 4bytes will indicate which ordering are we using
             raf.setLength(0); // empty the file.
             for (Map.Entry<String, Product> pair : theMap.entrySet()) {
                 Product tmp = (Product) pair.getValue(); // gets the product
@@ -55,9 +56,10 @@ public class FileHandler implements Iterable<Product> {
             if (isClearingMapB4) {
                 theMap.clear(); // remove all elements from map
             }
-            raf.seek(0); // go to beelining of file
-            for(Product p : this){
-                theMap.put(p.getBarcode(),p);
+            // NOTE! bytes 0-3 in the file are used for the mapOrder_KEYS
+            raf.seek(4); // go to begging of file
+            for (Product p : this) {
+                theMap.put(p.getBarcode(), p);
             }
 
         } catch (FileNotFoundException e) {
@@ -67,6 +69,36 @@ public class FileHandler implements Iterable<Product> {
         }
     }
 
+
+    public int readMapOrdering() {
+        if (file.length() == 0)
+            return -1;// -1 means the file is empty
+        int theOrderingInTheFile = -1; // if -1, something went wrong, or empty
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+            raf.seek(0);
+            theOrderingInTheFile = raf.readInt();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return theOrderingInTheFile; // Store.KEYS.ORDER_BY_...
+    }
+
+    public boolean writeMapOrderingToFile(int mapOrdering_KEYS) {
+        if (file.length() != 0)
+            return false;// file already contains data, order has already been set.
+        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+            raf.setLength(0); // make sure that empty, and pointer on first byte.
+            raf.writeInt(mapOrdering_KEYS);
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false; // could not write for any reason
+    }
 
     @Override
     public Iterator<Product> iterator() {
@@ -84,7 +116,7 @@ public class FileHandler implements Iterable<Product> {
         public ConcreteIterator(File file) {
             try {
                 raf_iterator = new RandomAccessFile(file, "rw");
-                pointerToB4LastReturnedElement=0;
+                pointerToB4LastReturnedElement = 0;
             } catch (FileNotFoundException e) {
                 System.err.println("Unable to open Random Access file in ConcreteIterator");
                 e.printStackTrace();
@@ -124,7 +156,7 @@ public class FileHandler implements Iterable<Product> {
                             costToStore, priceSold, new Customer(cName, cMobileNum, cAcceptAds));
                 } catch (IOException e) {
                     e.printStackTrace();
-                    this.lastReturnedProduct =  new Product("__failed__ In file Iterator (line 142)");
+                    this.lastReturnedProduct = new Product("__failed__ In file Iterator (line 142)");
                     return lastReturnedProduct;
                 }
 
@@ -135,7 +167,7 @@ public class FileHandler implements Iterable<Product> {
         public void remove() {
             // delete the last element returned by the iterator
             try {
-                if (raf_iterator.getFilePointer()==0L){
+                if (raf_iterator.getFilePointer() == 0L) {
                     throw new IllegalStateException();
                 }
                 // backup data from pointer to the end of the file
