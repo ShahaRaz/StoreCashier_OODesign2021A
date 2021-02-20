@@ -10,7 +10,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -21,7 +20,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
@@ -64,6 +62,9 @@ public class View extends GridPane {
 		stage.show();
 	}
 
+	/**
+	 * Creating the TabPane with TableView & AddWindow & RemoveWindow & SaleWindow.
+	 */
 	public void creatTabPane() {
 		TabPane tbPane = new TabPane();
 
@@ -85,68 +86,89 @@ public class View extends GridPane {
 		hbButtons.getChildren().add(tbPane);
 	}
 
+	/** @param addMe - View sending request to add specific product */
 	public void fireAddNewProduct(Product addMe) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToAddProduct(addMe);
 		}
 	}
 
+	/** @param removeMe - View sending request to remove specific product */
 	public void fireRemoveProduct(Product removeMe) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToRemoveProduct(removeMe);
 		}
 	}
 
+	/** @param searchMe - View sending request to search specific product */
 	public void fireSearchProduct(String searchMe) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskForProduct(searchMe);
 		}
 	}
 
+	/** View sending request to update list of products */
 	public void fireListOfProducts() {
 		for (ViewListenable l : allListeners) {
 			l.viewAskForListOfAllProducts();
 		}
 	}
 
+	/** View sending request to Undo last action */
 	public void fireUndo() {
 		for (ViewListenable l : allListeners) {
 			l.viewAskForUndo();
 		}
 	}
 
+	/** View sending request to save current state */
 	public void fireSave() {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToSave();
 		}
 	}
 
-	public void fireRevers() {
+	/** View sending request to reverse a specific state */
+	public void fireReverse() {
 		for (ViewListenable l : allListeners) {
-			l.viewAskToRevers();
+			l.viewAskToReverse();
 		}
 	}
 
+	// TODO: Send product to model to create manipulation on product.
+	/** @param product - View sending request to create sale for product */
 	public void fireSale(Product product) {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToSendSale();
 		}
 	}
 
+	/* After updating the status field, cleaning the fields for each tab */
+	/** Cleaning the ComboBox of AddWindow and SaleWindow */
 	public void clearFieldsAfterRemoved() {
 		// Clear other's tabs fields after remove product.
 		addWindow.cleanValueFields();
 		saleWindow.cleanValueFields();
 	}
 
+	/** @param products - List of all product to update the relevant ComboBox */
 	public void nofityProductsArrived(Set<Map.Entry<String, Product>> products) {
 		this.products_set_copy = products;
-		tableView.updateTable(products);
-		addWindow.updateComboBox(products);
-		removeWindow.updateComboBox(products);
-		saleWindow.updateComboBox(products);
+		updateBomboBox();
 	}
 
+	/** Update the ComboBox and TableView */
+	private void updateBomboBox() {
+		tableView.updateTable(products_set_copy);
+		addWindow.updateComboBox(products_set_copy);
+		removeWindow.updateComboBox(products_set_copy);
+		saleWindow.updateComboBox(products_set_copy);
+	}
+
+	/**
+	 * @param productDetails - Getting from the model a specific product and insert
+	 *                       to relevant fields
+	 */
 	public void getProductFromModel(Product productDetails) {
 		if (addWindow.isAddWindowSent) {
 			addWindow.setFields(productDetails);
@@ -158,13 +180,21 @@ public class View extends GridPane {
 	}
 
 	// TODO: Change all notify to this method
-	/* Notify a 'Good' message */
+	/**
+	 * Notify a 'Good' message
+	 * 
+	 * @param content - The message to display on Status label
+	 */
 	public void notifyNewMessageFromModel(String content) {
 		fireListOfProducts();
 		notifyNewMessage(content, "green");
 	}
 
-	/* Notify a 'Error' message */
+	/**
+	 * Notify a 'Error' message
+	 * 
+	 * @param elaborate - The message to display on Status label
+	 */
 	public void notifyFailedOperation(String elaborate) {
 //		if (errorMassage.contains("UNDO")) {
 //			popUpShortMassage(errorMassage, elaborate, 400, 200, 20);
@@ -173,6 +203,12 @@ public class View extends GridPane {
 
 	}
 
+	/**
+	 * If block to pick the right status' tab to display
+	 * 
+	 * @param status - The message to display on Status label
+	 * @param color  - Color to color the caption in status
+	 */
 	private void notifyNewMessage(String status, String color) {
 		if (addWindow.isAddWindowSent) {
 			this.addWindow.updateStatus(status, color);
@@ -268,6 +304,7 @@ public class View extends GridPane {
 //		return lblHeadline;
 //	}
 
+	/** Pop-Up window to get from the user the sorting method */
 	public void getSorteWindow() {
 		Stage miniStage = new Stage();
 		ToggleGroup tglSelectedSort = new ToggleGroup();
@@ -307,6 +344,11 @@ public class View extends GridPane {
 		});
 	}
 
+	/**
+	 * Sending sorting Key to model
+	 * 
+	 * @param toggle - The selected RadioButton from the user
+	 */
 	private void fireSortingMethod(Toggle toggle) {
 		int key = 0;
 		if (toggle.toString().contains("Ascending Order")) {

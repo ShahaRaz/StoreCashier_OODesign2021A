@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -20,15 +19,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import main.model.Customer;
 import main.model.Product;
 
 public class SaleWondow extends GridPane {
 
-	/*Boolean attribute for ComboBox.SenOnAction*/
+	/* Boolean attribute for ComboBox.SenOnAction */
 	protected boolean isAddressingModel = true;
-	/*Boolean attribute for UpdateFields method*/
+	/* Boolean attribute for UpdateFields method */
 	protected boolean isSaleWindowSent;
 	// Variables
 	private View view;
@@ -98,6 +95,7 @@ public class SaleWondow extends GridPane {
 		add(lblTitle, 0, 1, 5, 1);
 	}
 
+	/** Initial TextField product's Barcode. */
 	private void initFldBarcode() {
 		cboxPrdctBarCode = new ComboBox<String>();
 		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -129,6 +127,7 @@ public class SaleWondow extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Name. */
 	private void initFldName() {
 		txtFldPrdctName = new TextField();
 		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -145,6 +144,7 @@ public class SaleWondow extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Price. */
 	private void initFldPrice() {
 		txtFldPrdctPrice = new TextField();
 		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -161,6 +161,7 @@ public class SaleWondow extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's PriceToStore. */
 	private void initFldPriceToStore() {
 		txtFldPrdctPriceToStore = new TextField();
 		txtFldPrdctPriceToStore.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -176,20 +177,21 @@ public class SaleWondow extends GridPane {
 			}
 		});
 	}
-	
-	// init status
+
+	/** initial status */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 7);
 		add(lblStatus, 1, 7, 4, 1);
 	}
 
-	// update status
+	/** update status */
 	public void updateStatus(String status, String color) {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
 	}
 
+	/** Update the products list's ComboBox. */
 	public void updateComboBox(Set<Entry<String, Product>> products) {
 		cboxPrdctBarCode.getItems().clear(); // SetOnAction->FireSearchProducct (AVOID ME!)
 
@@ -198,12 +200,18 @@ public class SaleWondow extends GridPane {
 		}
 	}
 
+	/**
+	 * Setting the Fields with the right data.
+	 * 
+	 * @param productDetails - The selected product from the ComboBox.
+	 */
 	public void setFields(Product productDetails) {
 		txtFldPrdctName.setText(productDetails.getDescription());
 		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
 		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
 	}
 
+	/** Initial Clear Button to clean all fields */
 	private void initClearButton() {
 		btnClear = new Button("Clear Product");
 		btnClear.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -213,6 +221,7 @@ public class SaleWondow extends GridPane {
 		add(btnClear, 1, 11);
 	}
 
+	/** Initial Add Button to add a new \ update Sale */
 	private void initAddButton() {
 		btnAddSale = new Button("Add Sale");
 		btnAddSale.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -254,13 +263,14 @@ public class SaleWondow extends GridPane {
 			view.fireSale(new Product(description, priceToStore, priceSold, null, id));
 			isSaleWindowSent = false;
 			isAddressingModel = false;
-			
+
 			cboxPrdctBarCode.requestFocus();
 			cleanValueFields();
 		});
 		add(btnAddSale, 1, 10);
 	}
 
+	/** Initial Undo Button to undo last action */
 	private void initUndoButton() {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -272,7 +282,7 @@ public class SaleWondow extends GridPane {
 		add(btnUndo, 1, 12);
 	}
 
-	// clean Value Fields
+	/** clean Value Fields */
 	public void cleanValueFields() {
 		isAddressingModel = false;
 		cboxPrdctBarCode.setValue("");

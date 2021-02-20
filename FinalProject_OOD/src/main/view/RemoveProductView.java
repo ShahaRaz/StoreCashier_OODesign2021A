@@ -1,21 +1,19 @@
 package main.view;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
 /**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  */
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,12 +22,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import main.model.Product;
 
 public class RemoveProductView extends GridPane {
 
-	/*Boolean attribute for UpdateFields method*/
+	/* Boolean attribute for UpdateFields method */
 	protected boolean isRemoveWindowSent;
 
 	private View view;
@@ -44,7 +41,6 @@ public class RemoveProductView extends GridPane {
 
 	public RemoveProductView(View view) {
 		this.view = view;
-
 		init();
 	}
 
@@ -86,7 +82,7 @@ public class RemoveProductView extends GridPane {
 		initUndoButton();
 	}
 
-	// init Text Field.
+	/** Initial TextField product's Barcode. */
 	private void initFldBarcode() {
 		cboxPrdctBarCode = new ComboBox<String>();
 		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -108,8 +104,8 @@ public class RemoveProductView extends GridPane {
 		});
 	}
 
+	/** Update the products list's ComboBox. */
 	public void updateComboBox(Set<Entry<String, Product>> products) {
-
 		cboxPrdctBarCode.getItems().clear();
 
 		for (Map.Entry<String, Product> e : products) {
@@ -117,6 +113,7 @@ public class RemoveProductView extends GridPane {
 		}
 	}
 
+	/** Initial Undo Button to undo last action */
 	private void initUndoButton() {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -128,7 +125,7 @@ public class RemoveProductView extends GridPane {
 		add(btnUndo, 1, 10);
 	}
 
-	// init Button.
+	/** Initial Remove Button to remove product */
 	private void initRemoveButton() {
 		btnRemove = new Button("Remove Product");
 		btnRemove.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -145,14 +142,14 @@ public class RemoveProductView extends GridPane {
 		add(btnRemove, 1, 9);
 	}
 
-	// init status
+	/** initial status */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 8);
 		add(lblStatus, 1, 8, 4, 1);
 	}
 
-	// update status
+	/** update status */
 	public void updateStatus(String status, String color) {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
@@ -184,7 +181,7 @@ public class RemoveProductView extends GridPane {
 	}
 	// END Setters & Getters.
 
-	// clean Value Fields
+	/** clean Value Fields */
 	public void cleanValueFields() {
 		cboxPrdctBarCode.setValue("");
 	}

@@ -96,7 +96,7 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void viewAskToRevers() {
+	public void viewAskToReverse() {
 		theModel.revertedLastState();
 	}
 

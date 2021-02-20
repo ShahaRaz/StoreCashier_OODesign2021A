@@ -114,6 +114,7 @@ public class AddProductView extends GridPane {
 		initUndoButton();
 	}
 
+	/** Initial TextField product's Name. */
 	private void initFldName() {
 		txtFldPrdctName = new TextField();
 		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -130,6 +131,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Price. */
 	private void initFldPrice() {
 		txtFldPrdctPrice = new TextField();
 		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -146,6 +148,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Barcode. */
 	private void initFldBarcode() {
 		cboxPrdctBarCode = new ComboBox<String>();
 		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -177,6 +180,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Update the products list's ComboBox. */
 	public void updateComboBox(Set<Entry<String, Product>> products) {
 		cboxPrdctBarCode.getItems().clear(); // SetOnAction->FireSearchProducct (AVOID ME!)
 
@@ -185,18 +189,24 @@ public class AddProductView extends GridPane {
 		}
 	}
 
+	/**
+	 * Setting the Fields with the right data.
+	 * 
+	 * @param productDetails - The selected product from the ComboBox.
+	 */
 	public void setFields(Product productDetails) {
-		/*Product's Fields*/
+		/* Product's Fields */
 		txtFldPrdctName.setText(productDetails.getDescription());
 		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
 		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
-		/*Customer's Fields*/
+		/* Customer's Fields */
 		txtFldCustomer.setText(productDetails.getCustomer().getName());
 		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
 //		TODO: think about who'll get the attribute isPromotionCusotmer.
 //		checkBoxPromotion.setSelected(productDetails.isPromotionCusotmer);
 	}
 
+	/** Initial TextField product's PriceToStore. */
 	private void initFldPriceToStore() {
 		txtFldPrdctPriceToStore = new TextField();
 		txtFldPrdctPriceToStore.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -213,6 +223,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Customer. */
 	private void initFldCustomer() {
 		txtFldCustomer = new TextField();
 		txtFldCustomer.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -229,6 +240,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's CustomerPhone. */
 	private void initFldCustomerPhone() {
 		txtFldCustomerPhone = new TextField();
 		txtFldCustomerPhone.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -245,6 +257,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial CheckBox product's CustomerIsPromoted. */
 	private void initCheckBox() {
 		checkBoxPromotion = new CheckBox();
 		add(new Label("Promotion: "), 0, 9);
@@ -260,6 +273,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial Clear Button to clean all fields */
 	private void initClearButton() {
 		btnClear = new Button("Clear Product");
 		btnClear.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -269,6 +283,7 @@ public class AddProductView extends GridPane {
 		add(btnClear, 1, 12);
 	}
 
+	/** Initial Undo Button to undo last action */
 	private void initUndoButton() {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -280,6 +295,7 @@ public class AddProductView extends GridPane {
 		add(btnUndo, 1, 13);
 	}
 
+	/** Initial Add Button to add a new \ update product */
 	private void initAddButton() {
 		btnAdd = new Button("Add Product");
 		btnAdd.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -337,21 +353,21 @@ public class AddProductView extends GridPane {
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
 			isAddWindowSent = false;
 			isAddressingModel = false;
-			
+
 			cboxPrdctBarCode.requestFocus();
 			cleanValueFields();
 		});
 		add(btnAdd, 1, 11);
 	}
 
-	// init status
+	/** initial status */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 10);
 		add(lblStatus, 1, 10, 4, 1);
 	}
 
-	// update status
+	/** update status */
 	public void updateStatus(String status, String color) {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
@@ -407,7 +423,7 @@ public class AddProductView extends GridPane {
 	}
 	// END Setters & Getters.
 
-	// clean Value Fields
+	/** clean Value Fields */
 	public void cleanValueFields() {
 		isAddressingModel = false;
 		txtFldCustomer.setText("");

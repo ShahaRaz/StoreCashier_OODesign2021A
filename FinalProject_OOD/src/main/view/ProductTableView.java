@@ -28,19 +28,19 @@ import javafx.stage.Stage;
 import main.model.Product;
 
 public class ProductTableView extends GridPane {
-	/*Boolean attribute for UpdateFields method*/
+	/* Boolean attribute for UpdateFields method */
 	protected boolean isAddWindowSent;
-	/*HBox*/
+	/* HBox */
 	private HBox hbButtons;
-	/*Buttons*/
+	/* Buttons */
 	private Button btnUndo;
 	private Button btnSave;
-	private Button btnRevers;
+	private Button btnReverse;
 	/* Status */
 	private Label lblStatus;
-	/*View*/
+	/* View */
 	private View view;
-	/*List of products*/
+	/* List of products */
 	private final ObservableList<DisplayableProduct> data = FXCollections.observableArrayList();
 
 	public ProductTableView(View view) {
@@ -59,8 +59,8 @@ public class ProductTableView extends GridPane {
 		hbButtons = getHBox();
 		initUndoButton();
 		initSavaButton();
-		initReversButton();
-		hbButtons.getChildren().addAll(btnSave, btnUndo, btnRevers);
+		initReverseButton();
+		hbButtons.getChildren().addAll(btnSave, btnUndo, btnReverse);
 		add(hbButtons, 0, 6);
 	}
 
@@ -94,6 +94,7 @@ public class ProductTableView extends GridPane {
 		add(title, 0, 0, 5, 1);
 	}
 
+	/** Initial Undo Button to undo last action */
 	private void initUndoButton() {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -104,6 +105,7 @@ public class ProductTableView extends GridPane {
 		});
 	}
 
+	/** Initial Save Button to save current state */
 	private void initSavaButton() {
 		btnSave = new Button("Save");
 		btnSave.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -114,12 +116,13 @@ public class ProductTableView extends GridPane {
 		});
 	}
 
-	private void initReversButton() {
-		btnRevers = new Button("Revers");
-		btnRevers.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
-		btnRevers.setOnAction(e -> {
+	/** Initial Reverse Button to return last state */
+	private void initReverseButton() {
+		btnReverse = new Button("Revers");
+		btnReverse.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btnReverse.setOnAction(e -> {
 			isAddWindowSent = true;
-			view.fireRevers();
+			view.fireReverse();
 			isAddWindowSent = false;
 		});
 	}
@@ -137,6 +140,7 @@ public class ProductTableView extends GridPane {
 		}
 	}
 
+	/** initial TableView */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initTable() {
 		view.fireListOfProducts();
@@ -164,7 +168,7 @@ public class ProductTableView extends GridPane {
 		add(table, 0, 3, 5, 1);
 	}
 
-	// Init status
+	/** initial status */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 4);
@@ -172,7 +176,7 @@ public class ProductTableView extends GridPane {
 		setHalignment(lblStatus, HPos.CENTER);
 	}
 
-	// Update status
+	/** update status */
 	public void updateStatus(String status, String color) {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
@@ -188,4 +192,3 @@ public class ProductTableView extends GridPane {
 //		.addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga", "0549512365", true), "Ne1658"));
 //Store.getInstance(null)
 //		.addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo", "0541236549", false), "Mi982"));
-
