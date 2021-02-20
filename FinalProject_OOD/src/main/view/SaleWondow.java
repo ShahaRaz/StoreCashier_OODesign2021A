@@ -26,8 +26,11 @@ import main.model.Product;
 
 public class SaleWondow extends GridPane {
 
+	/*Boolean attribute for ComboBox.SenOnAction*/
+	protected boolean isAddressingModel = true;
+	/*Boolean attribute for UpdateFields method*/
+	protected boolean isSaleWindowSent;
 	// Variables
-
 	private View view;
 	/* ProductName */
 	private TextField txtFldPrdctName;
@@ -46,19 +49,11 @@ public class SaleWondow extends GridPane {
 	/* Undo button */
 	private Button btnUndo;
 
-	private Stage stage;
-	protected boolean isAddressingModel = true;
-	protected boolean isSaleWindowSent;
-
-	public SaleWondow(Stage stg, View view) {
+	public SaleWondow(View view) {
 		super();
-		this.stage = stg;
 		this.view = view;
 
 		init();
-		this.stage.setScene(new Scene(this, 500, 500));
-		this.stage.setTitle("Store Saver");
-		this.stage.show();
 	}
 
 	private void init() {
@@ -118,8 +113,10 @@ public class SaleWondow extends GridPane {
 		cboxPrdctBarCode.setOnAction(e -> {
 			String selectedValue = (String) cboxPrdctBarCode.getValue();
 
-			if (selectedValue != null && isAddressingModel) {// && isAddressingModel == true
+			if (selectedValue != null && isAddressingModel) {
+				isSaleWindowSent = true;
 				view.fireSearchProduct(selectedValue);
+				isSaleWindowSent = false;
 			}
 			isAddressingModel = true; // don't go to model for searching empty product
 		});
@@ -253,7 +250,9 @@ public class SaleWondow extends GridPane {
 			}
 
 			// Product's Customer who bought it.
+			isSaleWindowSent = true;
 			view.fireSale(new Product(description, priceToStore, priceSold, null, id));
+			isSaleWindowSent = false;
 			isAddressingModel = false;
 			
 			cboxPrdctBarCode.requestFocus();
@@ -275,9 +274,11 @@ public class SaleWondow extends GridPane {
 
 	// clean Value Fields
 	public void cleanValueFields() {
+		isAddressingModel = false;
 		cboxPrdctBarCode.setValue("");
 		txtFldPrdctName.setText("");
 		txtFldPrdctPriceToStore.setText("");
 		txtFldPrdctPrice.setText("");
+		isAddressingModel = true;
 	}
 }

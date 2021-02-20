@@ -31,7 +31,7 @@ public class Store {
 														// only by using Commands (commandStack)
 
 	protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
-	protected ArrayList<saleEventListener> subscribedCustomers;
+	protected ArrayList<saleEventListener> subscribedCustomers = new ArrayList<>(); // Add for now initial.
 
 	protected FileHandler theFile;
 
@@ -165,18 +165,6 @@ public class Store {
 //		}
 	}
 
-//	public static Comparator<String> compareByPID = new Comparator<String>() {
-//		@Override
-//		public int compare(String s1, String s2) {
-//			return s1.compareTo(s2);
-//		}
-//	};
-//	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
-//		@Override
-//		public int compare(Product p1, Product p2) {
-//			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
-//		}
-//	};
 	// Inner Comparators for Sorts //
 	public static Comparator<String> compareByPID = (s1, s2) -> s1.compareTo(s2);
 	public static Comparator<Product> compareByTimeEntered = (p1, p2) -> (int) (p1.getTimeMilis() - p2.getTimeMilis());

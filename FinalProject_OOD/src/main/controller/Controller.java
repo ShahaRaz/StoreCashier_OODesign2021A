@@ -34,18 +34,6 @@ public class Controller implements ViewListenable, LogicListenable {
 		theModel.addProduct(p);
 	}
 
-	// Model return a massage: The produce added.
-	@Override
-	public void modelAddedProduct(Product p) {
-		theView.notifyProductAdded(p);
-	}
-
-	// Model return a massage: The produce rejected.
-	@Override
-	public void modelRejectedProduct(Product p, String str) {
-		theView.notifyProductRejected(p, str);
-	}
-
 	// View wants to remove product.
 	@Override
 	public void viewAskToRemoveProduct(Product p) {
@@ -54,13 +42,8 @@ public class Controller implements ViewListenable, LogicListenable {
 
 	// Model return a massage: The produce removed.
 	@Override
-	public void modelRemovedProduct(Product p) {
-		theView.notifyProductRemoved(p);
-	}
-
-	@Override
-	public void notifyProductNotExist(Product p, String str) {
-		theView.notifyProductNotExist(p, str);
+	public void modelRemovedProduct() {
+		theView.clearFieldsAfterRemoved();
 	}
 
 	@Override
@@ -69,7 +52,7 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void modelSendsMessage(String headline, String content) {
+	public void modelSendsMessage(String content) { 
 		/**
 		 * send message to the user
 		 *
@@ -78,7 +61,7 @@ public class Controller implements ViewListenable, LogicListenable {
 		 * fireAskForProductsList
 		 *
 		 */
-		theView.notifyNewMessageFromModel(headline, content);
+		theView.notifyNewMessageFromModel(content);
 
 	}
 
@@ -118,8 +101,7 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void modelFailedOperation(String errorMassage, String elaborate) {
-		// TODO: What operation? Remove or Add?
+	public void modelFailedOperation(String elaborate) {//String errorMassage, 
 		/**
 		 * notify user that operation faild Operations like:
 		 *
@@ -134,10 +116,17 @@ public class Controller implements ViewListenable, LogicListenable {
 		 *
 		 */
 		// failed
-		theView.notifyFailedOperation(errorMassage, elaborate);
+		theView.notifyFailedOperation(elaborate);
 	}
 
-//    public class Controller implements ChampionshipListenable , ViewListenable {
-//        private Model theModel;
-//        private View theView;
+	@Override
+	public void modelAskToSelectSorteMethod() {
+		theView.getSorteWindow();
+	}
+	
+	@Override
+	public void viewSendSortingMethod(int key) {
+		theModel.viewSendSortingKey(key);
+	}
+
 }

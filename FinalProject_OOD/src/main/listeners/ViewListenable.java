@@ -23,4 +23,6 @@ public interface ViewListenable {
 
 	public void viewAskToRevers();
 
+	public void viewSendSortingMethod(int key);
+
 }

@@ -33,7 +33,9 @@ import main.model.Product;
 
 public class AddProductView extends GridPane {
 	private static final String TAG = "AddProductView";
+	/* Boolean attribute for ComboBox.SenOnAction */
 	protected boolean isAddressingModel = true;
+	/* Boolean attribute for UpdateFields method */
 	protected boolean isAddWindowSent;
 	// Variables
 
@@ -61,16 +63,10 @@ public class AddProductView extends GridPane {
 	/* Undo button */
 	private Button btnUndo;
 
-	private Stage stage;
-
-	public AddProductView(Stage stg, View view) {
-		this.stage = stg;
+	public AddProductView(View view) {
 		this.view = view;
 
 		init();
-		stage.setScene(new Scene(this, 500, 500));
-		stage.setTitle("Store Saver");
-		stage.show();
 	}
 
 	private void init() {
@@ -190,13 +186,15 @@ public class AddProductView extends GridPane {
 	}
 
 	public void setFields(Product productDetails) {
+		/*Product's Fields*/
 		txtFldPrdctName.setText(productDetails.getDescription());
 		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
 		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
-
-//		TODO: check insertion to Customer's fields.
+		/*Customer's Fields*/
 		txtFldCustomer.setText(productDetails.getCustomer().getName());
-		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());///////////////
+		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
+//		TODO: think about who'll get the attribute isPromotionCusotmer.
+//		checkBoxPromotion.setSelected(productDetails.isPromotionCusotmer);
 	}
 
 	private void initFldPriceToStore() {
@@ -319,10 +317,27 @@ public class AddProductView extends GridPane {
 			}
 
 			// Product's Customer who bought it.
-			Customer c = new Customer(txtFldCustomer.getText(), txtFldCustomerPhone.getText(),
-					checkBoxPromotion.isSelected());///
+
+			String custName = txtFldCustomer.getText();
+			try {
+				custName = custName.equals("") ? "_Customer_" : custName;
+			} catch (Exception e2) {
+				System.err.println("Letting Customer's Name be null");
+			}
+
+			String custPhone = txtFldCustomerPhone.getText();
+			try {
+				custPhone = custPhone.equals("") ? "000-0000000" : custPhone;
+			} catch (Exception e2) {
+				System.err.println("Letting Phone be null");
+			}
+
+			Customer c = new Customer(custName, custPhone, checkBoxPromotion.isSelected());
+			isAddWindowSent = true;
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
+			isAddWindowSent = false;
 			isAddressingModel = false;
+			
 			cboxPrdctBarCode.requestFocus();
 			cleanValueFields();
 		});
@@ -394,6 +409,7 @@ public class AddProductView extends GridPane {
 
 	// clean Value Fields
 	public void cleanValueFields() {
+		isAddressingModel = false;
 		txtFldCustomer.setText("");
 		cboxPrdctBarCode.setValue("");
 		txtFldPrdctName.setText("");
@@ -401,5 +417,6 @@ public class AddProductView extends GridPane {
 		txtFldPrdctPrice.setText("");
 		txtFldCustomerPhone.setText("");
 		checkBoxPromotion.setSelected(false);
+		isAddressingModel = true;
 	}
 }

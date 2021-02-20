@@ -28,6 +28,8 @@ import javafx.stage.Stage;
 import main.model.Product;
 
 public class RemoveProductView extends GridPane {
+
+	/*Boolean attribute for UpdateFields method*/
 	protected boolean isRemoveWindowSent;
 
 	private View view;
@@ -40,16 +42,10 @@ public class RemoveProductView extends GridPane {
 	/* Status */
 	private Label lblStatus;
 
-	private Stage stage;
-
-	public RemoveProductView(Stage stg, View view) {
-		this.stage = stg;
+	public RemoveProductView(View view) {
 		this.view = view;
 
 		init();
-		stage.setScene(new Scene(this, 500, 500));
-		stage.setTitle("Store Saver");
-		stage.show();
 	}
 
 	private void init() {
@@ -177,14 +173,6 @@ public class RemoveProductView extends GridPane {
 
 	public void setBtnRemove(Button btnRemove) {
 		this.btnRemove = btnRemove;
-	}
-
-	public Stage getStage() {
-		return stage;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
 	}
 
 	public Label getLblStatus() {
