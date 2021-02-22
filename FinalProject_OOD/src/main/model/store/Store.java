@@ -88,12 +88,17 @@ public class Store {
 
     public Set<Map.Entry<String, Product>> getProductsSet() {
         /// TODO: Create a copy of this set, and move it to the controller.
-        SortedMap<String, Product> aCopyOfLocalMap = copyMap(this.productsMap, this.currentMapOrdering);
+//        SortedMap<String, Product> aCopyOfLocalMap = copyMap(this.productsMap, this.currentMapOrdering);
+        System.out.println("hey ");
         return this.productsMap.entrySet();
     }
 
     public ArrayList<saleEventListener> getSubscribedCustomers() {
         return subscribedCustomers;
+    }
+
+    public void setProductsMap(SortedMap<String, Product> productsMap) {
+        this.productsMap = productsMap;
     }
 
     public static SortedMap<String, Product> getNewEmptyMap(int mapKind_KEYS) {
