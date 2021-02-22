@@ -109,10 +109,12 @@ public class Model {
 	}
 
 	public void sendAllProductsToView() {
-		/// TODO add here asking for ordering by user,
-		// injecting for now..
-		if(store.getProductsSet().isEmpty())
+
+		if(store.getProductsSet().isEmpty()) {
+			/// TODO add here asking for ordering by user,
+			// injecting for now..
 			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP));
+		}
 		fireSendProductsArrToView(store.getProductsSet());
 	}
 
