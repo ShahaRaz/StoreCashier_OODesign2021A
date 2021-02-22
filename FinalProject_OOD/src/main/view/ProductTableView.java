@@ -24,25 +24,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import main.model.Product;
 
 public class ProductTableView extends GridPane {
+	/** Boolean attribute for UpdateFields method */
 	protected boolean isAddWindowSent;
+	/** HBox */
 	private HBox hbButtons;
-
+	/** Buttons */
 	private Button btnUndo;
 	private Button btnSave;
-	private Button btnRevers;
-	/* Status */
+	private Button btnReverse;
+	/** Status */
 	private Label lblStatus;
-	
-	private Stage stage;
+	/** View */
 	private View view;
+	/** List of products */
 	private final ObservableList<DisplayableProduct> data = FXCollections.observableArrayList();
 
-	public ProductTableView(Stage stg, View view) {
-		this.stage = stg;
+	public ProductTableView(View view) {
 		this.view = view;
 		init();
 	}
@@ -58,12 +58,12 @@ public class ProductTableView extends GridPane {
 		hbButtons = getHBox();
 		initUndoButton();
 		initSavaButton();
-		initReversButton();
-		hbButtons.getChildren().addAll(btnSave, btnUndo, btnRevers);
+		initReverseButton();
+		hbButtons.getChildren().addAll(btnSave, btnUndo, btnReverse);
 		add(hbButtons, 0, 6);
 	}
 
-	// get new styled hbox
+	// Get new styled HBox
 	private HBox getHBox() {
 		HBox hBox = new HBox(5);
 		hBox.setMinSize(300, 50);
@@ -93,49 +93,42 @@ public class ProductTableView extends GridPane {
 		add(title, 0, 0, 5, 1);
 	}
 
+	/** Initial Undo Button to undo last action */
 	private void initUndoButton() {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnUndo.setOnAction(e -> {
-			// TODO: change from undo to memento.
 			isAddWindowSent = true;
 			view.fireUndo();
 			isAddWindowSent = false;
 		});
-//		setHalignment(btnUndo, HPos.CENTER);
-//		add(btnUndo, 0, 6, 5, 1);
 	}
 
+	/** Initial Save Button to save current state */
 	private void initSavaButton() {
 		btnSave = new Button("Save");
 		btnSave.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnSave.setOnAction(e -> {
-			// TODO: change from undo to memento.
 			isAddWindowSent = true;
 			view.fireSave();
 			isAddWindowSent = false;
 		});
-//		setHalignment(btnSave, HPos.CENTER);
-//		add(btnSave, 0, 6, 5, 1);
 	}
 
-	private void initReversButton() {
-		btnRevers = new Button("Revers");
-		btnRevers.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
-		btnRevers.setOnAction(e -> {
-			// TODO: change from undo to memento.
+	/** Initial Reverse Button to return last state */
+	private void initReverseButton() {
+		btnReverse = new Button("Revers");
+		btnReverse.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btnReverse.setOnAction(e -> {
 			isAddWindowSent = true;
-			view.fireRevers();
+			view.fireReverse();
 			isAddWindowSent = false;
 		});
-//		setHalignment(btnRevers, HPos.CENTER);
-//		add(btnRevers, 0, 6, 5, 1);
 	}
 
 	private void initTableProducts() {
 		initTable();
 		initStatus();
-		stage.show();
 	}
 
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
@@ -146,13 +139,13 @@ public class ProductTableView extends GridPane {
 		}
 	}
 
+	/** initial TableView */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initTable() {
 		view.fireListOfProducts();
 
 		TableView table = new TableView();
 
-		stage.setTitle("Product's Table");
 		TableColumn prodctNameCol = new TableColumn("Description");
 		prodctNameCol.setCellValueFactory(new PropertyValueFactory("description"));
 
@@ -174,7 +167,7 @@ public class ProductTableView extends GridPane {
 		add(table, 0, 3, 5, 1);
 	}
 
-	// init status
+	/** initial status */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 4);
@@ -182,7 +175,7 @@ public class ProductTableView extends GridPane {
 		setHalignment(lblStatus, HPos.CENTER);
 	}
 
-	// update status
+	/** update status */
 	public void updateStatus(String status, String color) {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
@@ -198,4 +191,3 @@ public class ProductTableView extends GridPane {
 //		.addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga", "0549512365", true), "Ne1658"));
 //Store.getInstance(null)
 //		.addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo", "0541236549", false), "Mi982"));
-// TODO: Change HardCode to read from File.

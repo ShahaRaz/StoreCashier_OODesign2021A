@@ -7,7 +7,7 @@ package main.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Product implements Comparable{
+public class Product implements Comparable {
 	private long timeAdded;
 
 	private String description;
@@ -17,19 +17,12 @@ public class Product implements Comparable{
 	private int priceSold;
 	private Customer customer;
 
-	public Product(long timeAdded, String description, String barcode,
-				   int costToStore, int priceSold, Customer customer) {
+	public Product(long timeAdded, String description, String barcode, int costToStore, int priceSold,
+			Customer customer) {
 		// CALL ME ONLY WHEN INSERT FROM FILE (time added already determined)
 
-					this(description, costToStore, priceSold, customer, barcode);
-					this.timeAdded = timeAdded;
-		
-//		this.timeAdded = timeAdded;
-//		this.description = new SimpleStringProperty(description);
-//		this.barcode = new SimpleStringProperty(barcode);
-//		this.costToStore = new SimpleIntegerProperty(costToStore);
-//		this.priceSold = new SimpleIntegerProperty(priceSold);
-//		this.customer = customer;
+		this(description, costToStore, priceSold, customer, barcode);
+		this.timeAdded = timeAdded;
 	}
 
 	public Product(String description, int costToStore, int priceSold, Customer customer, String pID) {
@@ -64,8 +57,9 @@ public class Product implements Comparable{
 		if (this.costToStore < 0 || this.priceSold < 0) {
 			return "Price can't be negative";
 		}
-		//TODO: this.barcode.get().equals("") is unnecessary, already checked in AddProductView, line 306
-		//		when barcode null, throws Exception.
+		// TODO: this.barcode.get().equals("") is unnecessary, already checked in
+		// AddProductView, line 306
+		// when barcode null, throws Exception.
 		if (this.barcode == null || this.barcode.equals("")) {
 			return "Product must have Valid Barcode";
 		}
@@ -132,8 +126,7 @@ public class Product implements Comparable{
 	@Override
 	public String toString() {
 		return "Product [timeAdded=" + timeAdded + ", description=" + description + ", barcode=" + barcode
-				+ ", costToStore=" + costToStore + ", priceSold=" + priceSold + ", customer=" + customer
-				+ "]";
+				+ ", costToStore=" + costToStore + ", priceSold=" + priceSold + ", customer=" + customer + "]";
 	}
 
 	@Override
@@ -145,7 +138,7 @@ public class Product implements Comparable{
 
 	@Override
 	public int compareTo(Object o) {
-		Product other = (Product)o;
-		return (int)this.getTimeMilis()-(int)other.getTimeMilis();
+		Product other = (Product) o;
+		return (int) this.getTimeMilis() - (int) other.getTimeMilis();
 	}
 }

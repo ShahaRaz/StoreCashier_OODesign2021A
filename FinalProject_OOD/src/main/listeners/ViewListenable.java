@@ -21,6 +21,8 @@ public interface ViewListenable {
 
 	public void viewAskToSave();
 
-	public void viewAskToRevers();
+	public void viewAskToReverse();
+
+	public void viewSendSortingMethod(int key);
 
 }

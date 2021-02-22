@@ -4,14 +4,13 @@ package main.view;
  * @author Shahar Raz.
  */
 
-import java.util.Map.Entry;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -25,52 +24,46 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import main.model.Customer;
 import main.model.Product;
 
-//import static org.graalvm.compiler.debug.DebugOptions.Log;
 
 public class AddProductView extends GridPane {
-	private static final String TAG = "AddProductView";
-	protected boolean isAddressingModel = true;
-	protected boolean isAddWindowSent;
+	
 	// Variables
+	private static final String TAG = "AddProductView";
+	/** Boolean attribute for ComboBox.SenOnAction */
+	protected boolean isAddressingModel = true;
+	/** Boolean attribute for UpdateFields method */
+	protected boolean isAddWindowSent;
 
 	private View view;
-	/* ProductName */
+	/** ProductName */
 	private TextField txtFldPrdctName;
-	/* Price */
+	/** Price */
 	private TextField txtFldPrdctPrice;
-	/* Barcode */
+	/** Barcode */
 	private ComboBox<String> cboxPrdctBarCode;
-	/* PriceToStore */
+	/** PriceToStore */
 	private TextField txtFldPrdctPriceToStore;
-	/* Customer */
+	/** Customer */
 	private TextField txtFldCustomer;
-	/* Customer's Phone */
+	/** Customer's Phone */
 	private TextField txtFldCustomerPhone;
-	/* Promotion Customer */
+	/** Promotion Customer */
 	private CheckBox checkBoxPromotion;
-	/* Status */
+	/** Status */
 	private Label lblStatus;
-	/* Add button */
+	/** Add button */
 	private Button btnAdd;
-	/* Clear button */
+	/** Clear button */
 	private Button btnClear;
-	/* Undo button */
+	/** Undo button */
 	private Button btnUndo;
 
-	private Stage stage;
-
-	public AddProductView(Stage stg, View view) {
-		this.stage = stg;
+	public AddProductView(View view) {
 		this.view = view;
-
 		init();
-		stage.setScene(new Scene(this, 500, 500));
-		stage.setTitle("Store Saver");
-		stage.show();
 	}
 
 	private void init() {
@@ -118,6 +111,7 @@ public class AddProductView extends GridPane {
 		initUndoButton();
 	}
 
+	/** Initial TextField product's Name. */
 	private void initFldName() {
 		txtFldPrdctName = new TextField();
 		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -134,6 +128,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Price. */
 	private void initFldPrice() {
 		txtFldPrdctPrice = new TextField();
 		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -150,6 +145,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Barcode. */
 	private void initFldBarcode() {
 		cboxPrdctBarCode = new ComboBox<String>();
 		cboxPrdctBarCode.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -181,6 +177,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Update the products list's ComboBox. */
 	public void updateComboBox(Set<Entry<String, Product>> products) {
 		cboxPrdctBarCode.getItems().clear(); // SetOnAction->FireSearchProducct (AVOID ME!)
 
@@ -189,16 +186,23 @@ public class AddProductView extends GridPane {
 		}
 	}
 
+	/**
+	 * Setting the Fields with the right data.
+	 * 
+	 * @param productDetails - The selected product from the ComboBox.
+	 */
 	public void setFields(Product productDetails) {
+		/* Product's Fields */
 		txtFldPrdctName.setText(productDetails.getDescription());
 		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
 		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
-
-//		TODO: check insertion to Customer's fields.
+		/* Customer's Fields */
 		txtFldCustomer.setText(productDetails.getCustomer().getName());
-		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());///////////////
+		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
+		checkBoxPromotion.setSelected(productDetails.getCustomer().getIsAcceptingPromotions());
 	}
 
+	/** Initial TextField product's PriceToStore. */
 	private void initFldPriceToStore() {
 		txtFldPrdctPriceToStore = new TextField();
 		txtFldPrdctPriceToStore.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -215,6 +219,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's Customer. */
 	private void initFldCustomer() {
 		txtFldCustomer = new TextField();
 		txtFldCustomer.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -231,6 +236,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial TextField product's CustomerPhone. */
 	private void initFldCustomerPhone() {
 		txtFldCustomerPhone = new TextField();
 		txtFldCustomerPhone.setOnMouseClicked(e -> updateStatus("", "black"));
@@ -247,6 +253,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial CheckBox product's CustomerIsPromoted. */
 	private void initCheckBox() {
 		checkBoxPromotion = new CheckBox();
 		add(new Label("Promotion: "), 0, 9);
@@ -262,6 +269,7 @@ public class AddProductView extends GridPane {
 		});
 	}
 
+	/** Initial Clear Button to clean all fields */
 	private void initClearButton() {
 		btnClear = new Button("Clear Product");
 		btnClear.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -271,6 +279,7 @@ public class AddProductView extends GridPane {
 		add(btnClear, 1, 12);
 	}
 
+	/** Initial Undo Button to undo last action */
 	private void initUndoButton() {
 		btnUndo = new Button("Undo");
 		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -282,6 +291,7 @@ public class AddProductView extends GridPane {
 		add(btnUndo, 1, 13);
 	}
 
+	/** Initial Add Button to add a new \ update product */
 	private void initAddButton() {
 		btnAdd = new Button("Add Product");
 		btnAdd.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -319,24 +329,41 @@ public class AddProductView extends GridPane {
 			}
 
 			// Product's Customer who bought it.
-			Customer c = new Customer(txtFldCustomer.getText(), txtFldCustomerPhone.getText(),
-					checkBoxPromotion.isSelected());///
+
+			String custName = txtFldCustomer.getText();
+			try {
+				custName = custName.equals("") ? "_Customer_" : custName;
+			} catch (Exception e2) {
+				System.err.println("Letting Customer's Name be null");
+			}
+
+			String custPhone = txtFldCustomerPhone.getText();
+			try {
+				custPhone = custPhone.equals("") ? "000-0000000" : custPhone;
+			} catch (Exception e2) {
+				System.err.println("Letting Phone be null");
+			}
+
+			Customer c = new Customer(custName, custPhone, checkBoxPromotion.isSelected());
+			isAddWindowSent = true;
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
+			isAddWindowSent = false;
 			isAddressingModel = false;
+
 			cboxPrdctBarCode.requestFocus();
 			cleanValueFields();
 		});
 		add(btnAdd, 1, 11);
 	}
 
-	// init status
+	/** initial status */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 10);
 		add(lblStatus, 1, 10, 4, 1);
 	}
 
-	// update status
+	/** update status */
 	public void updateStatus(String status, String color) {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
@@ -392,8 +419,9 @@ public class AddProductView extends GridPane {
 	}
 	// END Setters & Getters.
 
-	// clean Value Fields
+	/** clean Value Fields */
 	public void cleanValueFields() {
+		isAddressingModel = false;
 		txtFldCustomer.setText("");
 		cboxPrdctBarCode.setValue("");
 		txtFldPrdctName.setText("");
@@ -401,5 +429,6 @@ public class AddProductView extends GridPane {
 		txtFldPrdctPrice.setText("");
 		txtFldCustomerPhone.setText("");
 		checkBoxPromotion.setSelected(false);
+		isAddressingModel = true;
 	}
 }
