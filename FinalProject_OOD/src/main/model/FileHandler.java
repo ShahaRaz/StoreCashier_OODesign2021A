@@ -16,7 +16,7 @@ import java.util.*;
 public class FileHandler implements Iterable<Product> {
     private File file;
     private boolean isAppendableFile;
-    private static final String FILE_NAME = "products1111111.txt"; // Yes, it ends with .txt while its a binary file. (asked by the professor)
+    private static final String FILE_NAME = "products.txt"; // Yes, it ends with .txt while its a binary file. (asked by the professor)
 
     public FileHandler() {
         this.file = new File(FILE_NAME);

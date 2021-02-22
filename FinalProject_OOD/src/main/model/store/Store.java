@@ -64,7 +64,8 @@ public class Store {
 		// Read map from file:
 		currentMapOrdering = theFile.readMapOrdering(); // KEYS.ORDER_BY..
 		if (currentMapOrdering == -1) { // Note! -1 means that the file is Empty
-			this.productsMap = null;
+//			this.productsMap = null;
+			this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
 			// ask user for map order technique
 			// will be called when view asks for the map
 		} else { // _____________________ INIT PRODUCT MAP FROM FILE

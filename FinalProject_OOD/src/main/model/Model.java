@@ -100,7 +100,7 @@ public class Model {
 	}
 
 	public void sendAllProductsToView() {
-		fireSendProductsArrToView(store.getProductsSet());
+//		fireSendProductsArrToView(store.getProductsSet());
 		Set<Map.Entry<String, Product>> products = store.getProductsSet();
 		if (products.isEmpty()) {
 			fireSelectingSorte();
