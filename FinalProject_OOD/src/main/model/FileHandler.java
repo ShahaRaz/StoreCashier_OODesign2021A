@@ -23,6 +23,7 @@ public class FileHandler implements Iterable<Product> {
         this.isAppendableFile = file.exists();
     }
 
+
     /**
      * writes the entire map to the file (while overwriting the existing one)
      *
@@ -34,21 +35,33 @@ public class FileHandler implements Iterable<Product> {
             raf.setLength(0); // empty the file. (overWriting)
             for (Map.Entry<String, Product> pair : theMap.entrySet()) {
                 Product tmp = (Product) pair.getValue(); // gets the product
-                raf.writeUTF(tmp.getBarcode()); // Barcode
-                raf.writeUTF(tmp.getDescription()); // DESCRIPTION
-                raf.writeInt(tmp.getPriceSold()); // Price sold
-                raf.writeInt(tmp.getCostToStore()); // Cost to store
-                raf.writeLong(tmp.getTimeAdded()); // Time Added
-                // _______ Write Costumer ____
-                raf.writeUTF(tmp.getCustomer().getName()); // customer's name
-                raf.writeUTF(tmp.getCustomer().getMobileNumber()); // customer's mobile num
-                raf.writeBoolean(tmp.getCustomer().getIsAcceptingPromotions()); // customer's is accepting
+                writeProductToFile(tmp,raf);
+//                raf.writeUTF(tmp.getBarcode()); // Barcode
+//                raf.writeUTF(tmp.getDescription()); // DESCRIPTION
+//                raf.writeInt(tmp.getPriceSold()); // Price sold
+//                raf.writeInt(tmp.getCostToStore()); // Cost to store
+//                raf.writeLong(tmp.getTimeAdded()); // Time Added
+//                // _______ Write Costumer ____
+//                raf.writeUTF(tmp.getCustomer().getName()); // customer's name
+//                raf.writeUTF(tmp.getCustomer().getMobileNumber()); // customer's mobile num
+//                raf.writeBoolean(tmp.getCustomer().getIsAcceptingPromotions()); // customer's is accepting
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    protected void writeProductToFile(Product tmp, RandomAccessFile raf) throws IOException { // todo continue
+        raf.writeUTF(tmp.getBarcode()); // Barcode
+        raf.writeUTF(tmp.getDescription()); // DESCRIPTION
+        raf.writeInt(tmp.getPriceSold()); // Price sold
+        raf.writeInt(tmp.getCostToStore()); // Cost to store
+        raf.writeLong(tmp.getTimeAdded()); // Time Added
+        // _______ Write Costumer ____
+        raf.writeUTF(tmp.getCustomer().getName()); // customer's name
+        raf.writeUTF(tmp.getCustomer().getMobileNumber()); // customer's mobile num
+        raf.writeBoolean(tmp.getCustomer().getIsAcceptingPromotions()); // customer's is accepting
     }
 
     public void readMapFromFile(SortedMap<String, Product> theMap, boolean isClearingMapB4) {
@@ -107,12 +120,23 @@ public class FileHandler implements Iterable<Product> {
     }
 
     public void removeProductFromFile(Product product) {
-
         Iterator i = this.iterator();
         while (i.hasNext()) {
             Product p = (Product) i.next();
             if (p.equals(product)) {
                 i.remove();
+                System.out.println("\nThe element " + product.getDescription() + " was deleted,  FileHandler 116");
+                break;
+            }
+        }
+    }
+
+    public void replaceProductWithOtherVersion(Product product) {
+        Iterator i = this.iterator();
+        while (i.hasNext()) {
+            Product p = (Product) i.next();
+            if (p.equals(product)) {
+//                i.replace(product);
                 System.out.println("\nThe element " + product.getDescription() + " was deleted,  FileHandler 116");
                 break;
             }
@@ -125,6 +149,7 @@ public class FileHandler implements Iterable<Product> {
         private RandomAccessFile raf_iterator;
         private Product lastReturnedProduct;
         private long pointerToB4LastReturnedElement;
+//        private int indexOflastProductReturned =-1;
 
 
         public ConcreteIterator(File file) {
@@ -166,6 +191,7 @@ public class FileHandler implements Iterable<Product> {
                     boolean cAcceptAds = raf_iterator.readBoolean(); // customer's is accepting
 
                     // creating the product
+//                    this.indexOflastProductReturned++;
                     return new Product(timeAdded, desc, barcode,
                             costToStore, priceSold, new Customer(cName, cMobileNum, cAcceptAds));
                 } catch (IOException e) {
@@ -193,11 +219,39 @@ public class FileHandler implements Iterable<Product> {
 
                 // overWrite over the element we deleted
                 raf_iterator.write(temp);
-
+//                this.indexOflastProductReturned=-1;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        public void replace(Product p){
+            try {
+                if (raf_iterator.getFilePointer() == 0L) {
+                    throw new IllegalStateException();
+                }
+                // backup data from pointer to the end of the file
+                byte[] temp = new byte[(int) (raf_iterator.length() - raf_iterator.getFilePointer())]; // creating buffer
+                raf_iterator.read(temp); // reading the reset of the file into buffer
+
+                // return to the position b4 last element was read.
+                raf_iterator.seek(pointerToB4LastReturnedElement);
+
+                writeProductToFile(p,raf_iterator);
+
+                // overWrite over the element we deleted
+                raf_iterator.write(temp);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+
+
 
 //        @Override
 //        public void remove() {

@@ -35,6 +35,7 @@ public class Store {
     // only by using Commands (commandStack)
 
     protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
+    //// soldProductsArr - not listed in the system requirements, but we implement this for possible future use
     protected ArrayList<saleEventListener> subscribedCustomers;
 
     protected FileHandler theFile;
@@ -60,8 +61,8 @@ public class Store {
 			// will be called when view asks for the map
 		}
         else{ // _____________________ INIT PRODUCT MAP FROM FILE _____________________________
-		this.productsMap = getNewEmptyMap(currentMapOrdering);
-		theFile.readMapFromFile(productsMap,true);
+		    this.productsMap = getNewEmptyMap(currentMapOrdering);
+		    theFile.readMapFromFile(productsMap,true);
 		}
 
 //        this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
@@ -110,7 +111,7 @@ public class Store {
                 }));
                 break;
             case KEYS.ORDER_BY_INSERT_ORDER:
-                newMap = (SortedMap<String, Product>) new LinkedHashMap<String, Product>();
+                newMap = (SortedMap<String, Product>) new LinkedHashMap<String, Product>(); // insertion order
                 break;
             default:
                 System.err.println("Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default.");
