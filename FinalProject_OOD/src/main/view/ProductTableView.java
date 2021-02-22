@@ -24,23 +24,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import main.model.Product;
 
 public class ProductTableView extends GridPane {
-	/* Boolean attribute for UpdateFields method */
+	/** Boolean attribute for UpdateFields method */
 	protected boolean isAddWindowSent;
-	/* HBox */
+	/** HBox */
 	private HBox hbButtons;
-	/* Buttons */
+	/** Buttons */
 	private Button btnUndo;
 	private Button btnSave;
 	private Button btnReverse;
-	/* Status */
+	/** Status */
 	private Label lblStatus;
-	/* View */
+	/** View */
 	private View view;
-	/* List of products */
+	/** List of products */
 	private final ObservableList<DisplayableProduct> data = FXCollections.observableArrayList();
 
 	public ProductTableView(View view) {

@@ -103,9 +103,8 @@ public class Model {
 		Set<Map.Entry<String, Product>> products = store.getProductsSet();
 		if (products.isEmpty()) {
 			fireSelectingSorte();
-		} else {
-			fireSendProductsArrToView(products);
 		}
+		fireSendProductsArrToView(products);
 	}
 
 	private void fireSelectingSorte() {

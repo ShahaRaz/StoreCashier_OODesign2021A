@@ -5,8 +5,8 @@ package main.view;
  * @author Shahar Raz.
  */
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -26,17 +26,17 @@ import main.model.Product;
 
 public class RemoveProductView extends GridPane {
 
-	/* Boolean attribute for UpdateFields method */
+	/** Boolean attribute for UpdateFields method */
 	protected boolean isRemoveWindowSent;
 
 	private View view;
-	/* Barcode */
+	/** Barcode */
 	private ComboBox<String> cboxPrdctBarCode;
-	/* Remove button */
+	/** Remove button */
 	private Button btnRemove;
-	/* Undo button */
+	/** Undo button */
 	private Button btnUndo;
-	/* Status */
+	/** Status */
 	private Label lblStatus;
 
 	public RemoveProductView(View view) {

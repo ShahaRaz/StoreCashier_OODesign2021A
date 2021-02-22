@@ -1,5 +1,9 @@
 package main.view;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
@@ -24,10 +28,6 @@ import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
 import main.model.store.Store;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 public class View extends GridPane {
 
@@ -179,7 +179,6 @@ public class View extends GridPane {
 		}
 	}
 
-	// TODO: Change all notify to this method
 	/**
 	 * Notify a 'Good' message
 	 * 

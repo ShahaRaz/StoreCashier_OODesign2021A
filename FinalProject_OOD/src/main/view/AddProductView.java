@@ -4,14 +4,13 @@ package main.view;
  * @author Shahar Raz.
  */
 
-import java.util.Map.Entry;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -25,47 +24,45 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import main.model.Customer;
 import main.model.Product;
 
-//import static org.graalvm.compiler.debug.DebugOptions.Log;
 
 public class AddProductView extends GridPane {
-	private static final String TAG = "AddProductView";
-	/* Boolean attribute for ComboBox.SenOnAction */
-	protected boolean isAddressingModel = true;
-	/* Boolean attribute for UpdateFields method */
-	protected boolean isAddWindowSent;
+	
 	// Variables
+	private static final String TAG = "AddProductView";
+	/** Boolean attribute for ComboBox.SenOnAction */
+	protected boolean isAddressingModel = true;
+	/** Boolean attribute for UpdateFields method */
+	protected boolean isAddWindowSent;
 
 	private View view;
-	/* ProductName */
+	/** ProductName */
 	private TextField txtFldPrdctName;
-	/* Price */
+	/** Price */
 	private TextField txtFldPrdctPrice;
-	/* Barcode */
+	/** Barcode */
 	private ComboBox<String> cboxPrdctBarCode;
-	/* PriceToStore */
+	/** PriceToStore */
 	private TextField txtFldPrdctPriceToStore;
-	/* Customer */
+	/** Customer */
 	private TextField txtFldCustomer;
-	/* Customer's Phone */
+	/** Customer's Phone */
 	private TextField txtFldCustomerPhone;
-	/* Promotion Customer */
+	/** Promotion Customer */
 	private CheckBox checkBoxPromotion;
-	/* Status */
+	/** Status */
 	private Label lblStatus;
-	/* Add button */
+	/** Add button */
 	private Button btnAdd;
-	/* Clear button */
+	/** Clear button */
 	private Button btnClear;
-	/* Undo button */
+	/** Undo button */
 	private Button btnUndo;
 
 	public AddProductView(View view) {
 		this.view = view;
-
 		init();
 	}
 
@@ -202,8 +199,7 @@ public class AddProductView extends GridPane {
 		/* Customer's Fields */
 		txtFldCustomer.setText(productDetails.getCustomer().getName());
 		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
-//		TODO: think about who'll get the attribute isPromotionCusotmer.
-//		checkBoxPromotion.setSelected(productDetails.isPromotionCusotmer);
+		checkBoxPromotion.setSelected(productDetails.getCustomer().getIsAcceptingPromotions());
 	}
 
 	/** Initial TextField product's PriceToStore. */

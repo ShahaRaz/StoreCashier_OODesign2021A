@@ -1,8 +1,8 @@
 package main.view;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -23,27 +23,28 @@ import main.model.Product;
 
 public class SaleWondow extends GridPane {
 
-	/* Boolean attribute for ComboBox.SenOnAction */
-	protected boolean isAddressingModel = true;
-	/* Boolean attribute for UpdateFields method */
-	protected boolean isSaleWindowSent;
 	// Variables
+
+	/** Boolean attribute for ComboBox.SenOnAction */
+	protected boolean isAddressingModel = true;
+	/** Boolean attribute for UpdateFields method */
+	protected boolean isSaleWindowSent;
 	private View view;
-	/* ProductName */
+	/** ProductName */
 	private TextField txtFldPrdctName;
-	/* Price */
+	/** Price */
 	private TextField txtFldPrdctPrice;
-	/* Barcode */
+	/** Barcode */
 	private ComboBox<String> cboxPrdctBarCode;
-	/* PriceToStore */
+	/** PriceToStore */
 	private TextField txtFldPrdctPriceToStore;
-	/* Status */
+	/** Status */
 	private Label lblStatus;
-	/* Add button */
+	/** Add button */
 	private Button btnAddSale;
-	/* Clear button */
+	/** Clear button */
 	private Button btnClear;
-	/* Undo button */
+	/** Undo button */
 	private Button btnUndo;
 
 	public SaleWondow(View view) {
