@@ -84,6 +84,7 @@ public class FileHandler implements Iterable<Product> {
 
 
     public int readMapOrdering() {
+        System.out.println(file.length());
         if (file.length() == 0)
             return -1;// -1 means the file is empty
 

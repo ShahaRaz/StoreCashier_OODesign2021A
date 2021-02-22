@@ -70,7 +70,7 @@ public class Store {
 
         this.soldProductsArr = new ArrayList<Product>(); // am i needed?
 
-        theFile.readMapFromFile(this.productsMap, true);
+//        theFile.readMapFromFile(this.productsMap, true);
 //		if (this.productsMap.isEmpty())
 //			askUserForMapOrder
     }
