@@ -15,6 +15,7 @@ import java.util.Set;
 public class Model {
 	private Store store;
 	private ArrayList<LogicListenable> allListeners;
+	private static final String TAG = "Model";
 
 	public Model() {
 		this.allListeners = new ArrayList<>();
@@ -103,13 +104,15 @@ public class Model {
 //		fireSendProductsArrToView(store.getProductsSet());
 		Set<Map.Entry<String, Product>> products = store.getProductsSet();
 		if (products.isEmpty()) {
-			fireSelectingSorte();
-			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP));
+			fireSendProductsArrToView(products); // here for testing, delete me later
+			fireSelectingSortType();
+			// TODO remove the next line, and set the map based on the returned value from the user.
+//			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP),Store.KEYS.ORDER_BY_ABC_UP);
 		}
 		fireSendProductsArrToView(products);
 	}
 
-	private void fireSelectingSorte() {
+	private void fireSelectingSortType() {
 		for (LogicListenable l : allListeners) {
 			l.modelAskToSelectSorteMethod();
 		}
@@ -155,14 +158,20 @@ public class Model {
 		 */
 
 		switch (key) {
-		case 1:
-			System.out.println(Store.KEYS.ORDER_BY_ABC_DOWN);
+		case Store.KEYS.ORDER_BY_ABC_UP:
+			System.err.println((TAG + ", viewSendSortingKey: Store.KEYS.ORDER_BY_ABC_UP"));
+			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP),Store.KEYS.ORDER_BY_ABC_UP);
+
 			break;
-		case 2:
-			System.out.println(Store.KEYS.ORDER_BY_ABC_UP);
+		case Store.KEYS.ORDER_BY_ABC_DOWN:
+			System.err.println((TAG + ", viewSendSortingKey: Store.KEYS.ORDER_BY_ABC_DOWN"));
+			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_DOWN),Store.KEYS.ORDER_BY_ABC_DOWN);
+
 			break;
-		case 3:
-			System.out.println(Store.KEYS.ORDER_BY_INSERT_ORDER);
+		case Store.KEYS.ORDER_BY_INSERT_ORDER:
+			System.err.println((TAG + ", viewSendSortingKey: Store.ORDER_BY_INSERT_ORDER"));
+			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_INSERT_ORDER),Store.KEYS.ORDER_BY_INSERT_ORDER);
+
 			break;
 
 		default:

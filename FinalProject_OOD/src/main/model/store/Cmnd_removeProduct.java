@@ -26,10 +26,11 @@ public class Cmnd_removeProduct implements Command {
 
     @Override
     public void execute() {
-
+        boolean isLastProduct = (map_ref.size()==1 ? true : false); // if it's the last product, we want to ask the user for new map ordering
         theFile.removeProductFromFile(product);
-        theFile.readMapFromFile(map_ref,true); // it's inefficient, but that's what we were asked for.
-//        map_ref.remove(product.getBarcode());
+        if (!isLastProduct)
+            theFile.readMapFromFile(map_ref,true); // it's inefficient, but that's what we were asked for.
+        map_ref.remove(product.getBarcode());
 
         soldProductsArr_ref.remove(product); // not listed in the system requirements, but we implement this for possible future use
 

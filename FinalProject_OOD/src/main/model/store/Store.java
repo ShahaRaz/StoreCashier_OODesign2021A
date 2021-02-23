@@ -63,6 +63,7 @@ public class Store {
 
 		// Read map from file:
 		currentMapOrdering = theFile.readMapOrdering(); // KEYS.ORDER_BY..
+		System.err.println((TAG + ", Store: READ RAF.READINT:" + currentMapOrdering ));
 		if (currentMapOrdering == -1) { // Note! -1 means that the file is Empty
 //			this.productsMap = null;
 			this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
@@ -97,7 +98,6 @@ public class Store {
 	public Set<Map.Entry<String, Product>> getProductsSet() {
 		/// TODO: Create a copy of this set, and move it to the controller.
 //        SortedMap<String, Product> aCopyOfLocalMap = copyMap(this.productsMap, this.currentMapOrdering);
-		System.out.println("hey ");
 		return this.productsMap.entrySet();
 	}
 
@@ -105,15 +105,16 @@ public class Store {
 		return subscribedCustomers;
 	}
 
-	public void setProductsMap(SortedMap<String, Product> productsMap) {
+	public void setProductsMap(SortedMap<String, Product> productsMap,int currentMapOrdering) {
 		this.productsMap = productsMap;
+		this.currentMapOrdering = currentMapOrdering;
 	}
 
 	public static SortedMap<String, Product> getNewEmptyMap(int mapKind_KEYS) {
-		SortedMap<String, Product> newMap;
+		SortedMap<String, Product> newMap; // LinkedHashMap cannot be cast to class SortedMap
 		switch (mapKind_KEYS) {
 		case KEYS.ORDER_BY_ABC_UP:
-			newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+			newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());// default comparator.
 			break;
 		case KEYS.ORDER_BY_ABC_DOWN:
 			newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>(new Comparator<String>() {
@@ -127,7 +128,7 @@ public class Store {
 			newMap = (SortedMap<String, Product>) new LinkedHashMap<String, Product>(); // insertion order
 			break;
 		default:
-			System.err.println("Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default.");
+			System.err.println((TAG + ", getNewEmptyMap: \t" + "Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default."));
 			newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
 		}
 		return newMap;
@@ -512,3 +513,29 @@ public class Store {
 ////		}
 ////
 ////	};
+
+/*
+	public static SortedMap<String, Product> getNewEmptyMap(int mapKind_KEYS) {
+		SortedMap<String, Product> newMap; // LinkedHashMap cannot be cast to class SortedMap
+		switch (mapKind_KEYS) {
+			case KEYS.ORDER_BY_ABC_UP:
+				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+				break;
+			case KEYS.ORDER_BY_ABC_DOWN:
+				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>(new Comparator<String>() {
+					@Override
+					public int compare(String s1, String s2) {
+						return s2.compareTo(s1); // reversed order
+					}
+				}));
+				break;
+			case KEYS.ORDER_BY_INSERT_ORDER:
+				newMap = (SortedMap<String, Product>) new LinkedHashMap<String, Product>(); // insertion order
+				break;
+			default:
+				System.err.println("Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default.");
+				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
+		}
+		return newMap;
+	}
+*/

@@ -35,6 +35,7 @@ public class View extends GridPane {
 
 	private ArrayList<ViewListenable> allListeners;
 	private HBox hbButtons;
+	private static final String TAG = "View";
 
 	private Stage stage;
 
@@ -351,14 +352,15 @@ public class View extends GridPane {
 	private void fireSortingMethod(Toggle toggle) {
 		int key = 0;
 		if (toggle.toString().contains("Ascending Order")) {
-			key = Store.KEYS.ORDER_BY_ABC_DOWN;
-		} else if (toggle.toString().contains("Descending Order")) {
 			key = Store.KEYS.ORDER_BY_ABC_UP;
+		} else if (toggle.toString().contains("Descending Order")) {
+			key = Store.KEYS.ORDER_BY_ABC_DOWN;
 		} else {
 			key = Store.KEYS.ORDER_BY_INSERT_ORDER;
 		}
 		// TODO: Try replace toString to equals on Toggle
 		for (ViewListenable l : allListeners) {
+			System.err.println((TAG + ", fireSortingMethod: key = " + key));
 			l.viewSendSortingMethod(key);
 		}
 	}
