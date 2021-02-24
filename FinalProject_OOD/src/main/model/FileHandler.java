@@ -171,7 +171,7 @@ public class FileHandler implements Iterable<Product> {
         while (i.hasNext()) {
             Product p = (Product) i.next();
             if (p.equals(product)) {
-//                i.replace(product);
+                i.replace(product);
                 System.err.println((TAG + ", replaceProductWithOtherVersion: time for replace"));
                 break;
             }
@@ -201,6 +201,7 @@ public class FileHandler implements Iterable<Product> {
         @Override
         public boolean hasNext() {
             try {
+                System.err.println((TAG + ",___ hasNext:\tgetFilePointer: " +raf_concreteItr.getFilePointer() + "\t length: " + raf_concreteItr.length() ));
                 return (raf_concreteItr.getFilePointer() < raf_concreteItr.length());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -216,9 +217,16 @@ public class FileHandler implements Iterable<Product> {
                 try {
                     // _________________________________________
                     pointerToB4LastReturnedElement = raf_concreteItr.getFilePointer();
+//                    System.err.println((TAG + ", next: pointerToB4LastReturnedElement = " + pointerToB4LastReturnedElement));
+
+                    if (pointerToB4LastReturnedElement==0) {
+                        raf_concreteItr.readInt(); // skipping over the first 4 bytes
+                        pointerToB4LastReturnedElement=raf_concreteItr.getFilePointer();
+//                        System.err.println((TAG + ", next: AfterReadInt pointerToB4Last = " + pointerToB4LastReturnedElement));
+                    }
 //                    if (pointerToB4LastReturnedElement == 0)
 //                        raf.readInt();
-                    System.err.println((TAG + ", next: pointerToB4LastReturnedElement = " + pointerToB4LastReturnedElement));
+
                     // _________________________________________
                     String barcode = raf_concreteItr.readUTF(); // Barcode
                     String desc = raf_concreteItr.readUTF(); // DESCRIPTION
@@ -236,7 +244,7 @@ public class FileHandler implements Iterable<Product> {
                             costToStore, priceSold, new Customer(cName, cMobileNum, cAcceptAds));
                 } catch (IOException e) {
                     e.printStackTrace();
-                    this.lastReturnedProduct = new Product("__failed__ In file Iterator (line 200/142)");
+                    this.lastReturnedProduct = new Product("__failed__ In file Iterator (line 234/142)");
                     return lastReturnedProduct;
                 }
 
@@ -253,19 +261,25 @@ public class FileHandler implements Iterable<Product> {
                 // backup data from pointer to the end of the file
                 System.err.println((TAG +  ", remove: " + "\traf.lengh = " + raf_concreteItr.length() + " raf.getFilePointer=" + raf_concreteItr.getFilePointer()));
                 byte[] temp = new byte[(int) (raf_concreteItr.length() - raf_concreteItr.getFilePointer())]; // creating buffer
+//                System.err.println((TAG + ", remove: bufferSize  = " + (int) (raf_concreteItr.length() - raf_concreteItr.getFilePointer())));
                 raf_concreteItr.read(temp); // reading the reset of the file into buffer
-                System.out.println();
 
                 // return to the position b4 last element was read.
+//                System.err.println((TAG + ", remove: pointerToB4LastElement: " + pointerToB4LastReturnedElement));
                 raf_concreteItr.seek(pointerToB4LastReturnedElement);
 
                 // overWrite over the element we deleted
                 raf_concreteItr.write(temp);
 
-                System.err.println((TAG +  ", remove: " + "\traf.lengh = " + raf_concreteItr.length() + " raf.getFilePointer=" + raf_concreteItr.getFilePointer()));
+//                System.err.println((TAG +  ", remove: " + "\traf.lengh = " + raf_concreteItr.length() + " raf.getFilePointer=" + raf_concreteItr.getFilePointer()));
 
                 //free the memory
-                raf_concreteItr.setLength(raf_concreteItr.getFilePointer());
+                if (raf_concreteItr.getFilePointer() <=4) // we will ask the user for new map ordering
+                    raf_concreteItr.setLength(0);
+                else { // just deleting the product
+                    raf_concreteItr.setLength(raf_concreteItr.getFilePointer());
+                }
+                System.err.println((TAG + ", remove: file.length is: ") + file.length());
 
 //                this.indexOflastProductReturned=-1;
             } catch (IOException e) {
@@ -273,6 +287,7 @@ public class FileHandler implements Iterable<Product> {
             }
         }
 
+        
         public void replace(Product p){
             try {
                 if (raf_concreteItr.getFilePointer() == 0L) {
