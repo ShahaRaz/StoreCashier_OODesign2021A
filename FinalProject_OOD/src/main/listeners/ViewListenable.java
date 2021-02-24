@@ -25,4 +25,6 @@ public interface ViewListenable {
 
 	public void viewSendSortingMethod(int key);
 
+	public void viewAskToRemoveAllProducts();
+
 }

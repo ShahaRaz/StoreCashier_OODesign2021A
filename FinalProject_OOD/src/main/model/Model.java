@@ -39,12 +39,6 @@ public class Model {
 		}
 	}
 
-//	public void fireProductNotGood(String str) {
-//		for (LogicListenable l : allListeners) {
-//			l.modelRejectedProduct(str);
-//		}
-//	}
-
 	private void fireSendProductsArrToView(Set<Map.Entry<String, Product>> products) {
 		for (LogicListenable l : allListeners) {
 			l.modelSendProductsSet(products);
@@ -63,6 +57,12 @@ public class Model {
 		}
 	}
 
+	private void fireSelectingSortType() {
+		for (LogicListenable l : allListeners) {
+			l.modelAskToSelectSorteMethod();
+		}
+	}
+
 	public void addProduct(Product p) {
 		// TODO: Register customers as Subscribed (18/2).
 
@@ -78,18 +78,23 @@ public class Model {
 	}
 
 	public void removeProduct(Product p) {
-//		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
-//			fireOperationFailed("product wasn't found");
-//		} else { // product is in our database
-//			store.removeProduct(p);
-//			/* send update to status */
-//			fireSendMessageToUser("The product " + p.getBarcode() + " removed!");
-//			/* Clear others fields */
-//			fireProductRemoved();
-//		}
-//		// TODO: Return fireProductRemoved
-//		// firing a return statement from within the store.
+		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
+			fireOperationFailed("product wasn't found");
+		} else { // product is in our database
+			store.removeProduct(p);
+			/* send update to status */
+			fireSendMessageToUser("The product " + p.getBarcode() + " removed!");
+			/* Clear others fields */
+			fireProductRemoved();
+		}
+		// TODO: Return fireProductRemoved
+		// firing a return statement from within the store.
+		
+	}
+	
+	public void removeAllProducts() {
 		store.removeAllProducts();
+		fireSendMessageToUser("The products removed!");
 	}
 
 	public void undoLastAction() {
@@ -111,12 +116,6 @@ public class Model {
 //			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP),Store.KEYS.ORDER_BY_ABC_UP);
 		}
 		fireSendProductsArrToView(products);
-	}
-
-	private void fireSelectingSortType() {
-		for (LogicListenable l : allListeners) {
-			l.modelAskToSelectSorteMethod();
-		}
 	}
 
 	public void getProduct(String searchMe) {
@@ -153,7 +152,9 @@ public class Model {
 
 	public void viewSendSortingKey(int key) {
 		/*
-		 * TODO initial the sorting key. (18/2) 1 - Ascending Order 2 - Descending Order
+		 * TODO initial the sorting key. (18/2) 
+		 * 1 - Ascending Order 
+		 * 2 - Descending Order
 		 * 3 - Insertion Order
 		 *
 		 */

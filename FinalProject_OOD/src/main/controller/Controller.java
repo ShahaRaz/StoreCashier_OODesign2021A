@@ -129,4 +129,9 @@ public class Controller implements ViewListenable, LogicListenable {
 		theModel.viewSendSortingKey(key);
 	}
 
+	@Override
+	public void viewAskToRemoveAllProducts() {
+		theModel.removeAllProducts();
+	}
+
 }

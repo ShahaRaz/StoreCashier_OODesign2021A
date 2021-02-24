@@ -159,7 +159,8 @@ public class ProductTableView extends GridPane {
 
 		TableColumn priceCol = new TableColumn("Price");
 		priceCol.getColumns().addAll(storePrice, customerPrice);
-
+		
+//		TableColumn profit = new TableColumn("Profit");
 		table.setItems(data);
 		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 

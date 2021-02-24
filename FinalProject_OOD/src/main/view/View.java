@@ -143,6 +143,13 @@ public class View extends GridPane {
 			l.viewAskToSendSale();
 		}
 	}
+	
+	/**Sending fire to remove all products */
+	public void fireRemoveAllProducts() {
+		for (ViewListenable l : allListeners) {
+			l.viewAskToRemoveAllProducts();
+		}
+	}
 
 	/* After updating the status field, cleaning the fields for each tab */
 	/** Cleaning the ComboBox of AddWindow and SaleWindow */
@@ -200,7 +207,7 @@ public class View extends GridPane {
 //			popUpShortMassage(errorMassage, elaborate, 400, 200, 20);
 //		}
 		notifyNewMessage(elaborate, "red");
-
+		
 	}
 
 	/**

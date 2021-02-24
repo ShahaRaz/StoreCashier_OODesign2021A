@@ -27,9 +27,8 @@ import javafx.scene.text.Text;
 import main.model.Customer;
 import main.model.Product;
 
-
 public class AddProductView extends GridPane {
-	
+
 	// Variables
 	private static final String TAG = "AddProductView";
 	/** Boolean attribute for ComboBox.SenOnAction */
@@ -192,14 +191,14 @@ public class AddProductView extends GridPane {
 	 * @param productDetails - The selected product from the ComboBox.
 	 */
 	public void setFields(Product productDetails) {
-		/* Product's Fields */
-		txtFldPrdctName.setText(productDetails.getDescription());
-		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
-		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
-		/* Customer's Fields */
-		txtFldCustomer.setText(productDetails.getCustomer().getName());
-		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
-		checkBoxPromotion.setSelected(productDetails.getCustomer().getIsAcceptingPromotions());
+			/* Product's Fields */
+			txtFldPrdctName.setText(productDetails.getDescription());
+			txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
+			txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
+			/* Customer's Fields */
+			txtFldCustomer.setText(productDetails.getCustomer().getName());
+			txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
+			checkBoxPromotion.setSelected(productDetails.getCustomer().getIsAcceptingPromotions());
 	}
 
 	/** Initial TextField product's PriceToStore. */
