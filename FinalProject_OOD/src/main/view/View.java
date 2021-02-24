@@ -24,6 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.listeners.ViewListenable;
 import main.model.Product;
@@ -143,8 +144,8 @@ public class View extends GridPane {
 			l.viewAskToSendSale();
 		}
 	}
-	
-	/**Sending fire to remove all products */
+
+	/** Sending fire to remove all products */
 	public void fireRemoveAllProducts() {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToRemoveAllProducts();
@@ -207,7 +208,7 @@ public class View extends GridPane {
 //			popUpShortMassage(errorMassage, elaborate, 400, 200, 20);
 //		}
 		notifyNewMessage(elaborate, "red");
-		
+
 	}
 
 	/**
@@ -321,7 +322,10 @@ public class View extends GridPane {
 		rdoSortKey1.setToggleGroup(tglSelectedSort);
 		rdoSortKey2.setToggleGroup(tglSelectedSort);
 		rdoSortKey3.setToggleGroup(tglSelectedSort);
-
+		
+		//Selected as a default value.
+		rdoSortKey1.setSelected(true);
+		
 		Button btOK = new Button("OK");
 		btOK.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btOK.setOnAction(new EventHandler<ActionEvent>() {
@@ -339,7 +343,11 @@ public class View extends GridPane {
 
 		Scene scene = new Scene(vbox, 150 * ENLRAGMENT_FACTOR, 150 * ENLRAGMENT_FACTOR);
 		vbox.setStyle("-fx-background-color: BEIGE;");
+		
 		miniStage.setScene(scene);
+		miniStage.initOwner(stage);
+		miniStage.initModality(Modality.WINDOW_MODAL);
+		miniStage.requestFocus();
 		miniStage.show();
 		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
@@ -362,13 +370,14 @@ public class View extends GridPane {
 			key = Store.KEYS.ORDER_BY_ABC_UP;
 		} else if (toggle.toString().contains("Descending Order")) {
 			key = Store.KEYS.ORDER_BY_ABC_DOWN;
-		} else {
+		} else if (toggle.toString().contains("Insertion Order")) {
 			key = Store.KEYS.ORDER_BY_INSERT_ORDER;
 		}
 		// TODO: Try replace toString to equals on Toggle
-		for (ViewListenable l : allListeners) {
-			System.err.println((TAG + ", fireSortingMethod: key = " + key));
-			l.viewSendSortingMethod(key);
+		if (key != 0) {
+			for (ViewListenable l : allListeners)
+				l.viewSendSortingMethod(key);
 		}
+
 	}
 }
