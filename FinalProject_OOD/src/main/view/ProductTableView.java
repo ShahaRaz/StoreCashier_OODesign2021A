@@ -37,10 +37,13 @@ public class ProductTableView extends GridPane {
 	private Button btnReverse;
 	/** Status */
 	private Label lblStatus;
+	private Label lblProfit;
 	/** View */
 	private View view;
 	/** List of products */
 	private final ObservableList<DisplayableProduct> data = FXCollections.observableArrayList();
+
+	private int profit;
 
 	public ProductTableView(View view) {
 		this.view = view;
@@ -60,7 +63,8 @@ public class ProductTableView extends GridPane {
 		initSavaButton();
 		initReverseButton();
 		hbButtons.getChildren().addAll(btnSave, btnUndo, btnReverse);
-		add(hbButtons, 0, 6);
+
+		add(hbButtons, 1, 6);
 	}
 
 	// Get new styled HBox
@@ -129,12 +133,16 @@ public class ProductTableView extends GridPane {
 	private void initTableProducts() {
 		initTable();
 		initStatus();
+		initprofit();
 	}
 
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
 		data.clear();
+		profit = 0;
+		
 		for (Map.Entry<String, Product> e : products) {
 			DisplayableProduct tmp = new DisplayableProduct(e.getValue()); // here we changed
+			profit += tmp.getProfit();
 			data.addAll(tmp);
 		}
 	}
@@ -159,21 +167,31 @@ public class ProductTableView extends GridPane {
 
 		TableColumn priceCol = new TableColumn("Price");
 		priceCol.getColumns().addAll(storePrice, customerPrice);
-		
-//		TableColumn profit = new TableColumn("Profit");
+
+		TableColumn profit = new TableColumn("Profit");
+		profit.setCellValueFactory(new PropertyValueFactory<DisplayableProduct, Integer>("profit"));
+
 		table.setItems(data);
-		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
+		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol, profit);
 
 		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);
+		setHalignment(table, HPos.CENTER);
 	}
 
 	/** initial status */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 4);
-		add(lblStatus, 0, 4);
+		add(lblStatus, 1, 4);
 		setHalignment(lblStatus, HPos.CENTER);
+	}
+
+	private void initprofit() {
+		lblProfit = new Label();
+		add(new Label("Profit: "), 0, 5);
+		add(lblProfit, 1, 5);
+		setHalignment(lblProfit, HPos.CENTER);
 	}
 
 	/** update status */
@@ -181,14 +199,14 @@ public class ProductTableView extends GridPane {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
 	}
-}
 
-// Hard Code. will be from File.
-//Store.getInstance(null)
-//		.addNewProduct(new Product("Cola", 1, 4, new Customer("Mama", "054789654", false), "Co7736"));
-//Store.getInstance(null)
-//		.addNewProduct(new Product("Sprite", 12, 16, new Customer("Lili", "0524756987", false), "Sp9187"));
-//Store.getInstance(null)
-//		.addNewProduct(new Product("Nestea", 8, 10, new Customer("Gaga", "0549512365", true), "Ne1658"));
-//Store.getInstance(null)
-//		.addNewProduct(new Product("Milk", 1, 3, new Customer("Lolo", "0541236549", false), "Mi982"));
+	/** update profit */
+	public void updateProfit(String status, String color) {
+		lblProfit.setText(status);
+		lblProfit.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
+	}
+
+	public int getProfit() {
+		return profit;
+	}
+}

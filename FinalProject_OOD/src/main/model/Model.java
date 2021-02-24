@@ -107,7 +107,6 @@ public class Model {
 	}
 
 	public void sendAllProductsToView() {
-//		fireSendProductsArrToView(store.getProductsSet());
 		Set<Map.Entry<String, Product>> products = store.getProductsSet();
 		if (products.isEmpty()) {
 			fireSendProductsArrToView(products); // here for testing, delete me later
@@ -124,7 +123,6 @@ public class Model {
 			fireOperationFailed("Product doesn't exist!");
 		} else
 			fireGetProduct(p);
-
 	}
 
 	public void sendSaleToCustomers() {
@@ -161,19 +159,13 @@ public class Model {
 
 		switch (key) {
 		case Store.KEYS.ORDER_BY_ABC_UP:
-			System.err.println((TAG + ", viewSendSortingKey: Store.KEYS.ORDER_BY_ABC_UP"));
 			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP),Store.KEYS.ORDER_BY_ABC_UP);
-
 			break;
 		case Store.KEYS.ORDER_BY_ABC_DOWN:
-			System.err.println((TAG + ", viewSendSortingKey: Store.KEYS.ORDER_BY_ABC_DOWN"));
 			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_DOWN),Store.KEYS.ORDER_BY_ABC_DOWN);
-
 			break;
 		case Store.KEYS.ORDER_BY_INSERT_ORDER:
-			System.err.println((TAG + ", viewSendSortingKey: Store.ORDER_BY_INSERT_ORDER"));
 			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_INSERT_ORDER),Store.KEYS.ORDER_BY_INSERT_ORDER);
-
 			break;
 
 		default:

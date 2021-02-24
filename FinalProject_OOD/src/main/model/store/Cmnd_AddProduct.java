@@ -61,7 +61,6 @@ public class Cmnd_AddProduct implements Command{
 //            map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
 //            theFile.removeProductFromFile(product);
 //            theFile.addProductToFile(oldProductInMap);
-
         }
         else{
             theFile.removeProductFromFile(product);

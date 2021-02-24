@@ -226,6 +226,8 @@ public class View extends GridPane {
 			this.saleWindow.updateStatus(status, color);
 		} else if (tableView.isAddWindowSent)
 			this.tableView.updateStatus(status, color);
+
+		this.tableView.updateProfit("The profit is: " + tableView.getProfit() + "$", color);
 	}
 
 	// Get new styled HBox
@@ -322,10 +324,10 @@ public class View extends GridPane {
 		rdoSortKey1.setToggleGroup(tglSelectedSort);
 		rdoSortKey2.setToggleGroup(tglSelectedSort);
 		rdoSortKey3.setToggleGroup(tglSelectedSort);
-		
-		//Selected as a default value.
+
+		// Selected as a default value.
 		rdoSortKey1.setSelected(true);
-		
+
 		Button btOK = new Button("OK");
 		btOK.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btOK.setOnAction(new EventHandler<ActionEvent>() {
@@ -343,7 +345,7 @@ public class View extends GridPane {
 
 		Scene scene = new Scene(vbox, 150 * ENLRAGMENT_FACTOR, 150 * ENLRAGMENT_FACTOR);
 		vbox.setStyle("-fx-background-color: BEIGE;");
-		
+
 		miniStage.setScene(scene);
 		miniStage.initOwner(stage);
 		miniStage.initModality(Modality.WINDOW_MODAL);
@@ -370,14 +372,12 @@ public class View extends GridPane {
 			key = Store.KEYS.ORDER_BY_ABC_UP;
 		} else if (toggle.toString().contains("Descending Order")) {
 			key = Store.KEYS.ORDER_BY_ABC_DOWN;
-		} else if (toggle.toString().contains("Insertion Order")) {
+		} else 
 			key = Store.KEYS.ORDER_BY_INSERT_ORDER;
-		}
+
 		// TODO: Try replace toString to equals on Toggle
-		if (key != 0) {
-			for (ViewListenable l : allListeners)
-				l.viewSendSortingMethod(key);
-		}
+		for (ViewListenable l : allListeners)
+			l.viewSendSortingMethod(key);
 
 	}
 }

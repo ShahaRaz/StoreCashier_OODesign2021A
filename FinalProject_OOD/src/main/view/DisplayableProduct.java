@@ -13,6 +13,8 @@ public class DisplayableProduct {
 
 	private SimpleIntegerProperty costToStore;
 	private SimpleIntegerProperty priceSold;
+	private SimpleIntegerProperty profit;
+
 	private Customer customer;
 
 	public DisplayableProduct(Product p) {
@@ -23,6 +25,15 @@ public class DisplayableProduct {
 		this.costToStore = new SimpleIntegerProperty(p.getCostToStore());
 		this.priceSold = new SimpleIntegerProperty(p.getPriceSold());
 		this.customer = p.getCustomer();
+		this.profit = new SimpleIntegerProperty(priceSold.get() - costToStore.get());
+	}
+
+	public int getProfit() {
+		return profit.get();
+	}
+
+	public void setProfit(SimpleIntegerProperty profit) {
+		this.profit = profit;
 	}
 
 	public long getTimeAdded() {
@@ -72,5 +83,4 @@ public class DisplayableProduct {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-
 }

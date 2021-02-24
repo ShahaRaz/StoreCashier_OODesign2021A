@@ -52,7 +52,7 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void modelSendsMessage(String content) { 
+	public void modelSendsMessage(String content) {
 		/**
 		 * send message to the user
 		 *
@@ -101,7 +101,7 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void modelFailedOperation(String elaborate) {//String errorMassage, 
+	public void modelFailedOperation(String elaborate) {// String errorMassage,
 		/**
 		 * notify user that operation faild Operations like:
 		 *
@@ -123,7 +123,7 @@ public class Controller implements ViewListenable, LogicListenable {
 	public void modelAskToSelectSorteMethod() {
 		theView.getSorteWindow();
 	}
-	
+
 	@Override
 	public void viewSendSortingMethod(int key) {
 		theModel.viewSendSortingKey(key);
@@ -133,5 +133,4 @@ public class Controller implements ViewListenable, LogicListenable {
 	public void viewAskToRemoveAllProducts() {
 		theModel.removeAllProducts();
 	}
-
 }

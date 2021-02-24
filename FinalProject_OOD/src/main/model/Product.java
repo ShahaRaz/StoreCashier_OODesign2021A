@@ -1,12 +1,5 @@
 package main.model;
 
-/**
- * @author Gadi Engelsman.
- * @author Shahar Raz.
- */
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class Product implements Comparable {
 	private long timeAdded;
 

@@ -63,7 +63,6 @@ public class Store {
 
 		// Read map from file:
 		currentMapOrdering = theFile.readMapOrdering(); // KEYS.ORDER_BY..
-		System.err.println((TAG + ", Store: READ RAF.READINT:" + currentMapOrdering ));
 		if (currentMapOrdering == -1) { // Note! -1 means that the file is Empty
 //			this.productsMap = null;
 			this.productsMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
@@ -165,7 +164,6 @@ public class Store {
 			System.err.println(" String ID IS NULL!");
 			return null;
 		} else {
-			System.out.println(productsMap.containsKey(id) + " Store, 76, ID is: " + id);
 			if (productsMap.containsKey(id))
 				return productsMap.get(id); // if not exists. return null
 			else
@@ -417,154 +415,3 @@ public class Store {
 //			entry2) -> (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
 
 }
-
-//
-//	// Sort the list
-//        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
-//		public int compare(Map.Entry<String, Integer> o1,
-//				Map.Entry<String, Integer> o2)
-//		{
-//			return (o1.getValue()).compareTo(o2.getValue());
-//		}
-//	});
-
-//    public static Comparator<Flight> compareByDepDate = new Comparator<Flight>() {
-//        @Override
-//        public int compare(Flight o1, Flight o2) {
-//            String date1 = o1.getDate().toString();
-//            String date2 = o2.getDate().toString();
-//
-//            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//            int res = 0;
-//            try {
-//                res = sdf.parse(date1).compareTo(sdf.parse(date2));
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//            if (res != 0)
-//                return res;
-//            return o1.getDepTime().compareTo(o2.getDepTime());
-//
-//        }
-//    };
-
-//	public void orderProducts(int methodOfOrdering) {
-//		switch (methodOfOrdering) {
-//			case KEYS.ORDER_BY_ABC_UP:
-//				Collections.sort(productsMap, new Comparator<HashMap.Entry<String,Product>>() {
-//					@Override
-//					public int compare(Map.Entry<String, Product> stringProductEntry, Map.Entry<String, Product> t1) {
-//						return 0;
-//					}
-//
-//
-//				});
-//
-////		 TODO: 23/01/2021 continue & fixme
-//		}
-//	}
-
-//
-//	public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
-//	{
-//		// Create a list from elements of HashMap
-//		List<Map.Entry<String, Integer> > list =
-//				new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
-//
-//		// Sort the list
-//		Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
-//			public int compare(Map.Entry<String, Integer> o1,
-//							   Map.Entry<String, Integer> o2)
-//			{
-//				return (o1.getValue()).compareTo(o2.getValue());
-//			}
-//		});
-//
-//		// put data from sorted list to hashmap
-//		HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
-//		for (Map.Entry<String, Integer> aa : list) {
-//			temp.put(aa.getKey(), aa.getValue());
-//		}
-//		return temp;
-//	}
-//
-//	// Driver Code
-//	public static void main(String[] args)
-//	{
-//
-//		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-//
-//		// enter data into hashmap
-//		hm.put("Math", 98);
-//		hm.put("Data Structure", 85);
-//		hm.put("Database", 91);
-//		hm.put("Java", 95);
-//		hm.put("Operating System", 79);
-//		hm.put("Networking", 80);
-//		Map<String, Integer> hm1 = sortByValue(hm);
-//
-//		// print the sorted hashmap
-//		for (Map.Entry<String, Integer> en : hm1.entrySet()) {
-//			System.out.println("Key = " + en.getKey() +
-//					", Value = " + en.getValue());
-//		}
-//	}
-////	public static Comparator<String> compareByPID = new Comparator<String>() {
-////		@Override
-////		public int compare(String s1, String s2) {
-////			return s1.compareTo(s2);
-////		}
-////	};
-////	public static Comparator<Product> compareByTimeEntered = new Comparator<Product>() {
-////		@Override
-////		public int compare(Product p1, Product p2) {
-////			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
-////		}
-////	};
-//	// Inner Comparators for Sorts //
-//	public static Comparator<String> compareByPID = (s1, s2) -> s1.compareTo(s2);
-//	public static Comparator<Product> compareByTimeEntered = (p1, p2) -> (int) (p1.getTimeMilis() - p2.getTimeMilis());
-//
-//	// Inner Comparators for Sorts //
-//	public static Comparator<HashMap.Entry<String, Product>> compareByPidUp = new Comparator<>() {
-//
-//		@Override
-//		public int compare(Map.Entry<String, Product> stringProductEntry, Map.Entry<String, Product> t1) {
-//			return 0;
-//		}
-//	};
-//
-////	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
-////		@Override
-////		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
-//////			return entry1.getKey().compareTo(entry2.getKey());
-////			return (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
-////		}
-////
-////	};
-
-/*
-	public static SortedMap<String, Product> getNewEmptyMap(int mapKind_KEYS) {
-		SortedMap<String, Product> newMap; // LinkedHashMap cannot be cast to class SortedMap
-		switch (mapKind_KEYS) {
-			case KEYS.ORDER_BY_ABC_UP:
-				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
-				break;
-			case KEYS.ORDER_BY_ABC_DOWN:
-				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>(new Comparator<String>() {
-					@Override
-					public int compare(String s1, String s2) {
-						return s2.compareTo(s1); // reversed order
-					}
-				}));
-				break;
-			case KEYS.ORDER_BY_INSERT_ORDER:
-				newMap = (SortedMap<String, Product>) new LinkedHashMap<String, Product>(); // insertion order
-				break;
-			default:
-				System.err.println("Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default.");
-				newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());
-		}
-		return newMap;
-	}
-*/
