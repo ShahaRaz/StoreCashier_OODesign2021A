@@ -56,7 +56,8 @@ public class Cmnd_AddProduct implements Command{
         // and deleting directly from the map is not allowed (i guess), than i need a way to replace the last product returned from the iterator
 //        theFile.replaceProductWithOtherVersion(product);
         if(wasProductInMapB4thisCmnd) {
-            theFile.replaceProductWithOtherVersion(product);
+            map_ref.put(product.getBarcode(),oldProductInMap);
+            theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
 //            map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
 //            theFile.removeProductFromFile(product);
 //            theFile.addProductToFile(oldProductInMap);
