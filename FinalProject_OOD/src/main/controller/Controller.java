@@ -37,7 +37,7 @@ public class Controller implements ViewListenable, LogicListenable {
 	// View wants to remove product.
 	@Override
 	public void viewAskToRemoveProduct(Product p) {
-		theModel.removedProduct(p);
+		theModel.removeProduct(p);
 	}
 
 	// Model return a massage: The produce removed.

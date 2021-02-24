@@ -136,6 +136,8 @@ public class Store {
 
 	public static SortedMap<String, Product> copyMap(SortedMap<String, Product> source, int mapKind_KEYS) {
 		SortedMap<String, Product> newCopy = getNewEmptyMap(mapKind_KEYS);
+		if (source==null)
+			System.err.println((TAG + ", copyMap: source.entryset=nul!! "));
 		for (Map.Entry<String, Product> pair : source.entrySet()) {
 			if (pair != null) {
 				Product newDupOfProduct = new Product(pair.getValue()); // a new hard copy ( NOT REFERENCE )
@@ -144,6 +146,19 @@ public class Store {
 		}
 		return newCopy;
 	}
+	public static ArrayList<Product> copyArray(ArrayList<Product> source, int numOfElementsToCopy) {
+		ArrayList<Product> newCopy = new ArrayList<>();
+		for (int i=0; i<numOfElementsToCopy ; i++) {
+			if (source.get(i) != null) {
+				Product newDupOfProduct = new Product(source.get(i)); // a new hard copy ( NOT REFERENCE )
+				newCopy.add(newDupOfProduct);
+			}
+		}
+		return newCopy;
+	}
+
+
+
 
 	public Product getProductDetails(String id) {
 		if (id == null) {
@@ -167,11 +182,25 @@ public class Store {
 	}
 
 	public void removeProduct(Product p) {
-		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, soldProductsArr, productsMap, theFile,
+		Cmnd_RemoveProduct commandRemove = new Cmnd_RemoveProduct(p, soldProductsArr, productsMap, theFile,
 				currentMapOrdering);
 		commandStack.add(commandRemove);
 		commandRemove.execute();
-		theFile.removeProductFromFile(p);
+		theFile.removeProductFromFile(p); // TODO: move me into command
+	}
+
+	public void removeAllProducts() {
+		Cmnd_RemoveAllProducts cmnd_removeAllProducts = new Cmnd_RemoveAllProducts // TODO for now sending reference, later check how to deal with it.
+				(this.productsMap,this.currentMapOrdering,this.soldProductsArr,theFile);
+		commandStack.add(cmnd_removeAllProducts);
+		cmnd_removeAllProducts.execute();
+
+
+//		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, soldProductsArr, productsMap, theFile,
+//				currentMapOrdering);
+//		commandStack.add(commandRemove);
+//		commandRemove.execute();
+//		theFile.removeProductFromFile(p);
 	}
 
 	public String undoLastAction() {

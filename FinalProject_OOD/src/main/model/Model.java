@@ -77,18 +77,19 @@ public class Model {
 		fireSendMessageToUser("The product " + p.getBarcode() + " added!");
 	}
 
-	public void removedProduct(Product p) {
-		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
-			fireOperationFailed("product wasn't found");
-		} else { // product is in our database
-			store.removeProduct(p);
-			/* send update to status */
-			fireSendMessageToUser("The product " + p.getBarcode() + " removed!");
-			/* Clear others fields */
-			fireProductRemoved();
-		}
-		// TODO: Return fireProductRemoved
-		// firing a return statement from within the store.
+	public void removeProduct(Product p) {
+//		if (store.getProductDetails(p.getBarcode()) == null) {// product not in store.
+//			fireOperationFailed("product wasn't found");
+//		} else { // product is in our database
+//			store.removeProduct(p);
+//			/* send update to status */
+//			fireSendMessageToUser("The product " + p.getBarcode() + " removed!");
+//			/* Clear others fields */
+//			fireProductRemoved();
+//		}
+//		// TODO: Return fireProductRemoved
+//		// firing a return statement from within the store.
+		store.removeAllProducts();
 	}
 
 	public void undoLastAction() {

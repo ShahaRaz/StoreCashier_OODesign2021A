@@ -6,7 +6,7 @@ import main.model.Product;
 import java.util.ArrayList;
 import java.util.SortedMap;
 
-public class Cmnd_removeProduct implements Command {
+public class Cmnd_RemoveProduct implements Command {
 
     private ArrayList<Product> soldProductsArr_ref; // reference
     private Product product;
@@ -14,7 +14,7 @@ public class Cmnd_removeProduct implements Command {
     private FileHandler theFile;
     private int lastMapOrdering;
 
-    public Cmnd_removeProduct(Product product, ArrayList<Product> soldProductsArr_ref,
+    public Cmnd_RemoveProduct(Product product, ArrayList<Product> soldProductsArr_ref,
                               SortedMap<String, Product> map_ref, FileHandler theFile, int currentMapOrdering) {
         this.product = map_ref.get(product.getBarcode());
         this.map_ref = map_ref; // reference to the main map
