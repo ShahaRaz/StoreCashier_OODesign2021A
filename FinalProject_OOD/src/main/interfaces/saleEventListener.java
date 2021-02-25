@@ -8,5 +8,5 @@ package main.interfaces;
 import main.model.store.Store;
 
 public interface saleEventListener {
-	void onSaleEvent(Store store);
+	String announceGotPromotion(Store store);
 }

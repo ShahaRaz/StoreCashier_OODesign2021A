@@ -38,7 +38,9 @@ public class Cmnd_RemoveProduct implements Command {
 
         soldProductsArr_ref.remove(product); // not listed in the system requirements, but we implement this for possible future use
 
-
+        // saleListeners
+        if (subscribedCustomers_ref.contains(product.getCustomer()))
+            subscribedCustomers_ref.remove(product.getCustomer());
 
     }
 
@@ -53,6 +55,7 @@ public class Cmnd_RemoveProduct implements Command {
 
         soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
 
+        // saleListeners
         if(product.getCustomer().getIsAcceptingPromotions())
             subscribedCustomers_ref.add(product.getCustomer());
 
