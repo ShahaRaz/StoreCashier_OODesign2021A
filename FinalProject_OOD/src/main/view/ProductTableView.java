@@ -136,10 +136,15 @@ public class ProductTableView extends GridPane {
 		initprofit();
 	}
 
+	/**
+	 * Update the table after editing the data
+	 * 
+	 * @param products - Map of all products
+	 */
 	public void updateTable(Set<Map.Entry<String, Product>> products) {
 		data.clear();
 		profit = 0;
-		
+
 		for (Map.Entry<String, Product> e : products) {
 			DisplayableProduct tmp = new DisplayableProduct(e.getValue()); // here we changed
 			profit += tmp.getProfit();
@@ -179,7 +184,7 @@ public class ProductTableView extends GridPane {
 		setHalignment(table, HPos.CENTER);
 	}
 
-	/** initial status */
+	/** initial status label */
 	private void initStatus() {
 		lblStatus = new Label();
 		add(new Label("Status: "), 0, 4);
@@ -187,6 +192,7 @@ public class ProductTableView extends GridPane {
 		setHalignment(lblStatus, HPos.CENTER);
 	}
 
+	/** initial profit label */
 	private void initprofit() {
 		lblProfit = new Label();
 		add(new Label("Profit: "), 0, 5);
