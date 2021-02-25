@@ -194,8 +194,14 @@ public class View extends GridPane {
 	 * @param content - The message to display on Status label
 	 */
 	public void notifyNewMessageFromModel(String content) {
-		fireListOfProducts();
-		notifyNewMessage(content, "green");
+		if (content.contains("The Sale has been sent!")){
+			
+		}
+		else { // ask for product list, and update all statuses
+
+			fireListOfProducts();
+			notifyNewMessage(content, "green");
+		}
 	}
 
 	/**
@@ -227,7 +233,7 @@ public class View extends GridPane {
 		} else if (tableView.isAddWindowSent)
 			this.tableView.updateStatus(status, color);
 
-		this.tableView.updateProfit("The profit is: " + tableView.getProfit() + "$", color);
+//		this.tableView.updateProfit("The profit is: " + tableView.getProfit() + "$", color);
 	}
 
 	// Get new styled HBox

@@ -145,6 +145,7 @@ public class ProductTableView extends GridPane {
 			profit += tmp.getProfit();
 			data.addAll(tmp);
 		}
+		updateProfit("The profit is: " + getProfit() + "$", "green");
 	}
 
 	/** initial TableView */

@@ -1,5 +1,6 @@
 package main.model.store;
 
+import main.interfaces.saleEventListener;
 import main.model.FileHandler;
 import main.model.Product;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.SortedMap;
 
 public class Cmnd_AddProduct implements Command{
+    private ArrayList<saleEventListener> subscribedCustomers_ref; // reference
     private Product oldProductInMap=null; // save it in-case we'll overwrite old details of the product in the map
     boolean wasProductInMapB4thisCmnd=false;
     private ArrayList<Product> soldProductsArr_ref; // not listed in the system requirements, but we implement this for possible future use
@@ -16,14 +18,14 @@ public class Cmnd_AddProduct implements Command{
     private int currentMapOrdering;
 
 
-    public Cmnd_AddProduct(Product product,  SortedMap<String, Product> map_ref,
-                           ArrayList<Product> soldProductsArr_ref, FileHandler theFile, int currentMapOrdering) {
+    public Cmnd_AddProduct(Product p, SortedMap<String, Product> productsMap, ArrayList<Product> soldProductsArr,
+                           FileHandler theFile, int currentMapOrdering, ArrayList<saleEventListener> subscribedCustomers) {
         this.product = product;
         this.map_ref = map_ref; // reference to the main map
         this.soldProductsArr_ref = soldProductsArr_ref; // A Reference!
         this.theFile = theFile; // A Reference!
         this.currentMapOrdering = currentMapOrdering;
-
+        this.subscribedCustomers_ref = subscribedCustomers;
     }
 
     @Override
@@ -42,6 +44,8 @@ public class Cmnd_AddProduct implements Command{
 
         soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
 
+        if(product.getCustomer().getIsAcceptingPromotions())
+            subscribedCustomers_ref.add(product.getCustomer());
 
     }
 
@@ -51,6 +55,8 @@ public class Cmnd_AddProduct implements Command{
      */
     @Override
     public void undo() {
+        if (subscribedCustomers_ref.contains(product.getCustomer()))
+            subscribedCustomers_ref.remove(product.getCustomer());
         /// TODO: figure out a better, more efficient way to replace a product in the file
         // since deleting and than adding a product is inefficient & will lead to undesired output (the product will be last in the file)
         // and deleting directly from the map is not allowed (i guess), than i need a way to replace the last product returned from the iterator
@@ -58,6 +64,9 @@ public class Cmnd_AddProduct implements Command{
         if(wasProductInMapB4thisCmnd) {
             map_ref.put(product.getBarcode(),oldProductInMap);
             theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
+
+            if(oldProductInMap.getCustomer().getIsAcceptingPromotions())
+                subscribedCustomers_ref.add(oldProductInMap.getCustomer());
 //            map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
 //            theFile.removeProductFromFile(product);
 //            theFile.addProductToFile(oldProductInMap);

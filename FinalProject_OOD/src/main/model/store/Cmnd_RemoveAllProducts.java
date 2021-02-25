@@ -1,5 +1,6 @@
 package main.model.store;
 
+import main.interfaces.saleEventListener;
 import main.model.FileHandler;
 import main.model.Product;
 
@@ -15,12 +16,17 @@ public class Cmnd_RemoveAllProducts implements Command {
     private ArrayList<Product> soldProductsArr_ref; // reference
     private ArrayList<Product> copyOfProductsArr; // reference
     private FileHandler theFile; // reference
+    private ArrayList<saleEventListener> subscribedCustomers_ref; // reference
 
-    public Cmnd_RemoveAllProducts(SortedMap<String, Product> map_ref, int currentMapOrdering, ArrayList<Product> soldProductsArr_ref, FileHandler theFile) {
+
+    public Cmnd_RemoveAllProducts(SortedMap<String, Product> map_ref, int currentMapOrdering, ArrayList<Product> soldProductsArr_ref,
+                                  FileHandler theFile, ArrayList<saleEventListener> subscribedCustomers) {
         this.map_ref = map_ref;
         this.currentMapOrdering = currentMapOrdering;
         this.soldProductsArr_ref = soldProductsArr_ref; // Arrays.copy.......
         this.theFile = theFile;
+        this.subscribedCustomers_ref = subscribedCustomers;
+
     }
 
     @Override
