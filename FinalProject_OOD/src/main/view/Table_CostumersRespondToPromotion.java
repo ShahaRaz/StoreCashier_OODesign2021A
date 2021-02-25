@@ -4,6 +4,7 @@ package main.view;
  * @author Shahar Raz.
  */
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Table_CostumersRespondToPromotion extends GridPane implements Runnable {
+	private static final String TAG = "Table_CostumersRespondT";
 	/** Boolean attribute for UpdateFields method */
 	protected boolean isAddWindowSent;
 	/** HBox */
@@ -41,6 +43,8 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 	/** List of products */
 	private final ObservableList<DisplayableCustomer> data = FXCollections.observableArrayList();
 	private int totalCustomersRespond; // respond
+	private ArrayList<saleEventListener> theListeners;
+	private int totalSubscribed=0;
 
 	public Table_CostumersRespondToPromotion(View view) {
 		this.view = view;
@@ -83,7 +87,7 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 	private void initTitle() {
 		Reflection r = new Reflection();
 		r.setFraction(0.6);
-		Text title = new Text("Table of all Products");
+		Text title = new Text("Customers Respond to Promotion");
 		title.setFont(Font.font("ariel", FontWeight.BOLD, 25));
 		title.setFill(Color.RED);
 		title.setEffect(r);
@@ -102,17 +106,29 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 	}
 
 
-	public void updateTable(ArrayList<saleEventListener> saleEventListeners) {
-		data.clear();
-		totalCustomersRespond = 0;
-		for (saleEventListener l : saleEventListeners) {
-			DisplayableCustomer tmp = new DisplayableCustomer((Customer)l);
-			totalCustomersRespond += 1;
-			
-			data.add(tmp);
-		}
+//	public void updateTable(ArrayList<saleEventListener> saleEventListeners) {
+//		data.clear();
+//		totalCustomersRespond = 0;
+//		for (saleEventListener l : saleEventListeners) {
+//			DisplayableCustomer tmp = new DisplayableCustomer((Customer) l);
+//			totalCustomersRespond += 1;
+//			data.add(tmp);
+//
+//		}
+//
+//			Platform.runLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					try {
+//						wait(2000);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//					System.err.println((TAG + ", run: passes 2 sec"));
+//				}
+//			});
+//	}
 //		updateProfit("The profit is: " + getProfit() + "$", "green");
-	}
 	/** update profit */
 //	public void updateProfit(String status, String color) {
 //		lblProfit.setText(status);
@@ -139,7 +155,7 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 		table.getColumns().addAll(customerNameCol, message,PhoneNum);
 
 		view.fireListOfProducts();
-		add(table, 0, 3, 5, 1);
+		add(table, 0, 3, 3, 1);
 		setHalignment(table, HPos.CENTER);
 	}
 
@@ -163,7 +179,18 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 	public void run() {
 		// add message from user
 		try {
-			Thread.sleep(1000);
+			totalSubscribed += theListeners.size();
+			for (saleEventListener l : this.theListeners) {
+				DisplayableCustomer tmp = new DisplayableCustomer((Customer) l);
+				totalCustomersRespond += 1;
+				Platform.runLater(()-> {
+					updateStatus(totalCustomersRespond + " / " + totalSubscribed , "black");
+				});
+				data.add(tmp);
+				Thread.sleep(5000);
+
+
+			}
 
 
 		} catch (InterruptedException e) {
@@ -171,5 +198,9 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 			e.printStackTrace();
 		}
 
+	}
+
+	public void sendSaleListeners(ArrayList<saleEventListener> listeners) {
+		this.theListeners = listeners;
 	}
 }

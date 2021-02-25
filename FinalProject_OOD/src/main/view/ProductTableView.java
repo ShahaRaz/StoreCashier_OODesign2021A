@@ -170,15 +170,14 @@ public class ProductTableView extends GridPane {
 		storePrice.setCellValueFactory(new PropertyValueFactory<DisplayableProduct, Integer>("costToStore"));
 		TableColumn customerPrice = new TableColumn("Customer price");
 		customerPrice.setCellValueFactory(new PropertyValueFactory<DisplayableProduct, Integer>("priceSold"));
-
-		TableColumn priceCol = new TableColumn("Price");
-		priceCol.getColumns().addAll(storePrice, customerPrice);
-
 		TableColumn profit = new TableColumn("Profit");
 		profit.setCellValueFactory(new PropertyValueFactory<DisplayableProduct, Integer>("profit"));
 
+		TableColumn priceCol = new TableColumn("Price");
+		priceCol.getColumns().addAll(storePrice, customerPrice,profit);
+
 		table.setItems(data);
-		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol, profit);
+		table.getColumns().addAll(prodctNameCol, barcodeCol, priceCol);
 
 		view.fireListOfProducts();
 		add(table, 0, 3, 5, 1);

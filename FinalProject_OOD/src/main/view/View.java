@@ -9,6 +9,7 @@ import java.util.Set;
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  * */
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -48,6 +49,7 @@ public class View extends GridPane {
 	private ProductTableView tableView;
 	private SaleWondow saleWindow;
 	private Set<Map.Entry<String, Product>> products_set_copy;
+	private Table_CostumersRespondToPromotion tableResponse;
 
 	public void registerListener(ViewListenable l) {
 		allListeners.add(l);
@@ -77,16 +79,19 @@ public class View extends GridPane {
 		addWindow = new AddProductView(this);
 		removeWindow = new RemoveProductView(this);
 		saleWindow = new SaleWondow(this);
+		tableResponse = new Table_CostumersRespondToPromotion(this);
 
 		Tab tab1 = new Tab("Table Of All Products", tableView);
 		Tab tab2 = new Tab("Add Product", addWindow);
 		Tab tab3 = new Tab("Remove Product", removeWindow);
 		Tab tab4 = new Tab("Sale", saleWindow);
+		Tab tab5 = new Tab("CustomerResponse",tableResponse);
 
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
 		tbPane.getTabs().add(tab3);
 		tbPane.getTabs().add(tab4);
+		tbPane.getTabs().add(tab5);
 
 		hbButtons.getChildren().add(tbPane);
 	}
@@ -168,14 +173,19 @@ public class View extends GridPane {
 	 * @param listeners - all subscribed customers
 	 */
 	public void notifySubscribedCustomers(ArrayList<saleEventListener> listeners) {
-		for (saleEventListener l : listeners) {
-			try {
-				popUpShortMassage("Promotion Server",l.announceGotPromotion(), 100, 100, 100);
-				wait(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		tableResponse.sendSaleListeners(listeners);
+		Platform.runLater(()->{
+			new Thread(tableResponse).start();
+		});
+
+//		for (saleEventListener l : listeners) {
+//			try {
+//				popUpShortMassage("Promotion Server",l.announceGotPromotion(), 100, 100, 100);
+//				wait(2000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	/** @param products - List of all product to update the relevant ComboBox */

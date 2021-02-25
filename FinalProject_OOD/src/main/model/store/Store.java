@@ -78,6 +78,8 @@ public class Store {
 			// _____________________________
 			this.productsMap = getNewEmptyMap(currentMapOrdering);
 			theFile.readMapFromFile(productsMap, true);
+			//3. read subscribedCustomers from file
+			subscribedCustomers = getListenersFromMap(productsMap);
 		}
 		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
 	}
@@ -232,6 +234,18 @@ public class Store {
 			newCopy.add(tmpCustomer);
 		}
 		return newCopy;
+	}
+
+	public static ArrayList<saleEventListener> getListenersFromMap(Map<String, Product> theMap) {
+		ArrayList<saleEventListener> theNewList = new ArrayList<>();
+		for (Map.Entry<String, Product> pair : theMap.entrySet()) {
+			if (pair != null) {
+				saleEventListener tmpCustomer =(Customer) (pair.getValue().getCustomer()); // a new hard copy ( NOT REFERENCE )
+				if (((Customer)tmpCustomer).getIsAcceptingPromotions())
+					theNewList.add(tmpCustomer);
+			}
+		}
+		return theNewList;
 	}
 
 

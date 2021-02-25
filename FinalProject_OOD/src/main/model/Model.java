@@ -125,8 +125,15 @@ public class Model {
 			fireGetProduct(p);
 	}
 
+	/**
+	 * send promotions to all customers who approved receiving.
+	 * got the PWNewSaleInfo, but understood that we are "sending" a general message, so its not needed.
+	 * keeping it for maybe future use...
+	 *
+	 * @param pWNewSaleInfo
+	 */
 	public void sendSaleToCustomers(Product pWNewSaleInfo) {
-		// got the PWNewSaleInfo, but understood that we are "sending" a general message.
+
 		ArrayList<saleEventListener> listeners  = store.getSubscribedCustomers();
 		if (listeners.equals(null) || listeners.isEmpty()) {
 			fireOperationFailed("No Subscribed Customers");

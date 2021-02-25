@@ -87,6 +87,9 @@ public class Cmnd_AddProduct implements Command{
             theFile.removeProductFromFile(product);
             //2. read the file into map
             theFile.readMapFromFile(map_ref,true);
+//            //3. read subscribedCustomers from file
+//            subscribedCustomers_ref = Store.getListenersFromMap(map_ref);
+
 
         }
 

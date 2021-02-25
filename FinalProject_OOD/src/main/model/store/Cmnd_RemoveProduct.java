@@ -34,9 +34,12 @@ public class Cmnd_RemoveProduct implements Command {
         // 2. removing the product from the file
         theFile.removeProductFromFile(product);
         // 3. if it is not the last product, we want to read the updated map from the file.
-        if (!isLastProduct) // not the last product
-            theFile.readMapFromFile(map_ref,true); // it's inefficient, but that's what we were asked for.
+        if (!isLastProduct) { // not the last product
+            theFile.readMapFromFile(map_ref, true); // it's inefficient, but that's what we were asked for.
+//        // 4. read subscribedCustomers from file
+//            subscribedCustomers_ref = Store.getListenersFromMap(map_ref);
 
+        }
         else{ // it is the last product, make sure that the map is empty.
             map_ref.clear();
         }
