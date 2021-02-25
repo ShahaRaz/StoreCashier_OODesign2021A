@@ -1,5 +1,6 @@
 package main.view;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -26,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import main.interfaces.saleEventListener;
 import main.listeners.ViewListenable;
 import main.model.Product;
 import main.model.store.Store;
@@ -140,9 +143,8 @@ public class View extends GridPane {
 	// TODO: Send product to model to create manipulation on product.
 	/** @param product - View sending request to create sale for product */
 	public void fireSale(Product product) {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskToSendSale();
-		}
 	}
 
 	/** Sending fire to remove all products */
@@ -158,6 +160,22 @@ public class View extends GridPane {
 		// Clear other's tabs fields after remove product.
 		addWindow.cleanValueFields();
 		saleWindow.cleanValueFields();
+	}
+
+	/**
+	 * Run through listeners and sending sale
+	 * 
+	 * @param listeners - all subscribed customers
+	 */
+	public void notifySubscribedCustomers(ArrayList<saleEventListener> listeners) {
+		for (saleEventListener l : listeners) {
+			try {
+				popUpShortMassage("Promotion Server",l.announceGotPromotion(), 100, 100, 100);
+				wait(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/** @param products - List of all product to update the relevant ComboBox */
@@ -194,10 +212,9 @@ public class View extends GridPane {
 	 * @param content - The message to display on Status label
 	 */
 	public void notifyNewMessageFromModel(String content) {
-		if (content.contains("The Sale has been sent!")){
-			
-		}
-		else { // ask for product list, and update all statuses
+		if (content.contains("The Sale has been sent!")) {
+
+		} else { // ask for product list, and update all statuses
 
 			fireListOfProducts();
 			notifyNewMessage(content, "green");
@@ -232,8 +249,6 @@ public class View extends GridPane {
 			this.saleWindow.updateStatus(status, color);
 		} else if (tableView.isAddWindowSent)
 			this.tableView.updateStatus(status, color);
-
-//		this.tableView.updateProfit("The profit is: " + tableView.getProfit() + "$", color);
 	}
 
 	// Get new styled HBox
@@ -269,56 +284,56 @@ public class View extends GridPane {
 		this.tableView = tableView;
 	}
 
-//	private void popUpShortMassage(String headLine, String Massage, int Width, int Height, int fontSize) {
-//		Stage miniStage = new Stage();
-//		VBox vbPopup = new VBox();
-//		miniStage.setTitle(headLine);
-//		Label lblMiniPopup = setHeadLine(Massage, fontSize);
-//		// lblMiniPopup.setText(Massage);
-//		// lblMiniPopup.setAlignment(Pos.CENTER);
-//		setStageCONSTSize(miniStage, Width, Width, Height, Height);
-//		Button btnClose = new Button();
-//		btnClose.setText("Ok");
-//		btnClose.setOnAction(new EventHandler<ActionEvent>() {
-//			@Override
-//			public void handle(ActionEvent arg0) {
-//				miniStage.close();
-//			}
-//		});
-//		vbPopup.getChildren().addAll(lblMiniPopup, btnClose);
-//		vbPopup.setAlignment(Pos.CENTER);
-//		vbPopup.setSpacing(20 * ENLRAGMENT_FACTOR);
-//
-//		Scene scene = new Scene(vbPopup, Width * ENLRAGMENT_FACTOR, Height * ENLRAGMENT_FACTOR);
-//		miniStage.setScene(scene);
-//
-//		// miniStage.initStyle(StageStyle.UNDECORATED);
-//		miniStage.show();
-//
-//		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-//
-//			@Override
-//			public void handle(KeyEvent theEvent) {
-//				if (theEvent.getCode() == KeyCode.ENTER || theEvent.getCode() == KeyCode.ESCAPE)
-//					miniStage.close();
-//			}
-//		});
-//	}
-//
-//	private void setStageCONSTSize(Stage stg, int minWidth, int maxWidth, int minHeihgt, int maxHeight) { // height
-//		stg.setMinHeight(minHeihgt * ENLRAGMENT_FACTOR);
-//		stg.setMaxHeight(maxHeight * ENLRAGMENT_FACTOR);
-//		stg.setMinWidth(minWidth * ENLRAGMENT_FACTOR);
-//		stg.setMaxWidth(maxWidth * ENLRAGMENT_FACTOR);
-//	}
-//
-//	private Label setHeadLine(String headLine, int fontSize) {
-//		Label lblHeadline = new Label(headLine);
-//		lblHeadline.setMinHeight(10 * ENLRAGMENT_FACTOR);
-//		lblHeadline.setAlignment(Pos.TOP_CENTER);
+	private void popUpShortMassage(String headLine, String Massage, int Width, int Height, int fontSize) {
+		Stage miniStage = new Stage();
+		VBox vbPopup = new VBox();
+		miniStage.setTitle(headLine);
+		Label lblMiniPopup = setHeadLine(Massage, fontSize);
+		// lblMiniPopup.setText(Massage);
+		// lblMiniPopup.setAlignment(Pos.CENTER);
+		setStageCONSTSize(miniStage, Width, Width, Height, Height);
+		Button btnClose = new Button();
+		btnClose.setText("Ok");
+		btnClose.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				miniStage.close();
+			}
+		});
+		vbPopup.getChildren().addAll(lblMiniPopup, btnClose);
+		vbPopup.setAlignment(Pos.CENTER);
+		vbPopup.setSpacing(20 * ENLRAGMENT_FACTOR);
+
+		Scene scene = new Scene(vbPopup, Width * ENLRAGMENT_FACTOR, Height * ENLRAGMENT_FACTOR);
+		miniStage.setScene(scene);
+
+		// miniStage.initStyle(StageStyle.UNDECORATED);
+		miniStage.show();
+
+		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent theEvent) {
+				if (theEvent.getCode() == KeyCode.ENTER || theEvent.getCode() == KeyCode.ESCAPE)
+					miniStage.close();
+			}
+		});
+	}
+
+	private void setStageCONSTSize(Stage stg, int minWidth, int maxWidth, int minHeihgt, int maxHeight) { // height
+		stg.setMinHeight(minHeihgt * ENLRAGMENT_FACTOR);
+		stg.setMaxHeight(maxHeight * ENLRAGMENT_FACTOR);
+		stg.setMinWidth(minWidth * ENLRAGMENT_FACTOR);
+		stg.setMaxWidth(maxWidth * ENLRAGMENT_FACTOR);
+	}
+
+	private Label setHeadLine(String headLine, int fontSize) {
+		Label lblHeadline = new Label(headLine);
+		lblHeadline.setMinHeight(10 * ENLRAGMENT_FACTOR);
+		lblHeadline.setAlignment(Pos.TOP_CENTER);
 //		lblHeadline.setFont(Font.font("Cambria", fontSize));
-//		return lblHeadline;
-//	}
+		return lblHeadline;
+	}
 
 	/** Pop-Up window to get from the user the sorting method */
 	public void getSorteWindow() {
@@ -378,7 +393,7 @@ public class View extends GridPane {
 			key = Store.KEYS.ORDER_BY_ABC_UP;
 		} else if (toggle.toString().contains("Descending Order")) {
 			key = Store.KEYS.ORDER_BY_ABC_DOWN;
-		} else 
+		} else
 			key = Store.KEYS.ORDER_BY_INSERT_ORDER;
 
 		// TODO: Try replace toString to equals on Toggle

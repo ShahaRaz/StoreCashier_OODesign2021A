@@ -129,7 +129,7 @@ public class Controller implements ViewListenable, LogicListenable {
 
 	@Override
 	public void modelSendSaleListeners(ArrayList<saleEventListener> listeners) {
-		// the view........
+		 theView.notifySubscribedCustomers(listeners);
 	}
 
 	@Override
