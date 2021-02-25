@@ -5,7 +5,7 @@ import main.model.FileHandler;
 import main.model.Product;
 
 import java.util.ArrayList;
-import java.util.SortedMap;
+import java.util.Map;
 
 public class Cmnd_AddProduct implements Command{
     private static final String TAG = "Cmnd_AddProduct";
@@ -14,12 +14,12 @@ public class Cmnd_AddProduct implements Command{
     boolean wasProductInMapB4thisCmnd=false;
     private ArrayList<Product> soldProductsArr_ref; // not listed in the system requirements, but we implement this for possible future use
     private Product product;
-    private SortedMap<String, Product> map_ref;
+    private Map<String, Product> map_ref;
     private FileHandler theFile;
     private int currentMapOrdering;
 
 
-    public Cmnd_AddProduct(Product p, SortedMap<String, Product> productsMap, ArrayList<Product> soldProductsArr,
+    public Cmnd_AddProduct(Product p, Map<String, Product> productsMap, ArrayList<Product> soldProductsArr,
                            FileHandler theFile, int currentMapOrdering, ArrayList<saleEventListener> subscribedCustomers) {
         this.product = p;
         this.map_ref = productsMap; // reference to the main map

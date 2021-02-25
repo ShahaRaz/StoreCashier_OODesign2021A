@@ -38,7 +38,7 @@ public class FileHandler implements Iterable<Product> {
 	 *
 	 * @param theMap - Reference to it
 	 */
-	public void saveMapToFile(SortedMap<String, Product> theMap, int mapOrdering_KEYS) {
+	public void saveMapToFile(Map<String, Product> theMap, int mapOrdering_KEYS) {
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 			if (!writeMapOrderingToFile(mapOrdering_KEYS)) { // if products already in the map, it's already ordered
 				System.err.println((TAG + ", saveMapToFile: File is not empty, skip writing the ordering"));
@@ -75,7 +75,7 @@ public class FileHandler implements Iterable<Product> {
 	 * @param theMap
 	 * @param isClearingMapB4
 	 */
-	public void readMapFromFile(SortedMap<String, Product> theMap, boolean isClearingMapB4) {
+	public void readMapFromFile(Map<String, Product> theMap, boolean isClearingMapB4) {
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 			if (isClearingMapB4) {
 				theMap.clear(); // remove all elements from map
@@ -83,11 +83,11 @@ public class FileHandler implements Iterable<Product> {
 			// _____________________________________________ passing over the readInt
 			// NOTE! bytes 0-3 in the file are used for the mapOrder_KEYS,
 			// raf.seek(3); // go to begging of file
-			System.out.println("File handler, readMapFromFile , raf position is: " + raf.getFilePointer());
+			System.err.println((TAG + ", readMapFromFile: raf position is: " + raf.getFilePointer()));
 			raf.seek(0);
 			raf.readInt();
 
-			System.out.println("File handler, readMapFromFile , raf position is: " + raf.getFilePointer());
+			System.err.println((TAG + ", readMapFromFile: raf position is: " + raf.getFilePointer()));
 
 			// _____________________________________________
 
@@ -110,7 +110,8 @@ public class FileHandler implements Iterable<Product> {
 		while (i.hasNext()) {
 			Product p = (Product) i.next();
 			i.remove();
-			System.out.println("\nThe element " + p.getDescription() + " was deleted,  FileHandler 116");
+//			System.out.println("\nThe element " + p.getDescription() + " was deleted,  FileHandler 116");
+			System.err.println((TAG + ", removeAllProducts: The element " + p.getDescription() + " was deleted,  FileHandler 116"));
 		}
 	}
 

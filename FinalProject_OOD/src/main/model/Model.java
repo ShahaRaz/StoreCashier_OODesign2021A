@@ -129,8 +129,9 @@ public class Model {
 		ArrayList<saleEventListener> listeners  = store.getSubscribedCustomers();
 		if (listeners.equals(null) || listeners.isEmpty()) {
 			fireOperationFailed("No Subscribed Customers");
-		} else {
+		} else { // we have customers who accepts promotions
 			fireSendMessageToUser("The Sale has been sent!");
+			System.err.println((TAG + ", sendSaleToCustomers: Got " + listeners.size() + " Promotion listeners"));
 			fireSendSaleListenersList(listeners);
 		}
 	}

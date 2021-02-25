@@ -6,12 +6,12 @@ import main.model.Product;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.SortedMap;
+import java.util.Map;
 
 public class Cmnd_RemoveAllProducts implements Command {
-    private SortedMap<String, Product> map_ref;
+    private Map<String, Product> map_ref;
 
-    private SortedMap<String, Product> copyOfMap;
+    private Map<String, Product> copyOfMap;
     private int currentMapOrdering;
     private ArrayList<Product> soldProductsArr_ref; // reference
     private ArrayList<Product> copyOfProductsArr; // reference
@@ -19,7 +19,7 @@ public class Cmnd_RemoveAllProducts implements Command {
     private ArrayList<saleEventListener> subscribedCustomers_ref; // reference
 
 
-    public Cmnd_RemoveAllProducts(SortedMap<String, Product> map_ref, int currentMapOrdering, ArrayList<Product> soldProductsArr_ref,
+    public Cmnd_RemoveAllProducts(Map<String, Product> map_ref, int currentMapOrdering, ArrayList<Product> soldProductsArr_ref,
                                   FileHandler theFile, ArrayList<saleEventListener> subscribedCustomers) {
         this.map_ref = map_ref;
         this.currentMapOrdering = currentMapOrdering;

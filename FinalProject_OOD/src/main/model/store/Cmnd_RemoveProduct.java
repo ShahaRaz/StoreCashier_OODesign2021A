@@ -5,19 +5,19 @@ import main.model.FileHandler;
 import main.model.Product;
 
 import java.util.ArrayList;
-import java.util.SortedMap;
+import java.util.Map;
 
 public class Cmnd_RemoveProduct implements Command {
 
     private ArrayList<Product> soldProductsArr_ref; // reference
     private Product product;
-    private SortedMap<String, Product> map_ref;
+    private Map<String, Product> map_ref;
     private FileHandler theFile;
     private int lastMapOrdering;
     private ArrayList<saleEventListener> subscribedCustomers_ref; // reference
 
     public Cmnd_RemoveProduct(Product product, ArrayList<Product> soldProductsArr_ref,
-                              SortedMap<String, Product> map_ref, FileHandler theFile, int currentMapOrdering, ArrayList<saleEventListener> subscribedCustomers) {
+                              Map<String, Product> map_ref, FileHandler theFile, int currentMapOrdering, ArrayList<saleEventListener> subscribedCustomers) {
         this.product = map_ref.get(product.getBarcode());
         this.map_ref = map_ref; // reference to the main map
         this.soldProductsArr_ref = soldProductsArr_ref; // A Reference!
