@@ -25,6 +25,7 @@ public class Store {
 	private static final String TAG = "Store";
 
 	public interface KEYS {
+		final String STORE_NAME = "atGadi's";
 		final int ORDER_BY_ABC_UP = 1;
 		final int ORDER_BY_ABC_DOWN = 2;
 		final int ORDER_BY_INSERT_ORDER = 3;
@@ -35,7 +36,7 @@ public class Store {
 
 	// Singleton pattern.
 	private static Store instance;
-	private String storeName = "The Store";
+	private String storeName = KEYS.STORE_NAME;
 	protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
 	protected ArrayList<saleEventListener> subscribedCustomers = new ArrayList<>(); // Add for now initial.
 
@@ -100,6 +101,7 @@ public class Store {
 		return this.productsMap.entrySet();
 	}
 
+	// Implement Observable Pattern, notify all the subscribed customers.
 	public ArrayList<saleEventListener> getSubscribedCustomers() {
 		return subscribedCustomers;
 	}
@@ -240,10 +242,6 @@ public class Store {
 		theFile = m.getTheFile();
 	}
 
-	// Implement Observable Pattern, notify all the subscribed customers.
-	public ArrayList<saleEventListener> sendSaleListenersToView() {
-		return subscribedCustomers;
-	}
 
 	public static class Memento {
 		private Stack<Command> commandStack = new Stack<>(); // hold all operations

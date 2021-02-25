@@ -34,11 +34,12 @@ public class Cmnd_AddProduct implements Command{
             wasProductInMapB4thisCmnd = true;
             oldProductInMap = map_ref.get(product.getBarcode());
 
-            //handle subscribed costumer
-
+            /**
+             * handle subscribed costumer
+             * removing the OLD customer from
+             */
             if (subscribedCustomers_ref.contains(map_ref.get(product.getBarcode()).getCustomer()))
-                subscribedCustomers_ref.remove(product.getCustomer());
-
+                subscribedCustomers_ref.remove(map_ref.get(product.getBarcode()).getCustomer());
         }
         else
             wasProductInMapB4thisCmnd = false;
