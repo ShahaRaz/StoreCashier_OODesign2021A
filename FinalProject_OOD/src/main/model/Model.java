@@ -137,7 +137,6 @@ public class Model {
 		if (listeners.equals(null) || listeners.isEmpty()) {
 			fireOperationFailed("No Subscribed Customers");
 		} else {
-			store.sendSaleListenersToView();
 			fireSendMessageToUser("The Sale has been sent!");
 			fireSendSaleListenersList(listeners);
 		}

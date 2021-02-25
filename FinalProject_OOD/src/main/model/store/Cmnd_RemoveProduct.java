@@ -33,7 +33,7 @@ public class Cmnd_RemoveProduct implements Command {
         theFile.removeProductFromFile(product);
         if (!isLastProduct) // not the last product
             theFile.readMapFromFile(map_ref,true); // it's inefficient, but that's what we were asked for.
-        map_ref.remove(product.getBarcode());
+//        map_ref.remove(product.getBarcode());
 
 
         soldProductsArr_ref.remove(product); // not listed in the system requirements, but we implement this for possible future use
