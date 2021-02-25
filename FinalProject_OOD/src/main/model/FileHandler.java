@@ -57,7 +57,7 @@ public class FileHandler implements Iterable<Product> {
 		}
 	}
 
-	protected void writeProductToFile(Product tmp, RandomAccessFile raf) throws IOException { // todo continue
+	protected void writeProductToFile(Product tmp, RandomAccessFile raf) throws IOException {
 		raf.writeUTF(tmp.getBarcode()); // Barcode
 		raf.writeUTF(tmp.getDescription()); // DESCRIPTION
 		raf.writeInt(tmp.getPriceSold()); // Price sold
@@ -179,7 +179,7 @@ public class FileHandler implements Iterable<Product> {
 //        }
 //    }
 
-	// TODO complete this iterator later
+
 	private class ConcreteIterator implements Iterator<Product> {
 		private RandomAccessFile raf_concreteItr;
 		private Product lastReturnedProduct;

@@ -50,8 +50,7 @@ public class Product implements Comparable {
 		if (this.costToStore < 0 || this.priceSold < 0) {
 			return "Price can't be negative";
 		}
-		// TODO: this.barcode.get().equals("") is unnecessary, already checked in
-		// AddProductView, line 306
+		// NOTE: barcode.equals("") is unnecessary, already checked in AddProductView, line 306
 		// when barcode null, throws Exception.
 		if (this.barcode == null || this.barcode.equals("")) {
 			return "Product must have Valid Barcode";

@@ -21,7 +21,7 @@ public class Model {
 	public Model() {
 		this.allListeners = new ArrayList<>();
 		store = Store.getInstance();
-		// TODO add here products from file
+
 	}
 
 	public void registerListener(LogicListenable l) {
@@ -71,8 +71,6 @@ public class Model {
 	}
 
 	public void addProduct(Product p) {
-		// TODO: Register customers as Subscribed (18/2).
-
 		if (store.getProductDetails(p.getBarcode()) == null) { // product isn't yet in hashMap
 			String problemsWithProduct = p.isValidProduct(this); // return the first error found
 			if (problemsWithProduct.length() != 0) { // no errors found
@@ -94,9 +92,6 @@ public class Model {
 			/* Clear others fields */
 			fireProductRemoved();
 		}
-		// TODO: Return fireProductRemoved
-		// firing a return statement from within the store.
-		
 	}
 	
 	public void removeAllProducts() {
@@ -118,8 +113,6 @@ public class Model {
 		if (products.isEmpty()) {
 			fireSendProductsArrToView(products); // here for testing, delete me later
 			fireSelectingSortType();
-			// TODO remove the next line, and set the map based on the returned value from the user.
-//			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP),Store.KEYS.ORDER_BY_ABC_UP);
 		}
 		fireSendProductsArrToView(products);
 	}
@@ -160,11 +153,9 @@ public class Model {
 
 	public void viewSendSortingKey(int key) {
 		/*
-		 * TODO initial the sorting key. (18/2) 
 		 * 1 - Ascending Order 
 		 * 2 - Descending Order
 		 * 3 - Insertion Order
-		 *
 		 */
 		System.err.println((TAG + ", viewSendSortingKey: key is: " + key));
 		switch (key) {
