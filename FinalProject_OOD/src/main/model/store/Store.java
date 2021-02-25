@@ -173,7 +173,7 @@ public class Store {
 
 	public void addNewProduct(Product p) {
 		// Access only from command
-		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr, theFile, currentMapOrdering);
+		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr, theFile, currentMapOrdering,subscribedCustomers);
 		commandStack.add(commandAdd);
 		commandAdd.execute();
 
@@ -181,7 +181,7 @@ public class Store {
 
 	public void removeProduct(Product p) {
 		Cmnd_RemoveProduct commandRemove = new Cmnd_RemoveProduct(p, soldProductsArr, productsMap, theFile,
-				currentMapOrdering);
+				currentMapOrdering,subscribedCustomers);
 		commandStack.add(commandRemove);
 		commandRemove.execute();
 		theFile.removeProductFromFile(p); // TODO: move me into command
@@ -189,7 +189,7 @@ public class Store {
 
 	public void removeAllProducts() {
 		Cmnd_RemoveAllProducts cmnd_removeAllProducts = new Cmnd_RemoveAllProducts // TODO for now sending reference, later check how to deal with it.
-				(this.productsMap,this.currentMapOrdering,this.soldProductsArr,theFile);
+				(this.productsMap,this.currentMapOrdering,this.soldProductsArr,theFile,subscribedCustomers);
 		commandStack.add(cmnd_removeAllProducts);
 		cmnd_removeAllProducts.execute();
 
