@@ -166,7 +166,7 @@ public class Model {
 		 * 3 - Insertion Order
 		 *
 		 */
-
+		System.err.println((TAG + ", viewSendSortingKey: key is: " + key));
 		switch (key) {
 		case Store.KEYS.ORDER_BY_ABC_UP:
 			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP),Store.KEYS.ORDER_BY_ABC_UP);

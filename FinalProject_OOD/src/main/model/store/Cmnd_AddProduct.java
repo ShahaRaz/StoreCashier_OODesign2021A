@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.SortedMap;
 
 public class Cmnd_AddProduct implements Command{
+    private static final String TAG = "Cmnd_AddProduct";
     private ArrayList<saleEventListener> subscribedCustomers_ref; // reference
     private Product oldProductInMap=null; // save it in-case we'll overwrite old details of the product in the map
     boolean wasProductInMapB4thisCmnd=false;
@@ -20,9 +21,9 @@ public class Cmnd_AddProduct implements Command{
 
     public Cmnd_AddProduct(Product p, SortedMap<String, Product> productsMap, ArrayList<Product> soldProductsArr,
                            FileHandler theFile, int currentMapOrdering, ArrayList<saleEventListener> subscribedCustomers) {
-        this.product = product;
-        this.map_ref = map_ref; // reference to the main map
-        this.soldProductsArr_ref = soldProductsArr_ref; // A Reference!
+        this.product = p;
+        this.map_ref = productsMap; // reference to the main map
+        this.soldProductsArr_ref = soldProductsArr; // A Reference!
         this.theFile = theFile; // A Reference!
         this.currentMapOrdering = currentMapOrdering;
         this.subscribedCustomers_ref = subscribedCustomers;
@@ -30,6 +31,8 @@ public class Cmnd_AddProduct implements Command{
 
     @Override
     public void execute() {
+        if (map_ref==null)
+            System.err.println((TAG + ", execute: mapref==null"));
         if(map_ref.containsKey(product.getBarcode())) { // if product is already in map
             wasProductInMapB4thisCmnd = true;
             oldProductInMap = map_ref.get(product.getBarcode());
