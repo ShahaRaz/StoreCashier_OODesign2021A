@@ -5,11 +5,14 @@ package main.controller;
  * @author Shahar Raz.
  * */
 
+import main.interfaces.saleEventListener;
 import main.listeners.LogicListenable;
 import main.listeners.ViewListenable;
 import main.model.Model;
 import main.model.Product;
 import main.view.View;
+
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -122,6 +125,11 @@ public class Controller implements ViewListenable, LogicListenable {
 	@Override
 	public void modelAskToSelectSorteMethod() {
 		theView.getSorteWindow();
+	}
+
+	@Override
+	public void modelSendSaleListeners(ArrayList<saleEventListener> listeners) {
+		// the view........
 	}
 
 	@Override

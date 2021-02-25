@@ -241,10 +241,8 @@ public class Store {
 	}
 
 	// Implement Observable Pattern, notify all the subscribed customers.
-	public void notifyAllCustomers() {
-		for (saleEventListener customer : subscribedCustomers) {
-			customer.onSaleEvent(this);
-		}
+	public ArrayList<saleEventListener> sendSaleListenersToView() {
+		return subscribedCustomers;
 	}
 
 	public static class Memento {

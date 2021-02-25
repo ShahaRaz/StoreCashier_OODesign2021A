@@ -56,10 +56,10 @@ public class Customer implements saleEventListener{
 
 	// Implement the Observable interface.
 	@Override
-	public void onSaleEvent(Store store) {
+	public String announceGotPromotion(Store store) {
 		// TODO: For now, create a console message, need to decide if we want to display with a new window or as a status reference.
-		System.out.println(name + "! There is sale on '"+store.getStoreName() + "'");
+		return (name + ": i got the sale message from '"+store.getStoreName() + "'");
 	}
-	
-	
+
+
 }

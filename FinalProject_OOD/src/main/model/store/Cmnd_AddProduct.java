@@ -30,9 +30,15 @@ public class Cmnd_AddProduct implements Command{
 
     @Override
     public void execute() {
-        if(map_ref.containsKey(product.getBarcode())) { // knowing if product is already in map
+        if(map_ref.containsKey(product.getBarcode())) { // if product is already in map
             wasProductInMapB4thisCmnd = true;
             oldProductInMap = map_ref.get(product.getBarcode());
+
+            //handle subscribed costumer
+
+            if (subscribedCustomers_ref.contains(map_ref.get(product.getBarcode()).getCustomer()))
+                subscribedCustomers_ref.remove(product.getCustomer());
+
         }
         else
             wasProductInMapB4thisCmnd = false;

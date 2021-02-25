@@ -41,6 +41,9 @@ public class Cmnd_RemoveAllProducts implements Command {
         soldProductsArr_ref.clear();
 
         theFile.removeAllProducts();
+
+//        if(oldProductInMap.getCustomer().getIsAcceptingPromotions())
+//            subscribedCustomers_ref.add(oldProductInMap.getCustomer());
     }
 
     @Override

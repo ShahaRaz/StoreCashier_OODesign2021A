@@ -1,7 +1,9 @@
 package main.listeners;
 
+import main.interfaces.saleEventListener;
 import main.model.Product;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,4 +22,6 @@ public interface LogicListenable {
 	void viewAskForListOfAllProducts();
 
 	void modelAskToSelectSorteMethod();
+
+	void modelSendSaleListeners(ArrayList<saleEventListener> listeners);
 }

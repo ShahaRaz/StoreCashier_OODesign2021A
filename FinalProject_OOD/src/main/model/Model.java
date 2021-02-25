@@ -5,6 +5,7 @@ package main.model;
  * @author Shahar Raz.
  * */
 
+import main.interfaces.saleEventListener;
 import main.listeners.LogicListenable;
 import main.model.store.Store;
 
@@ -60,6 +61,12 @@ public class Model {
 	private void fireSelectingSortType() {
 		for (LogicListenable l : allListeners) {
 			l.modelAskToSelectSorteMethod();
+		}
+	}
+
+	private void fireSendSaleListenersList(ArrayList<saleEventListener> listeners) {
+		for (LogicListenable l : allListeners) {
+			l.modelSendSaleListeners(listeners);
 		}
 	}
 
@@ -126,13 +133,17 @@ public class Model {
 	}
 
 	public void sendSaleToCustomers() {
-		if (store.getSubscribedCustomers().equals(null) || store.getSubscribedCustomers().isEmpty()) {
+		ArrayList<saleEventListener> listeners  = store.getSubscribedCustomers();
+		if (listeners.equals(null) || listeners.isEmpty()) {
 			fireOperationFailed("No Subscribed Customers");
 		} else {
-			store.notifyAllCustomers();
+			store.sendSaleListenersToView();
 			fireSendMessageToUser("The Sale has been sent!");
+			fireSendSaleListenersList(listeners);
 		}
 	}
+
+
 
 	public void saveMemento() {
 		store.addMemento();
