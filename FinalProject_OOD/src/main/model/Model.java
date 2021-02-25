@@ -145,7 +145,7 @@ public class Model {
 
 	public void revertedLastState() {
 		String isGood = store.getLastState();
-		if (isGood.equalsIgnoreCase("Reverted state FAILED")) {
+		if (isGood.equals(Store.KEYS.MOMENTO_FAILED_REVERT)) {
 			fireOperationFailed("No Actions to Reverted");
 		} else {
 			fireSendMessageToUser("The State has been reverted");

@@ -18,6 +18,7 @@ import java.util.Stack;
 import java.util.TreeMap;
 
 import main.interfaces.saleEventListener;
+import main.model.Customer;
 import main.model.FileHandler;
 import main.model.Product;
 
@@ -26,6 +27,10 @@ public class Store {
 
 	public interface KEYS {
 		final String STORE_NAME = "atGadi's";
+		final String MOMENTO_FAILED_REVERT="Reverted state FAILED";
+
+
+
 		final int ORDER_BY_ABC_UP = 1;
 		final int ORDER_BY_ABC_DOWN = 2;
 		final int ORDER_BY_INSERT_ORDER = 3;
@@ -70,7 +75,7 @@ public class Store {
 			// ask user for map order technique
 			// will be called when view asks for the map
 		} else { // _____________________ INIT PRODUCT MAP FROM FILE
-					// _____________________________
+			// _____________________________
 			this.productsMap = getNewEmptyMap(currentMapOrdering);
 			theFile.readMapFromFile(productsMap, true);
 		}
@@ -106,7 +111,7 @@ public class Store {
 		return subscribedCustomers;
 	}
 
-	public void setProductsMap(Map<String, Product> productsMap,int currentMapOrdering) {
+	public void setProductsMap(Map<String, Product> productsMap, int currentMapOrdering) {
 		System.err.println((TAG + ", setProductsMap: class of map: " + productsMap.getClass()));
 		this.productsMap = productsMap;
 		this.currentMapOrdering = currentMapOrdering;
@@ -115,31 +120,39 @@ public class Store {
 	public static Map<String, Product> getNewEmptyMap(int mapKind_KEYS) {
 		Map<String, Product> newMap; // LinkedHashMap cannot be cast to class Map
 		switch (mapKind_KEYS) {
-		case KEYS.ORDER_BY_ABC_UP:
-			newMap = Collections.synchronizedMap(new TreeMap<String, Product>());// default comparator.
-			System.err.println((TAG + ", getNewEmptyMap: ABC_UP"));
-			break;
-		case KEYS.ORDER_BY_ABC_DOWN:
-			newMap = Collections.synchronizedMap(new TreeMap<String, Product>(new Comparator<String>() {
-				@Override
-				public int compare(String s1, String s2) {
-					return s2.compareTo(s1); // reversed order
-				}
-			}));
-			break;
-		case KEYS.ORDER_BY_INSERT_ORDER:
-			newMap = (Map<String, Product>) new LinkedHashMap<String, Product>(); // insertion order
-			break;
-		default:
-			System.err.println((TAG + ", getNewEmptyMap: \t" + "selected ABC_UP by default."));
-			newMap = Collections.synchronizedMap(new TreeMap<String, Product>());
+			case KEYS.ORDER_BY_ABC_UP:
+				newMap = Collections.synchronizedMap(new TreeMap<String, Product>());// default comparator.
+				System.err.println((TAG + ", getNewEmptyMap: ABC_UP"));
+				break;
+			case KEYS.ORDER_BY_ABC_DOWN:
+				newMap = Collections.synchronizedMap(new TreeMap<String, Product>(new Comparator<String>() {
+					@Override
+					public int compare(String s1, String s2) {
+						return s2.compareTo(s1); // reversed order
+					}
+				}));
+				break;
+			case KEYS.ORDER_BY_INSERT_ORDER:
+				newMap = (Map<String, Product>) new LinkedHashMap<String, Product>(); // insertion order
+				break;
+			default:
+				System.err.println((TAG + ", getNewEmptyMap: \t" + "selected ABC_UP by default."));
+				newMap = Collections.synchronizedMap(new TreeMap<String, Product>());
 		}
 		return newMap;
 	}
 
+	/**
+	 * creating a deep copy of the map
+	 *
+	 * @param source
+	 * @param mapKind_KEYS
+	 * @return a complete new instance of map sorted by mapKind & holds new clones of the source instances
+	 */
 	public static Map<String, Product> copyMap(Map<String, Product> source, int mapKind_KEYS) {
-		Map<String, Product> newCopy = getNewEmptyMap(mapKind_KEYS);
-		if (source==null)
+		Map<String, Product> newCopy = getNewEmptyMap(mapKind_KEYS); // NEW MAP
+		// Filling up the map using copy constructors (DEEP COPY, Customer as-well)
+		if (source == null)
 			System.err.println((TAG + ", copyMap: source.entryset=nul!! "));
 		for (Map.Entry<String, Product> pair : source.entrySet()) {
 			if (pair != null) {
@@ -149,9 +162,10 @@ public class Store {
 		}
 		return newCopy;
 	}
+
 	public static ArrayList<Product> copyArray(ArrayList<Product> source, int numOfElementsToCopy) {
 		ArrayList<Product> newCopy = new ArrayList<>();
-		for (int i=0; i<numOfElementsToCopy ; i++) {
+		for (int i = 0; i < numOfElementsToCopy; i++) {
 			if (source.get(i) != null) {
 				Product newDupOfProduct = new Product(source.get(i)); // a new hard copy ( NOT REFERENCE )
 				newCopy.add(newDupOfProduct);
@@ -159,8 +173,6 @@ public class Store {
 		}
 		return newCopy;
 	}
-
-
 
 
 	public Product getProductDetails(String id) {
@@ -177,7 +189,7 @@ public class Store {
 
 	public void addNewProduct(Product p) {
 		// Access only from command
-		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr, theFile, currentMapOrdering,subscribedCustomers);
+		Cmnd_AddProduct commandAdd = new Cmnd_AddProduct(p, productsMap, soldProductsArr, theFile, currentMapOrdering, subscribedCustomers);
 		commandStack.add(commandAdd);
 		commandAdd.execute();
 
@@ -185,7 +197,7 @@ public class Store {
 
 	public void removeProduct(Product p) {
 		Cmnd_RemoveProduct commandRemove = new Cmnd_RemoveProduct(p, soldProductsArr, productsMap, theFile,
-				currentMapOrdering,subscribedCustomers);
+				currentMapOrdering, subscribedCustomers);
 		commandStack.add(commandRemove);
 		commandRemove.execute();
 		theFile.removeProductFromFile(p); // TODO: move me into command
@@ -193,16 +205,12 @@ public class Store {
 
 	public void removeAllProducts() {
 		Cmnd_RemoveAllProducts cmnd_removeAllProducts = new Cmnd_RemoveAllProducts // TODO for now sending reference, later check how to deal with it.
-				(this.productsMap,this.currentMapOrdering,this.soldProductsArr,theFile,subscribedCustomers);
+				(this.productsMap, this.currentMapOrdering, this.soldProductsArr, theFile, subscribedCustomers);
 		commandStack.add(cmnd_removeAllProducts);
 		cmnd_removeAllProducts.execute();
 
 
-//		Cmnd_removeProduct commandRemove = new Cmnd_removeProduct(p, soldProductsArr, productsMap, theFile,
-//				currentMapOrdering);
-//		commandStack.add(commandRemove);
-//		commandRemove.execute();
-//		theFile.removeProductFromFile(p);
+
 	}
 
 	public String undoLastAction() {
@@ -214,6 +222,7 @@ public class Store {
 		}
 	}
 
+	// ________________________________________ MEMENTO ________________________________________
 	// Adding the current state to Stack.
 	public void addMemento() {
 		mementoStack.add(createMemento());
@@ -222,8 +231,12 @@ public class Store {
 	// Reverted state.
 	public String getLastState() {
 		if (mementoStack.isEmpty())
-			return "Reverted state FAILED";
-		else {
+			return KEYS.MOMENTO_FAILED_REVERT;
+		else if (mementoStack.size()==1) { // holding at least one memento
+			setMemento(mementoStack.peek());
+			return "Successfully reverted state";
+		}
+		else{ // popping the last saved memento.
 			setMemento(mementoStack.pop());
 			return "Successfully reverted state";
 		}
@@ -231,10 +244,10 @@ public class Store {
 
 	// Creating new state.
 	private Memento createMemento() {
-		return new Memento(commandStack, storeName, productsMap, soldProductsArr, subscribedCustomers, theFile);
+		return new Memento(commandStack, storeName, productsMap, soldProductsArr, subscribedCustomers, theFile,currentMapOrdering);
 	}
 
-	// Return the saved state.
+	// Return to the saved state.
 	private void setMemento(Memento m) {
 		commandStack = m.getCommandStack();
 		storeName = m.getStoreName();
@@ -252,61 +265,48 @@ public class Store {
 		private String storeName;
 		protected Map<String, Product> productsMap = Collections
 				.synchronizedMap(new TreeMap<String, Product>()); // <productId,ProductObject> treemap note!
-							// will be modified
+		// will be modified
 		// only by using Commands (commandStack)
 		protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
 		protected ArrayList<saleEventListener> subscribedCustomers;
 		protected FileHandler theFile;
+		private int currentMapOrdering;
 
 		public Memento(Stack<Command> commandStack, String storeName, Map<String, Product> productsMap,
-				ArrayList<Product> soldProductsArr, ArrayList<saleEventListener> subscribedCustomers,
-				FileHandler theFile) {
+					   ArrayList<Product> soldProductsArr, ArrayList<saleEventListener> subscribedCustomers,
+					   FileHandler theFile,int currentMapOrdering) {
 
-			Collections.copy(commandStack, this.commandStack);
-			this.storeName = String.copyValueOf(storeName.toCharArray());
-			initMap(productsMap.entrySet());// Copy one by one.
-			this.soldProductsArr = new ArrayList<Product>(soldProductsArr);
-//			this.subscribedCustomers = new ArrayList<saleEventListener>(subscribedCustomers);
-			this.theFile = theFile;
+			Collections.copy(commandStack, this.commandStack); // shallow copy. 	commandStack
+			this.storeName = String.copyValueOf(storeName.toCharArray());//			storeName
+			this.soldProductsArr = copyProductsArr(soldProductsArr);//				soldProductsArr
+			this.subscribedCustomers = copySaleListenersList(subscribedCustomers);//subscribed Customers
+			this.theFile = theFile;//not copping(avoiding filling up the storage)	file
+			this.productsMap = Store.copyMap(productsMap,currentMapOrdering);//deep map
+			this.currentMapOrdering = currentMapOrdering;
 		}
 
-		private void initMap(Set<Entry<String, Product>> productsMap) {
-			for (Map.Entry<String, Product> p : productsMap) {
-				if (p != null) {
-					this.productsMap.put(p.getKey(), p.getValue());
-				}
-			}
-		}
 
-		private Map<String, Product> copyMap(Set<Entry<String, Product>> source, int mapKind) {
-			Map<String, Product> newCopy;
-			switch (mapKind) {
-			case KEYS.ORDER_BY_ABC_UP:
-				newCopy = Collections.synchronizedMap(new TreeMap<String, Product>());
-				break;
-			case KEYS.ORDER_BY_ABC_DOWN:
-				newCopy = Collections.synchronizedMap(new TreeMap<String, Product>(new Comparator<String>() {
-					@Override
-					public int compare(String s1, String s2) {
-						return s2.compareTo(s1);
-					}
-				}));
-				break;
-			case KEYS.ORDER_BY_INSERT_ORDER:
-				newCopy = (Map<String, Product>) new LinkedHashMap<String, Product>();
-				break;
-			default:
-				System.err.println("Choose map ordering by Store.KEYS.ORDER_BY_... \nselected ABC_UP by default.");
-				newCopy = Collections.synchronizedMap(new TreeMap<String, Product>());
-			}
 
-			for (Map.Entry<String, Product> p : source) {
-				if (p != null) {
-					newCopy.put(p.getKey(), p.getValue());
-				}
+		//TODO: a generic function that will do the same for subscribers
+		private static ArrayList<Product> copyProductsArr(ArrayList<Product> source){
+			ArrayList<Product> newCopy = new ArrayList<>();
+			Product tmpProduct;
+			for (Product p : source){
+				tmpProduct = new Product(p); // Copy Constructor, deep copping
+				newCopy.add(tmpProduct);
 			}
 			return newCopy;
 		}
+		private static  ArrayList<saleEventListener> copySaleListenersList(ArrayList<saleEventListener> source){
+			ArrayList<saleEventListener> newCopy = new ArrayList<>();
+			Customer tmpCustomer;
+			for (saleEventListener c : source){
+				tmpCustomer = new Customer((Customer)c); // Copy Constructor, deep copping
+				newCopy.add(tmpCustomer);
+			}
+			return newCopy;
+		}
+
 
 		public Stack<Command> getCommandStack() {
 			return commandStack;
@@ -358,34 +358,6 @@ public class Store {
 
 	}
 
-	// public static Comparator<Product> compareByTimeEntered = new
-	// Comparator<Product>() {
-//		@Override
-//		public int compare(Product p1, Product p2) {
-//			return (int) (p1.getTimeMilis() - p2.getTimeMilis());
-//		}
-//	};
-	public void orderProducts(int methodOfOrdering) {
-//		//////// Lec6 1:24:00 Comparator for TreeSet (Very similar to Comparator for TreeMap)
-//		//// Lec6 20:00 how to comparator works 23:30
-//		/// lec 6 53:00
-//		// lec6 1:18:00
-//		// inside the TreeMap 'add' method, it already inserts the organs in sorted way!
-//		switch (methodOfOrdering) {
-//			case KEYS.ORDER_BY_ABC_UP:
-//				Collections.sort(productsMap, compareByPidUp);
-//				break;
-//			case KEYS.ORDER_BY_ABC_DOWN:
-//
-//				break;
-//
-//			case KEYS.ORDER_BY_INSERT_ORDER:
-//
-//				break;
-//
-////		 TODO: 23/01/2021 continue & fixme
-//		}
-	}
 
 
 	// Inner Comparators for Sorts //
@@ -400,7 +372,27 @@ public class Store {
 			return 0;
 		}
 	};
+}
 
+//	public Memento(Stack<Command> commandStack, String storeName, Map<String, Product> productsMap,
+//				   ArrayList<Product> soldProductsArr, ArrayList<saleEventListener> subscribedCustomers,
+//				   FileHandler theFile) {
+//
+//		Collections.copy(commandStack, this.commandStack);
+//		this.storeName = String.copyValueOf(storeName.toCharArray());
+//		this.soldProductsArr = new ArrayList<Product>(soldProductsArr);
+////			this.subscribedCustomers = new ArrayList<saleEventListener>(subscribedCustomers);
+//		this.theFile = theFile;
+//		initMap(productsMap.entrySet());// Copy one by one.
+//	}
+//
+//	private void initMap(Set<Entry<String, Product>> productsMap) {
+//		for (Map.Entry<String, Product> p : productsMap) {
+//			if (p != null) {
+//				this.productsMap.put(p.getKey(), p.getValue());
+//			}
+//		}
+//	}
 //	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
 //		@Override
 //		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
@@ -411,4 +403,3 @@ public class Store {
 //	public static Comparator<Map.Entry<String, Product>> compareByPidDown = (entry1,
 //			entry2) -> (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
 
-}
