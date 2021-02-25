@@ -79,15 +79,7 @@ public class Store {
 			this.productsMap = getNewEmptyMap(currentMapOrdering);
 			theFile.readMapFromFile(productsMap, true);
 		}
-
-//        this.productsMap = Collections.synchronizedMap(new TreeMap<String, Product>());
-//        currentMapOrdering = KEYS.ORDER_BY_ABC_UP; // TODO change me and the line above to be dynamic
-
 		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
-
-//        theFile.readMapFromFile(this.productsMap, true);
-//		if (this.productsMap.isEmpty())
-//			askUserForMapOrder
 	}
 
 	public static Store getInstance() {
@@ -222,6 +214,27 @@ public class Store {
 		}
 	}
 
+	//TODO: a generic function that will do the same for subscribers
+	public static ArrayList<Product> copyProductsArr(ArrayList<Product> source){
+		ArrayList<Product> newCopy = new ArrayList<>();
+		Product tmpProduct;
+		for (Product p : source){
+			tmpProduct = new Product(p); // Copy Constructor, deep copping
+			newCopy.add(tmpProduct);
+		}
+		return newCopy;
+	}
+	public static  ArrayList<saleEventListener> copySaleListenersList(ArrayList<saleEventListener> source){
+		ArrayList<saleEventListener> newCopy = new ArrayList<>();
+		Customer tmpCustomer;
+		for (saleEventListener c : source){
+			tmpCustomer = new Customer((Customer)c); // Copy Constructor, deep copping
+			newCopy.add(tmpCustomer);
+		}
+		return newCopy;
+	}
+
+
 	// ________________________________________ MEMENTO ________________________________________
 	// Adding the current state to Stack.
 	public void addMemento() {
@@ -281,8 +294,8 @@ public class Store {
 
 			Collections.copy(commandStack, this.commandStack); // shallow copy. 	commandStack
 			this.storeName = String.copyValueOf(storeName.toCharArray());//			storeName
-			this.soldProductsArr = copyProductsArr(soldProductsArr);//				soldProductsArr
-			this.subscribedCustomers = copySaleListenersList(subscribedCustomers);//subscribed Customers
+			this.soldProductsArr = Store.copyProductsArr(soldProductsArr);//				soldProductsArr
+			this.subscribedCustomers = Store.copySaleListenersList(subscribedCustomers);//subscribed Customers
 			this.theFile = theFile;//not copping(avoiding filling up the storage)	file
 			this.productsMap = Store.copyMap(productsMap,currentMapOrdering);//deep map
 			this.currentMapOrdering = currentMapOrdering;
@@ -290,25 +303,6 @@ public class Store {
 
 
 
-		//TODO: a generic function that will do the same for subscribers
-		private static ArrayList<Product> copyProductsArr(ArrayList<Product> source){
-			ArrayList<Product> newCopy = new ArrayList<>();
-			Product tmpProduct;
-			for (Product p : source){
-				tmpProduct = new Product(p); // Copy Constructor, deep copping
-				newCopy.add(tmpProduct);
-			}
-			return newCopy;
-		}
-		private static  ArrayList<saleEventListener> copySaleListenersList(ArrayList<saleEventListener> source){
-			ArrayList<saleEventListener> newCopy = new ArrayList<>();
-			Customer tmpCustomer;
-			for (saleEventListener c : source){
-				tmpCustomer = new Customer((Customer)c); // Copy Constructor, deep copping
-				newCopy.add(tmpCustomer);
-			}
-			return newCopy;
-		}
 
 
 		public Stack<Command> getCommandStack() {

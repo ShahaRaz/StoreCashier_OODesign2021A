@@ -27,14 +27,16 @@ public class Cmnd_AddProduct implements Command{
         this.theFile = theFile; // A Reference!
         this.currentMapOrdering = currentMapOrdering;
         this.subscribedCustomers_ref = subscribedCustomers;
+        this.oldProductInMap = null;
     }
 
     @Override
     public void execute() {
-        if (map_ref==null)
-            System.err.println((TAG + ", execute: mapref==null"));
-        if(map_ref.containsKey(product.getBarcode())) { // if product is already in map
+        // 1. if product is already in map
+        if(map_ref.containsKey(product.getBarcode())) {
+            // 1. notify that there was
             wasProductInMapB4thisCmnd = true;
+            // 2. get the old product from the map
             oldProductInMap = map_ref.get(product.getBarcode());
 
             /**
@@ -47,15 +49,16 @@ public class Cmnd_AddProduct implements Command{
         else
             wasProductInMapB4thisCmnd = false;
 
-
+        // 2. adding the new product to the map
         map_ref.put(product.getBarcode(),product);
+        // 3. save the map into the file.
         theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
-//        theFile.addProductToFile(product);
 
-        soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
-
+        // 4. add Customer to promotions list..
         if(product.getCustomer().getIsAcceptingPromotions())
             subscribedCustomers_ref.add(product.getCustomer());
+
+        soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
 
     }
 
@@ -67,25 +70,26 @@ public class Cmnd_AddProduct implements Command{
     public void undo() {
         if (subscribedCustomers_ref.contains(product.getCustomer()))
             subscribedCustomers_ref.remove(product.getCustomer());
-        /// TODO: figure out a better, more efficient way to replace a product in the file
-        // since deleting and than adding a product is inefficient & will lead to undesired output (the product will be last in the file)
-        // and deleting directly from the map is not allowed (i guess), than i need a way to replace the last product returned from the iterator
-//        theFile.replaceProductWithOtherVersion(product);
-        if(wasProductInMapB4thisCmnd) {
-            map_ref.put(product.getBarcode(),oldProductInMap);
-            theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
 
+        if(wasProductInMapB4thisCmnd) { // we are actually adding the oldProduct
+            // 1. adding the old product to the map ( WILL OVER-Write the "new"product
+            map_ref.put(product.getBarcode(),oldProductInMap);
+            // 2. sav the map to the file
+            theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
+            // 3. add costumer to subscribedCustomers
             if(oldProductInMap.getCustomer().getIsAcceptingPromotions())
                 subscribedCustomers_ref.add(oldProductInMap.getCustomer());
-//            map_ref.put(oldProductInMap.getBarcode(),oldProductInMap); // as this command should overwrite the old one
-//            theFile.removeProductFromFile(product);
-//            theFile.addProductToFile(oldProductInMap);
+            // 4. write the map into the file
+            theFile.saveMapToFile(this.map_ref, this.currentMapOrdering); // update the map
         }
-        else{
+        else{ // product was not overwritten in execute, simply remove product
+            //1. remove product from file.
             theFile.removeProductFromFile(product);
+            //2. read the file into map
+            theFile.readMapFromFile(map_ref,true);
+
         }
 
-        theFile.readMapFromFile(map_ref,true);
 
         soldProductsArr_ref.remove(product);// not listed in the system requirements, but we implement this for possible future use
 

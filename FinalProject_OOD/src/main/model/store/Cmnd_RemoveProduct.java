@@ -29,21 +29,24 @@ public class Cmnd_RemoveProduct implements Command {
 
     @Override
     public void execute() {
+        // 1. checking if it's the last product
         boolean isLastProduct = (map_ref.size()==1 ? true : false); // if it's the last product, we want to ask the user for new map ordering
+        // 2. removing the product from the file
         theFile.removeProductFromFile(product);
+        // 3. if it is not the last product, we want to read the updated map from the file.
         if (!isLastProduct) // not the last product
             theFile.readMapFromFile(map_ref,true); // it's inefficient, but that's what we were asked for.
-//        map_ref.remove(product.getBarcode());
-        else{
+
+        else{ // it is the last product, make sure that the map is empty.
             map_ref.clear();
         }
 
 
-        soldProductsArr_ref.remove(product); // not listed in the system requirements, but we implement this for possible future use
-
-        // saleListeners
+        // 4. add Customer to promotions list.
         if (subscribedCustomers_ref.contains(product.getCustomer()))
             subscribedCustomers_ref.remove(product.getCustomer());
+        soldProductsArr_ref.remove(product); // not listed in the system requirements, but we implement this for possible future use
+
 
     }
 
@@ -53,14 +56,46 @@ public class Cmnd_RemoveProduct implements Command {
      */
     @Override
     public void undo() {
+        // 1. add the product back to the map
         map_ref.put(product.getBarcode(),product);
+        // 2. save the map to the file
         theFile.saveMapToFile(map_ref,this.lastMapOrdering);
-
-        soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
-
-        // saleListeners
+        // 3. add Customer to promotions list.
         if(product.getCustomer().getIsAcceptingPromotions())
             subscribedCustomers_ref.add(product.getCustomer());
 
+        soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
+
+
     }
+
+
+//    // 1. if product is already in map
+//        if(map_ref.containsKey(product.getBarcode())) {
+//        // 1. notify that there was
+//        wasProductInMapB4thisCmnd = true;
+//        // 2. get the old product from the map
+//        oldProductInMap = map_ref.get(product.getBarcode());
+//
+//        /**
+//         * handle subscribed costumer
+//         * removing the OLD customer from
+//         */
+//        if (subscribedCustomers_ref.contains(map_ref.get(product.getBarcode()).getCustomer()))
+//            subscribedCustomers_ref.remove(map_ref.get(product.getBarcode()).getCustomer());
+//    }
+//        else
+//    wasProductInMapB4thisCmnd = false;
+//
+//    // 2. adding the new product to the map
+//        map_ref.put(product.getBarcode(),product);
+//    // 3. save the map into the file.
+//        theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
+//
+//    // 4. add Customer to promotions list..
+//        if(product.getCustomer().getIsAcceptingPromotions())
+//            subscribedCustomers_ref.add(product.getCustomer());
+//
+//        soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
+
 }
