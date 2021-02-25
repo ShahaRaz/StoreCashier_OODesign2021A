@@ -107,6 +107,7 @@ public class Store {
 	}
 
 	public void setProductsMap(SortedMap<String, Product> productsMap,int currentMapOrdering) {
+		System.err.println((TAG + ", setProductsMap: class of map: " + productsMap.getClass()));
 		this.productsMap = productsMap;
 		this.currentMapOrdering = currentMapOrdering;
 	}
@@ -116,6 +117,7 @@ public class Store {
 		switch (mapKind_KEYS) {
 		case KEYS.ORDER_BY_ABC_UP:
 			newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>());// default comparator.
+			System.err.println((TAG + ", getNewEmptyMap: ABC_UP"));
 			break;
 		case KEYS.ORDER_BY_ABC_DOWN:
 			newMap = Collections.synchronizedSortedMap(new TreeMap<String, Product>(new Comparator<String>() {
