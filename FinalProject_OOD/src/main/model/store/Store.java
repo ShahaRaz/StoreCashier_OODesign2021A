@@ -232,10 +232,6 @@ public class Store {
 	public String getLastState() {
 		if (mementoStack.isEmpty())
 			return KEYS.MOMENTO_FAILED_REVERT;
-		else if (mementoStack.size()==1) { // holding at least one memento
-			setMemento(mementoStack.peek());
-			return "Successfully reverted state";
-		}
 		else{ // popping the last saved memento.
 			setMemento(mementoStack.pop());
 			return "Successfully reverted state";
@@ -255,6 +251,13 @@ public class Store {
 		soldProductsArr = m.getSoldProductsArr();
 		subscribedCustomers = m.getSubscribedCustomers();
 		theFile = m.getTheFile();
+		/**
+		 * _____ holding on to the last memento _____
+		 * 1. setMemento ( Set the state )
+		 * 2. immediately create a new memento(hard copy) from the state that just been set
+		 */
+		if (mementoStack.size() == 0)
+			addMemento();
 	}
 
 
