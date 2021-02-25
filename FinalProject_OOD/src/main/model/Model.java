@@ -125,7 +125,8 @@ public class Model {
 			fireGetProduct(p);
 	}
 
-	public void sendSaleToCustomers() {
+	public void sendSaleToCustomers(Product pWNewSaleInfo) {
+		// got the PWNewSaleInfo, but understood that we are "sending" a general message.
 		ArrayList<saleEventListener> listeners  = store.getSubscribedCustomers();
 		if (listeners.equals(null) || listeners.isEmpty()) {
 			fireOperationFailed("No Subscribed Customers");

@@ -89,8 +89,8 @@ public class Controller implements ViewListenable, LogicListenable {
 	}
 
 	@Override
-	public void viewAskToSendSale() {
-		theModel.sendSaleToCustomers();
+	public void viewAskToSendSale(Product pWNewSaleInfo) {
+		theModel.sendSaleToCustomers(pWNewSaleInfo);
 	}
 
 	@Override

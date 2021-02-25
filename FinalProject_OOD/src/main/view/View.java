@@ -144,7 +144,7 @@ public class View extends GridPane {
 	/** @param product - View sending request to create sale for product */
 	public void fireSale(Product product) {
 		for (ViewListenable l : allListeners)
-			l.viewAskToSendSale();
+			l.viewAskToSendSale(product);
 	}
 
 	/** Sending fire to remove all products */

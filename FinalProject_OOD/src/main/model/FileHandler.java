@@ -83,6 +83,8 @@ public class FileHandler implements Iterable<Product> {
 			// _____________________________________________ passing over the readInt
 			// NOTE! bytes 0-3 in the file are used for the mapOrder_KEYS,
 			// raf.seek(3); // go to begging of file
+			if(file.length()==0)
+				return;
 			System.err.println((TAG + ", readMapFromFile: raf position is: " + raf.getFilePointer()));
 			raf.seek(0);
 			raf.readInt();

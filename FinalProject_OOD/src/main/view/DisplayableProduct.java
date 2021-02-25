@@ -20,7 +20,6 @@ public class DisplayableProduct {
 	public DisplayableProduct(Product p) {
 		this.timeAdded = p.getTimeAdded();
 		this.description = new SimpleStringProperty(p.getDescription());
-		;
 		this.barcode = new SimpleStringProperty(p.getBarcode());
 		this.costToStore = new SimpleIntegerProperty(p.getCostToStore());
 		this.priceSold = new SimpleIntegerProperty(p.getPriceSold());

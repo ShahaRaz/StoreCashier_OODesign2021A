@@ -17,7 +17,7 @@ public interface ViewListenable {
 
 	public void viewAskForUndo();
 
-	public void viewAskToSendSale();
+	public void viewAskToSendSale(Product p);
 
 	public void viewAskToSave();
 
