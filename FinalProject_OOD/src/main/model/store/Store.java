@@ -4,16 +4,13 @@ package main.model.store;
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  */
-
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
 
@@ -46,10 +43,6 @@ public class Store {
 	private int currentMapOrdering;
 	protected Map<String, Product> productsMap; // <productId,ProductObject> // treemap// note! will be modified
 	// only by using Commands (commandStack)
-
-//    protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
-//    //// soldProductsArr - not listed in the system requirements, but we implement this for possible future use
-//    protected ArrayList<saleEventListener> subscribedCustomers;
 
 	protected FileHandler theFile;
 
@@ -93,8 +86,6 @@ public class Store {
 	}
 
 	public Set<Map.Entry<String, Product>> getProductsSet() {
-		/// TODO: Create a copy of this set, and move it to the controller.
-//        Map<String, Product> aCopyOfLocalMap = copyMap(this.productsMap, this.currentMapOrdering);
 		return this.productsMap.entrySet();
 	}
 
@@ -167,7 +158,6 @@ public class Store {
 
 	public Product getProductDetails(String id) {
 		if (id == null) {
-			System.err.println((TAG + ", getProductDetails:  String ID IS NULL!"));
 			return null;
 		} else {
 			if (productsMap.containsKey(id))
@@ -191,13 +181,11 @@ public class Store {
 				currentMapOrdering, subscribedCustomers);
 		commandStack.add(commandRemove);
 		commandRemove.execute();
-//		theFile.removeProductFromFile(p); // TODO: move me into command
 	}
 
 	public void removeAllProducts() {
-		Cmnd_RemoveAllProducts cmnd_removeAllProducts = new Cmnd_RemoveAllProducts // TODO for now sending reference,
-																					// later check how to deal with it.
-		(this.productsMap, this.currentMapOrdering, this.soldProductsArr, theFile, subscribedCustomers);
+		Cmnd_RemoveAllProducts cmnd_removeAllProducts = new Cmnd_RemoveAllProducts(this.productsMap,
+				this.currentMapOrdering, this.soldProductsArr, theFile, subscribedCustomers);
 		commandStack.add(cmnd_removeAllProducts);
 		cmnd_removeAllProducts.execute();
 	}
@@ -211,7 +199,6 @@ public class Store {
 		}
 	}
 
-	// TODO: a generic function that will do the same for subscribers
 	public static ArrayList<Product> copyProductsArr(ArrayList<Product> source) {
 		ArrayList<Product> newCopy = new ArrayList<>();
 		Product tmpProduct;
@@ -375,32 +362,3 @@ public class Store {
 		}
 	};
 }
-
-//	public Memento(Stack<Command> commandStack, String storeName, Map<String, Product> productsMap,
-//				   ArrayList<Product> soldProductsArr, ArrayList<saleEventListener> subscribedCustomers,
-//				   FileHandler theFile) {
-//
-//		Collections.copy(commandStack, this.commandStack);
-//		this.storeName = String.copyValueOf(storeName.toCharArray());
-//		this.soldProductsArr = new ArrayList<Product>(soldProductsArr);
-////			this.subscribedCustomers = new ArrayList<saleEventListener>(subscribedCustomers);
-//		this.theFile = theFile;
-//		initMap(productsMap.entrySet());// Copy one by one.
-//	}
-//
-//	private void initMap(Set<Entry<String, Product>> productsMap) {
-//		for (Map.Entry<String, Product> p : productsMap) {
-//			if (p != null) {
-//				this.productsMap.put(p.getKey(), p.getValue());
-//			}
-//		}
-//	}
-//	public static Comparator<Map.Entry<String, Product>> compareByPidDown = new Comparator<Map.Entry<String, Product>>() {
-//		@Override
-//		public int compare(Map.Entry<String, Product> entry1, Map.Entry<String, Product> entry2) {
-////			return entry1.getKey().compareTo(entry2.getKey());
-//			return (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();
-//		}
-//
-//	public static Comparator<Map.Entry<String, Product>> compareByPidDown = (entry1,
-//			entry2) -> (int) entry1.getValue().getTimeMilis() - (int) entry2.getValue().getTimeMilis();

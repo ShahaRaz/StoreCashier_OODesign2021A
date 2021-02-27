@@ -110,6 +110,7 @@ public class AddProductView extends GridPane {
 		initUndoButton();
 	}
 
+
 	/** Initial TextField product's Name. */
 	private void initFldName() {
 		txtFldPrdctName = new TextField();
@@ -191,14 +192,14 @@ public class AddProductView extends GridPane {
 	 * @param productDetails - The selected product from the ComboBox.
 	 */
 	public void setFields(Product productDetails) {
-			/* Product's Fields */
-			txtFldPrdctName.setText(productDetails.getDescription());
-			txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
-			txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
-			/* Customer's Fields */
-			txtFldCustomer.setText(productDetails.getCustomer().getName());
-			txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
-			checkBoxPromotion.setSelected(productDetails.getCustomer().getIsAcceptingPromotions());
+		/* Product's Fields */
+		txtFldPrdctName.setText(productDetails.getDescription());
+		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
+		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
+		/* Customer's Fields */
+		txtFldCustomer.setText(productDetails.getCustomer().getName());
+		txtFldCustomerPhone.setText(productDetails.getCustomer().getMobileNumber());
+		checkBoxPromotion.setSelected(productDetails.getCustomer().getIsAcceptingPromotions());
 	}
 
 	/** Initial TextField product's PriceToStore. */
@@ -275,7 +276,7 @@ public class AddProductView extends GridPane {
 		btnClear.setOnAction(e -> {
 			cleanValueFields();
 		});
-		add(btnClear, 1, 12);
+		add(btnClear, 1, 13);
 	}
 
 	/** Initial Undo Button to undo last action */
@@ -287,7 +288,7 @@ public class AddProductView extends GridPane {
 			view.fireUndo();
 			isAddWindowSent = false;
 		});
-		add(btnUndo, 1, 13);
+		add(btnUndo, 1, 11);
 	}
 
 	/** Initial Add Button to add a new \ update product */
@@ -296,7 +297,7 @@ public class AddProductView extends GridPane {
 		btnAdd.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnAdd.setOnAction(e -> {
 			// Store the data.
-
+			String str_Error = "";
 			// Product's Description
 			String description = txtFldPrdctName.getText();
 			description = description.equals("") ? "NA" : description;
@@ -307,7 +308,7 @@ public class AddProductView extends GridPane {
 			try {
 				priceToStore = Integer.parseInt(priceToStoreStr.equals("") ? "0" : priceToStoreStr);
 			} catch (Exception e1) {
-				System.err.println("letting priceToStore be 0");
+				str_Error = "Overing invalid value priceToStore";
 			}
 
 			// Product's price sold
@@ -316,7 +317,7 @@ public class AddProductView extends GridPane {
 			try {
 				priceSold = Integer.parseInt(priceSoldStr.equals("") ? "0" : priceSoldStr);
 			} catch (Exception e2) {
-				System.err.println("Letting price to store be 0");
+				str_Error = "Overing invalid value priceSold";
 			}
 
 			// Product's id
@@ -324,25 +325,27 @@ public class AddProductView extends GridPane {
 			try {
 				id = id.equals("") ? null : id;
 			} catch (Exception e2) {
-				System.err.println("Letting Bercode be null");
+				str_Error = "Overing invalid value Barcode";
 			}
 
 			// Product's Customer who bought it.
-
 			String custName = txtFldCustomer.getText();
 			try {
 				custName = custName.equals("") ? "_Customer_" : custName;
 			} catch (Exception e2) {
-				System.err.println("Letting Customer's Name be null");
+				str_Error = "Overing invalid value Customer's Name";
 			}
 
 			String custPhone = txtFldCustomerPhone.getText();
 			try {
 				custPhone = custPhone.equals("") ? "000-0000000" : custPhone;
 			} catch (Exception e2) {
-				System.err.println("Letting Phone be null");
+				str_Error = "Overing invalid value Phone";
 			}
 
+			if (!str_Error.isEmpty())
+				updateStatus(str_Error, "red");
+			
 			Customer c = new Customer(custName, custPhone, checkBoxPromotion.isSelected());
 			isAddWindowSent = true;
 			view.fireAddNewProduct(new Product(description, priceToStore, priceSold, c, id));
@@ -352,7 +355,7 @@ public class AddProductView extends GridPane {
 			cboxPrdctBarCode.requestFocus();
 			cleanValueFields();
 		});
-		add(btnAdd, 1, 11);
+		add(btnAdd, 1, 12);
 	}
 
 	/** initial status */

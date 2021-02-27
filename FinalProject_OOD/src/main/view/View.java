@@ -1,13 +1,13 @@
 package main.view;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
  * */
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -60,8 +60,10 @@ public class View extends GridPane {
 		hbButtons = getHBox();
 		creatTabPane();
 
-		Scene scene = new Scene(hbButtons, 505 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
+		Scene scene = new Scene(hbButtons, 530 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
+
 		stage.setScene(scene);
+		stage.setResizable(false);
 		stage.setTitle("Store Saver");
 		stage.show();
 	}
@@ -135,7 +137,6 @@ public class View extends GridPane {
 			l.viewAskToReverse();
 	}
 
-	// TODO: Send product to model to create manipulation on product.
 	/** @param product - View sending request to create sale for product */
 	public void fireSale(Product product) {
 		for (ViewListenable l : allListeners)
@@ -163,7 +164,6 @@ public class View extends GridPane {
 		} else
 			key = Store.KEYS.ORDER_BY_INSERT_ORDER;
 
-		// TODO: Try replace toString to equals on Toggle
 		for (ViewListenable l : allListeners)
 			l.viewSendSortingMethod(key);
 
@@ -213,7 +213,6 @@ public class View extends GridPane {
 			addWindow.setFields(productDetails);
 			saleWindow.cleanValueFields(); // Not necessary needed
 		} else if (saleWindow.isSaleWindowSent) {
-			saleWindow.setFields(productDetails);
 			addWindow.cleanValueFields(); // Not necessary needed
 		}
 	}
@@ -224,13 +223,8 @@ public class View extends GridPane {
 	 * @param content - The message to display on Status label
 	 */
 	public void notifyNewMessageFromModel(String content) {
-//		if (content.contains("The Sale has been sent!")) {
-//			 TODO: what we want in here
-//		} else { // ask for product list, and update all statuses
-		System.out.println("view line 231");
 		fireListOfProducts();
 		notifyNewMessage(content, "green");
-//		}
 	}
 
 	/**
@@ -291,57 +285,6 @@ public class View extends GridPane {
 	public void setTableView(ProductTableView tableView) {
 		this.tableView = tableView;
 	}
-
-//	private void popUpShortMassage(String headLine, String Massage, int Width, int Height, int fontSize) {
-//		Stage miniStage = new Stage();
-//		VBox vbPopup = new VBox();
-//		miniStage.setTitle(headLine);
-//		Label lblMiniPopup = setHeadLine(Massage, fontSize);
-//		// lblMiniPopup.setText(Massage);
-//		// lblMiniPopup.setAlignment(Pos.CENTER);
-//		setStageCONSTSize(miniStage, Width, Width, Height, Height);
-//		Button btnClose = new Button();
-//		btnClose.setText("Ok");
-//		btnClose.setOnAction(new EventHandler<ActionEvent>() {
-//			@Override
-//			public void handle(ActionEvent arg0) {
-//				miniStage.close();
-//			}
-//		});
-//		vbPopup.getChildren().addAll(lblMiniPopup, btnClose);
-//		vbPopup.setAlignment(Pos.CENTER);
-//		vbPopup.setSpacing(20 * ENLRAGMENT_FACTOR);
-//
-//		Scene scene = new Scene(vbPopup, Width * ENLRAGMENT_FACTOR, Height * ENLRAGMENT_FACTOR);
-//		miniStage.setScene(scene);
-//
-//		// miniStage.initStyle(StageStyle.UNDECORATED);
-//		miniStage.show();
-//
-//		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-//
-//			@Override
-//			public void handle(KeyEvent theEvent) {
-//				if (theEvent.getCode() == KeyCode.ENTER || theEvent.getCode() == KeyCode.ESCAPE)
-//					miniStage.close();
-//			}
-//		});
-//	}
-//
-//	private void setStageCONSTSize(Stage stg, int minWidth, int maxWidth, int minHeihgt, int maxHeight) { // height
-//		stg.setMinHeight(minHeihgt * ENLRAGMENT_FACTOR);
-//		stg.setMaxHeight(maxHeight * ENLRAGMENT_FACTOR);
-//		stg.setMinWidth(minWidth * ENLRAGMENT_FACTOR);
-//		stg.setMaxWidth(maxWidth * ENLRAGMENT_FACTOR);
-//	}
-//
-//	private Label setHeadLine(String headLine, int fontSize) {
-//		Label lblHeadline = new Label(headLine);
-//		lblHeadline.setMinHeight(10 * ENLRAGMENT_FACTOR);
-//		lblHeadline.setAlignment(Pos.TOP_CENTER);
-////		lblHeadline.setFont(Font.font("Cambria", fontSize));
-//		return lblHeadline;
-//	}
 
 	/** Pop-Up window to get from the user the sorting method */
 	public void getSorteWindow() {

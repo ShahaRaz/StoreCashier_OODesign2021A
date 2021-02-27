@@ -1,5 +1,9 @@
 package main.controller;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Gadi Engelsman.
  * @author Shahar Raz.
@@ -11,10 +15,6 @@ import main.listeners.ViewListenable;
 import main.model.Model;
 import main.model.Product;
 import main.view.View;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 public class Controller implements ViewListenable, LogicListenable {
 	private Model theModel;
@@ -118,7 +118,6 @@ public class Controller implements ViewListenable, LogicListenable {
 		 *
 		 *
 		 */
-		// failed
 		theView.notifyFailedOperation(elaborate);
 	}
 
@@ -129,7 +128,7 @@ public class Controller implements ViewListenable, LogicListenable {
 
 	@Override
 	public void modelSendSaleListeners(ArrayList<saleEventListener> listeners) {
-		 theView.notifySubscribedCustomers(listeners);
+		theView.notifySubscribedCustomers(listeners);
 	}
 
 	@Override

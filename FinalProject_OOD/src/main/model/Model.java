@@ -110,8 +110,6 @@ public class Model {
 	public void sendAllProductsToView() {
 		Set<Map.Entry<String, Product>> products = store.getProductsSet();
 		if (products.isEmpty()) {
-			//TODO: delete me! 114
-//			fireSendProductsArrToView(products); // here for testing, delete me later
 			fireSelectingSortType();
 		}
 		fireSendProductsArrToView(products);

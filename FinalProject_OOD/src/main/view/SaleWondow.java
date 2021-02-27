@@ -10,10 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.Reflection;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -30,27 +27,18 @@ public class SaleWondow extends GridPane {
 	/** Boolean attribute for UpdateFields method */
 	protected boolean isSaleWindowSent;
 	private View view;
-	/** ProductName */
-	private TextField txtFldPrdctName;
-	/** Price */
-	private TextField txtFldPrdctPrice;
 	/** Barcode */
 	private ComboBox<String> cboxPrdctBarCode;
-	/** PriceToStore */
-	private TextField txtFldPrdctPriceToStore;
 	/** Status */
 	private Label lblStatus;
 	/** Add button */
 	private Button btnAddSale;
 	/** Clear button */
 	private Button btnClear;
-	/** Undo button */
-	private Button btnUndo;
 
 	public SaleWondow(View view) {
 		super();
 		this.view = view;
-
 		init();
 	}
 
@@ -63,11 +51,7 @@ public class SaleWondow extends GridPane {
 
 	private void initSaleView() {
 		initFldBarcode();
-		initFldName();
-		initFldPrice();
-		initFldPriceToStore();
 		initAddButton();
-		initUndoButton();
 		initClearButton();
 	}
 
@@ -119,64 +103,6 @@ public class SaleWondow extends GridPane {
 			}
 			isAddressingModel = true; // don't go to model for searching empty product
 		});
-
-		cboxPrdctBarCode.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-			if (ev.getCode() == KeyCode.ENTER) {
-				txtFldPrdctName.requestFocus();
-				ev.consume();
-			}
-		});
-	}
-
-	/** Initial TextField product's Name. */
-	private void initFldName() {
-		txtFldPrdctName = new TextField();
-		txtFldPrdctName.setOnMouseClicked(e -> updateStatus("", "black"));
-		txtFldPrdctName.setPromptText("Product Name");
-
-		add(new Label("Product Name: "), 0, 4);
-		add(txtFldPrdctName, 1, 4);
-		// Switch to the next txtField after pressing Enter.
-		txtFldPrdctName.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-			if (ev.getCode() == KeyCode.ENTER) {
-				txtFldPrdctPrice.requestFocus();
-				ev.consume();
-			}
-		});
-	}
-
-	/** Initial TextField product's Price. */
-	private void initFldPrice() {
-		txtFldPrdctPrice = new TextField();
-		txtFldPrdctPrice.setOnMouseClicked(e -> updateStatus("", "black"));
-		txtFldPrdctPrice.setPromptText("Price");
-
-		add(new Label("Product Price: "), 0, 5);
-		add(txtFldPrdctPrice, 1, 5);
-		// Switch to the next txtField after pressing Enter.
-		txtFldPrdctPrice.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-			if (ev.getCode() == KeyCode.ENTER) {
-				txtFldPrdctPriceToStore.requestFocus();
-				ev.consume();
-			}
-		});
-	}
-
-	/** Initial TextField product's PriceToStore. */
-	private void initFldPriceToStore() {
-		txtFldPrdctPriceToStore = new TextField();
-		txtFldPrdctPriceToStore.setOnMouseClicked(e -> updateStatus("", "black"));
-		txtFldPrdctPriceToStore.setPromptText("Price to Store");
-
-		add(new Label("Store Price: "), 0, 6);
-		add(txtFldPrdctPriceToStore, 1, 6);
-		// Switch to the next txtField after pressing Enter.
-		txtFldPrdctPriceToStore.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
-			if (ev.getCode() == KeyCode.ENTER) {
-				btnAddSale.requestFocus();
-				ev.consume();
-			}
-		});
 	}
 
 	/** initial status */
@@ -201,17 +127,6 @@ public class SaleWondow extends GridPane {
 		}
 	}
 
-	/**
-	 * Setting the Fields with the right data.
-	 * 
-	 * @param productDetails - The selected product from the ComboBox.
-	 */
-	public void setFields(Product productDetails) {
-		txtFldPrdctName.setText(productDetails.getDescription());
-		txtFldPrdctPrice.setText(String.valueOf((productDetails.getPriceSold())));
-		txtFldPrdctPriceToStore.setText(String.valueOf((productDetails.getCostToStore())));
-	}
-
 	/** Initial Clear Button to clean all fields */
 	private void initClearButton() {
 		btnClear = new Button("Clear Product");
@@ -228,40 +143,22 @@ public class SaleWondow extends GridPane {
 		btnAddSale.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnAddSale.setOnAction(e -> {
 			// Store the data.
-
-			// Product's Description
-			String description = txtFldPrdctName.getText();
-			description = description.equals("") ? "NA" : description;
-
-			// Product's price to store
-			String priceToStoreStr = txtFldPrdctPriceToStore.getText();
-			int priceToStore = 0;
-			try {
-				priceToStore = Integer.parseInt(priceToStoreStr.equals("") ? "0" : priceToStoreStr);
-			} catch (Exception e1) {
-				System.err.println("letting priceToStore be 0");
-			}
-
-			// Product's price sold
-			String priceSoldStr = txtFldPrdctPrice.getText();
-			int priceSold = 0;
-			try {
-				priceSold = Integer.parseInt(priceSoldStr.equals("") ? "0" : priceSoldStr);
-			} catch (Exception e2) {
-				System.err.println("Letting price to store be 0");
-			}
+			String str_Error = "";
 
 			// Product's id
 			String id = cboxPrdctBarCode.getValue();
 			try {
 				id = id.equals("") ? null : id;
 			} catch (Exception e2) {
-				System.err.println("Letting Bercode be null");
+				str_Error = "Overing invalid value Bercode";
 			}
 
 			// Product's Customer who bought it.
+			if (!str_Error.isEmpty())
+				updateStatus(str_Error, "red");
+
 			isSaleWindowSent = true;
-			view.fireSale(new Product(description, priceToStore, priceSold, null, id));
+			view.fireSale(new Product(null, 0, 0, null, id));
 			isSaleWindowSent = false;
 			isAddressingModel = false;
 
@@ -271,25 +168,10 @@ public class SaleWondow extends GridPane {
 		add(btnAddSale, 1, 10);
 	}
 
-	/** Initial Undo Button to undo last action */
-	private void initUndoButton() {
-		btnUndo = new Button("Undo");
-		btnUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
-		btnUndo.setOnAction(e -> {
-			isSaleWindowSent = true;
-			view.fireUndo();
-			isSaleWindowSent = false;
-		});
-		add(btnUndo, 1, 12);
-	}
-
 	/** clean Value Fields */
 	public void cleanValueFields() {
 		isAddressingModel = false;
 		cboxPrdctBarCode.setValue("");
-		txtFldPrdctName.setText("");
-		txtFldPrdctPriceToStore.setText("");
-		txtFldPrdctPrice.setText("");
 		isAddressingModel = true;
 	}
 }

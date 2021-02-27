@@ -4,6 +4,8 @@ package main.view;
  * @author Shahar Raz.
  */
 
+import java.util.ArrayList;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +15,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Reflection;
 import javafx.scene.layout.GridPane;
@@ -24,11 +25,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import main.interfaces.saleEventListener;
 import main.model.Customer;
-import main.model.Product;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 public class Table_CostumersRespondToPromotion extends GridPane implements Runnable {
 	private static final String TAG = "Table_CostumersRespondT";
@@ -44,7 +40,7 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 	private final ObservableList<DisplayableCustomer> data = FXCollections.observableArrayList();
 	private int totalCustomersRespond; // respond
 	private ArrayList<saleEventListener> theListeners;
-	private int totalSubscribed=0;
+	private int totalSubscribed = 0;
 
 	public Table_CostumersRespondToPromotion(View view) {
 		this.view = view;
@@ -98,7 +94,6 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 		initStatus();
 	}
 
-
 	/** initial TableView */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initTable() {
@@ -117,7 +112,7 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 		message.prefWidthProperty().bind(table.widthProperty().multiply(0.6));
 
 		table.setItems(data);
-		table.getColumns().addAll(customerNameCol, message,PhoneNum);
+		table.getColumns().addAll(customerNameCol, message, PhoneNum);
 
 		view.fireListOfProducts();
 		add(table, 0, 3, 3, 1);
@@ -146,8 +141,8 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 			for (saleEventListener l : this.theListeners) {
 				DisplayableCustomer tmp = new DisplayableCustomer((Customer) l);
 				totalCustomersRespond += 1;
-				Platform.runLater(()-> {
-					updateStatus(totalCustomersRespond + " / " + totalSubscribed , "black");
+				Platform.runLater(() -> {
+					updateStatus(totalCustomersRespond + " / " + totalSubscribed, "black");
 				});
 				data.add(tmp);
 				Thread.sleep(2000);

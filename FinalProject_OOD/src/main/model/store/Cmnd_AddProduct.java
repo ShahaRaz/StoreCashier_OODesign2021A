@@ -1,11 +1,11 @@
 package main.model.store;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import main.interfaces.saleEventListener;
 import main.model.FileHandler;
 import main.model.Product;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public class Cmnd_AddProduct implements Command {
 	private static final String TAG = "Cmnd_AddProduct";

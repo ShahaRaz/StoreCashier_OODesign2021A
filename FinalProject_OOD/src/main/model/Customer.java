@@ -3,7 +3,7 @@ package main.model;
 import main.interfaces.saleEventListener;
 import main.model.store.Store;
 
-public class Customer implements saleEventListener{
+public class Customer implements saleEventListener {
 	private String name;
 	private String mobileNumber;
 	private Boolean isAcceptingPromotions;
@@ -14,21 +14,18 @@ public class Customer implements saleEventListener{
 		this.isAcceptingPromotions = false;
 	}
 
-	
 	public Customer(String name, String mobileNumber, Boolean isAcceptingPromotions) {
 		this.name = name;
 		this.mobileNumber = mobileNumber;
 		this.isAcceptingPromotions = isAcceptingPromotions;
 	}
 
-	//Copy Constructor
+	// Copy Constructor
 	public Customer(Customer other) {
 		this.name = new String(other.getName());
 		this.mobileNumber = new String(other.getMobileNumber());
 		this.isAcceptingPromotions = other.isAcceptingPromotions;
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -57,9 +54,9 @@ public class Customer implements saleEventListener{
 	// Implement the Observable interface.
 	@Override
 	public String announceGotPromotion() {
-		// TODO: For now, create a console message, need to decide if we want to display with a new window or as a status reference.
-		return (name + ": i got the sale message from '"+ Store.KEYS.STORE_NAME + "'");
+		// For now, create a console message, need to decide if we want to display with
+		// a new window or as a status reference.
+		return (name + ": i got the sale message from '" + Store.KEYS.STORE_NAME + "'");
 	}
-
 
 }

@@ -60,7 +60,6 @@ public class Product implements Comparable {
 		}
 
 		return ""; // product is ok, has no problems
-		// TODO: Check exist customer
 	}
 
 	public long getTimeMilis() {

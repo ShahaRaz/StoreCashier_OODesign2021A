@@ -36,7 +36,7 @@ public class RemoveProductView extends GridPane {
 	private Button btnRemove;
 	/** Undo button */
 	private Button btnUndo;
-	/**RemoveAll button*/
+	/** RemoveAll button */
 	private Button btnRemoveAll;
 	/** Status */
 	private Label lblStatus;
@@ -125,7 +125,7 @@ public class RemoveProductView extends GridPane {
 			view.fireUndo();
 			isRemoveWindowSent = false;
 		});
-		add(btnUndo, 1, 11);
+		add(btnUndo, 1, 9);
 	}
 
 	/** Initial Remove Button to remove product */
@@ -142,11 +142,12 @@ public class RemoveProductView extends GridPane {
 			cleanValueFields();
 			cboxPrdctBarCode.requestFocus();
 		});
-		add(btnRemove, 1, 9);
+		add(btnRemove, 1, 10);
 	}
-	/**Initial Remove All Products Button*/
+
+	/** Initial Remove All Products Button */
 	public void initRemoveAllButton() {
-		btnRemoveAll =new Button("Remove All Product");
+		btnRemoveAll = new Button("Remove All Product");
 		btnRemoveAll.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
 		btnRemoveAll.setOnAction(e -> {
 
@@ -157,7 +158,7 @@ public class RemoveProductView extends GridPane {
 			cleanValueFields();
 			cboxPrdctBarCode.requestFocus();
 		});
-		add(btnRemoveAll, 1, 10); 
+		add(btnRemoveAll, 1, 11);
 	}
 
 	/** initial status */
