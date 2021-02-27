@@ -1,21 +1,23 @@
 package main.model.store;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import main.interfaces.saleEventListener;
 import main.model.FileHandler;
 import main.model.Product;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-
 public class Cmnd_RemoveAllProducts implements Command {
     private Map<String, Product> map_ref;
-
     private Map<String, Product> copyOfMap;
+    
     private int currentMapOrdering;
+    
     private ArrayList<Product> soldProductsArr_ref; // reference
     private ArrayList<Product> copyOfProductsArr; // reference
+    
     private FileHandler theFile; // reference
+    
     private ArrayList<saleEventListener> subscribedCustomers_ref; // reference
     private ArrayList<saleEventListener> copyOf_subscribedCustomers;
 
@@ -26,11 +28,11 @@ public class Cmnd_RemoveAllProducts implements Command {
         this.soldProductsArr_ref = soldProductsArr_ref; // Arrays.copy.......
         this.theFile = theFile;
         this.subscribedCustomers_ref = subscribedCustomers;
-
     }
 
     @Override
     public void execute() {
+    	System.out.println(map_ref + "\nCMND REMOVEALL 35");
         // 1. create a copy of the map
         copyOfMap = Store.copyMap(map_ref,currentMapOrdering); // create a copy of the map
         // 2. clearing the map
@@ -52,6 +54,7 @@ public class Cmnd_RemoveAllProducts implements Command {
 
     @Override
     public void undo() {
+    	System.out.println(copyOfMap + "\nCMND REMOVEALL 57");
         // 1. restore the map
         map_ref = copyOfMap;
         // 2. restore the SoldProducts

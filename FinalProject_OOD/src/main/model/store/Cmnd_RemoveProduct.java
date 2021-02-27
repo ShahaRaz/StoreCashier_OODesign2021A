@@ -26,7 +26,6 @@ public class Cmnd_RemoveProduct implements Command {
         this.subscribedCustomers_ref = subscribedCustomers;
     }
 
-
     @Override
     public void execute() {
         // 1. checking if it's the last product
@@ -44,13 +43,10 @@ public class Cmnd_RemoveProduct implements Command {
             map_ref.clear();
         }
 
-
         // 4. add Customer to promotions list.
         if (subscribedCustomers_ref.contains(product.getCustomer()))
             subscribedCustomers_ref.remove(product.getCustomer());
         soldProductsArr_ref.remove(product); // not listed in the system requirements, but we implement this for possible future use
-
-
     }
 
     /**
@@ -68,37 +64,5 @@ public class Cmnd_RemoveProduct implements Command {
             subscribedCustomers_ref.add(product.getCustomer());
 
         soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
-
-
     }
-
-
-//    // 1. if product is already in map
-//        if(map_ref.containsKey(product.getBarcode())) {
-//        // 1. notify that there was
-//        wasProductInMapB4thisCmnd = true;
-//        // 2. get the old product from the map
-//        oldProductInMap = map_ref.get(product.getBarcode());
-//
-//        /**
-//         * handle subscribed costumer
-//         * removing the OLD customer from
-//         */
-//        if (subscribedCustomers_ref.contains(map_ref.get(product.getBarcode()).getCustomer()))
-//            subscribedCustomers_ref.remove(map_ref.get(product.getBarcode()).getCustomer());
-//    }
-//        else
-//    wasProductInMapB4thisCmnd = false;
-//
-//    // 2. adding the new product to the map
-//        map_ref.put(product.getBarcode(),product);
-//    // 3. save the map into the file.
-//        theFile.saveMapToFile(this.map_ref, this.currentMapOrdering);
-//
-//    // 4. add Customer to promotions list..
-//        if(product.getCustomer().getIsAcceptingPromotions())
-//            subscribedCustomers_ref.add(product.getCustomer());
-//
-//        soldProductsArr_ref.add(product);// not listed in the system requirements, but we implement this for possible future use
-
 }

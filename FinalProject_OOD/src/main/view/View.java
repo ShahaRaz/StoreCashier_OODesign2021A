@@ -1,6 +1,5 @@
 package main.view;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +15,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -62,8 +60,7 @@ public class View extends GridPane {
 		hbButtons = getHBox();
 		creatTabPane();
 
-		Scene scene = new Scene(hbButtons, 470 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
-
+		Scene scene = new Scene(hbButtons, 505 * ENLRAGMENT_FACTOR, 600 * ENLRAGMENT_FACTOR);
 		stage.setScene(scene);
 		stage.setTitle("Store Saver");
 		stage.show();
@@ -85,7 +82,7 @@ public class View extends GridPane {
 		Tab tab2 = new Tab("Add Product", addWindow);
 		Tab tab3 = new Tab("Remove Product", removeWindow);
 		Tab tab4 = new Tab("Sale", saleWindow);
-		Tab tab5 = new Tab("CustomerResponse",tableResponse);
+		Tab tab5 = new Tab("CustomerResponse", tableResponse);
 
 		tbPane.getTabs().add(tab1);
 		tbPane.getTabs().add(tab2);
@@ -98,51 +95,44 @@ public class View extends GridPane {
 
 	/** @param addMe - View sending request to add specific product */
 	public void fireAddNewProduct(Product addMe) {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskToAddProduct(addMe);
-		}
 	}
 
 	/** @param removeMe - View sending request to remove specific product */
 	public void fireRemoveProduct(Product removeMe) {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskToRemoveProduct(removeMe);
-		}
 	}
 
 	/** @param searchMe - View sending request to search specific product */
 	public void fireSearchProduct(String searchMe) {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskForProduct(searchMe);
-		}
 	}
 
 	/** View sending request to update list of products */
 	public void fireListOfProducts() {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskForListOfAllProducts();
-		}
 	}
 
 	/** View sending request to Undo last action */
 	public void fireUndo() {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskForUndo();
-		}
 	}
 
 	/** View sending request to save current state */
 	public void fireSave() {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskToSave();
-		}
 	}
 
 	/** View sending request to reverse a specific state */
 	public void fireReverse() {
-		for (ViewListenable l : allListeners) {
+		for (ViewListenable l : allListeners)
 			l.viewAskToReverse();
-		}
 	}
 
 	// TODO: Send product to model to create manipulation on product.
@@ -157,6 +147,26 @@ public class View extends GridPane {
 		for (ViewListenable l : allListeners) {
 			l.viewAskToRemoveAllProducts();
 		}
+	}
+
+	/**
+	 * Sending sorting Key to model
+	 * 
+	 * @param toggle - The selected RadioButton from the user
+	 */
+	private void fireSortingMethod(Toggle toggle) {
+		int key = 0;
+		if (toggle.toString().contains("Ascending Order")) {
+			key = Store.KEYS.ORDER_BY_ABC_UP;
+		} else if (toggle.toString().contains("Descending Order")) {
+			key = Store.KEYS.ORDER_BY_ABC_DOWN;
+		} else
+			key = Store.KEYS.ORDER_BY_INSERT_ORDER;
+
+		// TODO: Try replace toString to equals on Toggle
+		for (ViewListenable l : allListeners)
+			l.viewSendSortingMethod(key);
+
 	}
 
 	/* After updating the status field, cleaning the fields for each tab */
@@ -174,18 +184,10 @@ public class View extends GridPane {
 	 */
 	public void notifySubscribedCustomers(ArrayList<saleEventListener> listeners) {
 		tableResponse.sendSaleListeners(listeners);
-		Platform.runLater(()->{
+		saleWindow.updateStatus("S-A-L-E sent!", "green");
+		Platform.runLater(() -> {
 			new Thread(tableResponse).start();
 		});
-
-//		for (saleEventListener l : listeners) {
-//			try {
-//				popUpShortMassage("Promotion Server",l.announceGotPromotion(), 100, 100, 100);
-//				wait(2000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 	}
 
 	/** @param products - List of all product to update the relevant ComboBox */
@@ -222,13 +224,13 @@ public class View extends GridPane {
 	 * @param content - The message to display on Status label
 	 */
 	public void notifyNewMessageFromModel(String content) {
-		if (content.contains("The Sale has been sent!")) {
-
-		} else { // ask for product list, and update all statuses
-
-			fireListOfProducts();
-			notifyNewMessage(content, "green");
-		}
+//		if (content.contains("The Sale has been sent!")) {
+//			 TODO: what we want in here
+//		} else { // ask for product list, and update all statuses
+		System.out.println("view line 231");
+		fireListOfProducts();
+		notifyNewMessage(content, "green");
+//		}
 	}
 
 	/**
@@ -237,11 +239,7 @@ public class View extends GridPane {
 	 * @param elaborate - The message to display on Status label
 	 */
 	public void notifyFailedOperation(String elaborate) {
-//		if (errorMassage.contains("UNDO")) {
-//			popUpShortMassage(errorMassage, elaborate, 400, 200, 20);
-//		}
 		notifyNewMessage(elaborate, "red");
-
 	}
 
 	/**
@@ -294,56 +292,56 @@ public class View extends GridPane {
 		this.tableView = tableView;
 	}
 
-	private void popUpShortMassage(String headLine, String Massage, int Width, int Height, int fontSize) {
-		Stage miniStage = new Stage();
-		VBox vbPopup = new VBox();
-		miniStage.setTitle(headLine);
-		Label lblMiniPopup = setHeadLine(Massage, fontSize);
-		// lblMiniPopup.setText(Massage);
-		// lblMiniPopup.setAlignment(Pos.CENTER);
-		setStageCONSTSize(miniStage, Width, Width, Height, Height);
-		Button btnClose = new Button();
-		btnClose.setText("Ok");
-		btnClose.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				miniStage.close();
-			}
-		});
-		vbPopup.getChildren().addAll(lblMiniPopup, btnClose);
-		vbPopup.setAlignment(Pos.CENTER);
-		vbPopup.setSpacing(20 * ENLRAGMENT_FACTOR);
-
-		Scene scene = new Scene(vbPopup, Width * ENLRAGMENT_FACTOR, Height * ENLRAGMENT_FACTOR);
-		miniStage.setScene(scene);
-
-		// miniStage.initStyle(StageStyle.UNDECORATED);
-		miniStage.show();
-
-		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent theEvent) {
-				if (theEvent.getCode() == KeyCode.ENTER || theEvent.getCode() == KeyCode.ESCAPE)
-					miniStage.close();
-			}
-		});
-	}
-
-	private void setStageCONSTSize(Stage stg, int minWidth, int maxWidth, int minHeihgt, int maxHeight) { // height
-		stg.setMinHeight(minHeihgt * ENLRAGMENT_FACTOR);
-		stg.setMaxHeight(maxHeight * ENLRAGMENT_FACTOR);
-		stg.setMinWidth(minWidth * ENLRAGMENT_FACTOR);
-		stg.setMaxWidth(maxWidth * ENLRAGMENT_FACTOR);
-	}
-
-	private Label setHeadLine(String headLine, int fontSize) {
-		Label lblHeadline = new Label(headLine);
-		lblHeadline.setMinHeight(10 * ENLRAGMENT_FACTOR);
-		lblHeadline.setAlignment(Pos.TOP_CENTER);
-//		lblHeadline.setFont(Font.font("Cambria", fontSize));
-		return lblHeadline;
-	}
+//	private void popUpShortMassage(String headLine, String Massage, int Width, int Height, int fontSize) {
+//		Stage miniStage = new Stage();
+//		VBox vbPopup = new VBox();
+//		miniStage.setTitle(headLine);
+//		Label lblMiniPopup = setHeadLine(Massage, fontSize);
+//		// lblMiniPopup.setText(Massage);
+//		// lblMiniPopup.setAlignment(Pos.CENTER);
+//		setStageCONSTSize(miniStage, Width, Width, Height, Height);
+//		Button btnClose = new Button();
+//		btnClose.setText("Ok");
+//		btnClose.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent arg0) {
+//				miniStage.close();
+//			}
+//		});
+//		vbPopup.getChildren().addAll(lblMiniPopup, btnClose);
+//		vbPopup.setAlignment(Pos.CENTER);
+//		vbPopup.setSpacing(20 * ENLRAGMENT_FACTOR);
+//
+//		Scene scene = new Scene(vbPopup, Width * ENLRAGMENT_FACTOR, Height * ENLRAGMENT_FACTOR);
+//		miniStage.setScene(scene);
+//
+//		// miniStage.initStyle(StageStyle.UNDECORATED);
+//		miniStage.show();
+//
+//		miniStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+//
+//			@Override
+//			public void handle(KeyEvent theEvent) {
+//				if (theEvent.getCode() == KeyCode.ENTER || theEvent.getCode() == KeyCode.ESCAPE)
+//					miniStage.close();
+//			}
+//		});
+//	}
+//
+//	private void setStageCONSTSize(Stage stg, int minWidth, int maxWidth, int minHeihgt, int maxHeight) { // height
+//		stg.setMinHeight(minHeihgt * ENLRAGMENT_FACTOR);
+//		stg.setMaxHeight(maxHeight * ENLRAGMENT_FACTOR);
+//		stg.setMinWidth(minWidth * ENLRAGMENT_FACTOR);
+//		stg.setMaxWidth(maxWidth * ENLRAGMENT_FACTOR);
+//	}
+//
+//	private Label setHeadLine(String headLine, int fontSize) {
+//		Label lblHeadline = new Label(headLine);
+//		lblHeadline.setMinHeight(10 * ENLRAGMENT_FACTOR);
+//		lblHeadline.setAlignment(Pos.TOP_CENTER);
+////		lblHeadline.setFont(Font.font("Cambria", fontSize));
+//		return lblHeadline;
+//	}
 
 	/** Pop-Up window to get from the user the sorting method */
 	public void getSorteWindow() {
@@ -369,10 +367,22 @@ public class View extends GridPane {
 			}
 		});
 
+		Button btUndo = new Button("Undo");
+		btUndo.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+		btUndo.setOnAction(e -> {
+			fireUndo();
+			miniStage.close();
+		});
+
+		HBox hbox = new HBox();
+		hbox.setSpacing(10);
+		hbox.setPadding(new Insets(10));
+		hbox.getChildren().addAll(btOK, btUndo);
+
 		VBox vbox = new VBox();
 		vbox.setSpacing(10);
 		vbox.setPadding(new Insets(10));
-		vbox.getChildren().addAll(rdoSortKey1, rdoSortKey2, rdoSortKey3, btOK);
+		vbox.getChildren().addAll(rdoSortKey1, rdoSortKey2, rdoSortKey3, hbox);
 
 		Scene scene = new Scene(vbox, 150 * ENLRAGMENT_FACTOR, 150 * ENLRAGMENT_FACTOR);
 		vbox.setStyle("-fx-background-color: BEIGE;");
@@ -392,23 +402,4 @@ public class View extends GridPane {
 		});
 	}
 
-	/**
-	 * Sending sorting Key to model
-	 * 
-	 * @param toggle - The selected RadioButton from the user
-	 */
-	private void fireSortingMethod(Toggle toggle) {
-		int key = 0;
-		if (toggle.toString().contains("Ascending Order")) {
-			key = Store.KEYS.ORDER_BY_ABC_UP;
-		} else if (toggle.toString().contains("Descending Order")) {
-			key = Store.KEYS.ORDER_BY_ABC_DOWN;
-		} else
-			key = Store.KEYS.ORDER_BY_INSERT_ORDER;
-
-		// TODO: Try replace toString to equals on Toggle
-		for (ViewListenable l : allListeners)
-			l.viewSendSortingMethod(key);
-
-	}
 }

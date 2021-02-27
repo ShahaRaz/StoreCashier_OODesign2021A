@@ -21,7 +21,6 @@ public class Model {
 	public Model() {
 		this.allListeners = new ArrayList<>();
 		store = Store.getInstance();
-
 	}
 
 	public void registerListener(LogicListenable l) {
@@ -93,7 +92,7 @@ public class Model {
 			fireProductRemoved();
 		}
 	}
-	
+
 	public void removeAllProducts() {
 		store.removeAllProducts();
 		fireSendMessageToUser("The products removed!");
@@ -111,7 +110,8 @@ public class Model {
 	public void sendAllProductsToView() {
 		Set<Map.Entry<String, Product>> products = store.getProductsSet();
 		if (products.isEmpty()) {
-			fireSendProductsArrToView(products); // here for testing, delete me later
+			//TODO: delete me! 114
+//			fireSendProductsArrToView(products); // here for testing, delete me later
 			fireSelectingSortType();
 		}
 		fireSendProductsArrToView(products);
@@ -126,25 +126,21 @@ public class Model {
 	}
 
 	/**
-	 * send promotions to all customers who approved receiving.
-	 * got the PWNewSaleInfo, but understood that we are "sending" a general message, so its not needed.
-	 * keeping it for maybe future use...
+	 * send promotions to all customers who approved receiving. got the
+	 * PWNewSaleInfo, but understood that we are "sending" a general message, so its
+	 * not needed. keeping it for maybe future use...
 	 *
 	 * @param pWNewSaleInfo
 	 */
 	public void sendSaleToCustomers(Product pWNewSaleInfo) {
-
-		ArrayList<saleEventListener> listeners  = store.getSubscribedCustomers();
+		ArrayList<saleEventListener> listeners = store.getSubscribedCustomers();
 		if (listeners.equals(null) || listeners.isEmpty()) {
 			fireOperationFailed("No Subscribed Customers");
 		} else { // we have customers who accepts promotions
 			fireSendMessageToUser("The Sale has been sent!");
-			System.err.println((TAG + ", sendSaleToCustomers: Got " + listeners.size() + " Promotion listeners"));
 			fireSendSaleListenersList(listeners);
 		}
 	}
-
-
 
 	public void saveMemento() {
 		store.addMemento();
@@ -162,20 +158,18 @@ public class Model {
 
 	public void viewSendSortingKey(int key) {
 		/*
-		 * 1 - Ascending Order 
-		 * 2 - Descending Order
-		 * 3 - Insertion Order
+		 * 1 - Ascending Order 2 - Descending Order 3 - Insertion Order
 		 */
-		System.err.println((TAG + ", viewSendSortingKey: key is: " + key));
 		switch (key) {
 		case Store.KEYS.ORDER_BY_ABC_UP:
-			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP),Store.KEYS.ORDER_BY_ABC_UP);
+			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_UP), Store.KEYS.ORDER_BY_ABC_UP);
 			break;
 		case Store.KEYS.ORDER_BY_ABC_DOWN:
-			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_DOWN),Store.KEYS.ORDER_BY_ABC_DOWN);
+			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_ABC_DOWN), Store.KEYS.ORDER_BY_ABC_DOWN);
 			break;
 		case Store.KEYS.ORDER_BY_INSERT_ORDER:
-			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_INSERT_ORDER),Store.KEYS.ORDER_BY_INSERT_ORDER);
+			store.setProductsMap(Store.getNewEmptyMap(Store.KEYS.ORDER_BY_INSERT_ORDER),
+					Store.KEYS.ORDER_BY_INSERT_ORDER);
 			break;
 
 		default:

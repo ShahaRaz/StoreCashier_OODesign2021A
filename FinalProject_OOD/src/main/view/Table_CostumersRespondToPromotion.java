@@ -60,8 +60,6 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 
 	private void initHbox() {
 		hbButtons = getHBox();
-//		hbButtons.getChildren().addAll(btnSave, btnUndo, btnReverse);
-
 		add(hbButtons, 1, 6);
 	}
 
@@ -95,45 +93,12 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 		add(title, 0, 0, 5, 1);
 	}
 
-
-
-
-
-
 	private void initTableProducts() {
 		initTable();
 		initStatus();
 	}
 
 
-//	public void updateTable(ArrayList<saleEventListener> saleEventListeners) {
-//		data.clear();
-//		totalCustomersRespond = 0;
-//		for (saleEventListener l : saleEventListeners) {
-//			DisplayableCustomer tmp = new DisplayableCustomer((Customer) l);
-//			totalCustomersRespond += 1;
-//			data.add(tmp);
-//
-//		}
-//
-//			Platform.runLater(new Runnable() {
-//				@Override
-//				public void run() {
-//					try {
-//						wait(2000);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//					System.err.println((TAG + ", run: passes 2 sec"));
-//				}
-//			});
-//	}
-//		updateProfit("The profit is: " + getProfit() + "$", "green");
-	/** update profit */
-//	public void updateProfit(String status, String color) {
-//		lblProfit.setText(status);
-//		lblProfit.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
-//	}
 	/** initial TableView */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initTable() {
@@ -149,7 +114,7 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 
 		TableColumn message = new TableColumn("Message");
 		message.setCellValueFactory(new PropertyValueFactory("responseToPromotion"));
-
+		message.prefWidthProperty().bind(table.widthProperty().multiply(0.6));
 
 		table.setItems(data);
 		table.getColumns().addAll(customerNameCol, message,PhoneNum);
@@ -167,13 +132,11 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 		setHalignment(lblStatus, HPos.CENTER);
 	}
 
-
 	/** update status */
 	public void updateStatus(String status, String color) {
 		lblStatus.setText(status);
 		lblStatus.setStyle("-fx-text-fill: " + color + ";-fx-font-weight: bold");
 	}
-
 
 	@Override
 	public void run() {
@@ -187,17 +150,12 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 					updateStatus(totalCustomersRespond + " / " + totalSubscribed , "black");
 				});
 				data.add(tmp);
-				Thread.sleep(5000);
-
-
+				Thread.sleep(2000);
 			}
-
-
 		} catch (InterruptedException e) {
 			// finished
 			e.printStackTrace();
 		}
-
 	}
 
 	public void sendSaleListeners(ArrayList<saleEventListener> listeners) {
