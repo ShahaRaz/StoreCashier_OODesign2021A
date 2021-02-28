@@ -51,12 +51,14 @@ public class Cmnd_RemoveAllProducts implements Command {
 
 	@Override
 	public void undo() {
-		// 1. restore the map
-		map_ref = copyOfMap;
-		// 2. restore the SoldProducts
-		soldProductsArr_ref = copyOfProductsArr;
-		// 3. save map to the file
+		// 1. save map to the file
 		theFile.saveMapToFile(copyOfMap, currentMapOrdering); // file
+		// 2. restore the map
+		theFile.readMapFromFile(map_ref, true);
+
+		// 3. restore the SoldProducts
+		soldProductsArr_ref = copyOfProductsArr;
+
 		// 4. restore subscribedCustomers array
 		subscribedCustomers_ref = copyOf_subscribedCustomers;
 	}
