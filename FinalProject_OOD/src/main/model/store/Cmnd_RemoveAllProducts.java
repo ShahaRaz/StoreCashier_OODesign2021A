@@ -46,7 +46,7 @@ public class Cmnd_RemoveAllProducts implements Command {
 		theFile.removeAllProducts();
 		// 6. copy subscribedCustomers Array
 //		this.copyOf_subscribedCustomers = Store.copySaleListenersList(subscribedCustomers_ref);
-		// 7. clearing all subscribedCustomers /// ______ LOCAL STORAGE, not goin back
+		// 7. clearing all subscribedCustomers /// ______ LOCAL STORAGE, not goin back to store
 		subscribedCustomers_ref.removeAll(subscribedCustomers_ref);
 	}
 
