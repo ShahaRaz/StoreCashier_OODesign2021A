@@ -1,0 +1,36 @@
+____________________________________________ Shahar ____________________________________________
+
+______________________ Questions ______________________
+1. In the command pattern:
+    do i need to save only Add & Remove product, or also other things like query to display data...? what else??
+
+2. Map:
+    do i need to save as TreeMap, so for the entire program we will hold a sorted Sorted Map. if yes, how?????
+    or it is enough to hold a hashmap, and everytime the user asks for the products list convert the map to list and sort it?
+
+2b. sort Map:
+    how am i expected to sort the values in map?
+    a. https://www.baeldung.com/java-hashmap-sort tree map (2)
+    b. using external comparator ?? how? on the map, or on the set create from it?
+    c.
+
+
+
+3. Which data we save?
+    If we only save the map of products, than we wont be able to hold the Sales of each product
+    if we only save it inside the Customer.purchased products, we won't contain sales to antoninus buyers
+    So we need to also save an arraylist of all the sold products?
+
+4.
+ where do we save all the saves??
+______________________ Known Bugs & Issues ______________________
+
+
+
+____________________________________________ Gadi ____________________________________________
+
+1. 
+______________________ Questions ______________________
+
+
+______________________ Known Bugs & Issues ______________________

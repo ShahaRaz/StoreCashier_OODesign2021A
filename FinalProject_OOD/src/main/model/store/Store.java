@@ -38,7 +38,7 @@ public class Store {
 	private static Store instance;
 	private String storeName = KEYS.STORE_NAME;
 	protected ArrayList<Product> soldProductsArr; // note! will be modified only by using Commands (commandStack)
-	protected ArrayList<saleEventListener> subscribedCustomers = new ArrayList<>(); // Add for now initial.
+	protected ArrayList<saleEventListener> subscribedCustomers; // Add for now initial.
 
 	private int currentMapOrdering;
 	protected Map<String, Product> productsMap; // <productId,ProductObject> // treemap// note! will be modified
@@ -56,13 +56,14 @@ public class Store {
 		 * KEYS.SORT_BY??
 		 *
 		 */
+		this.subscribedCustomers = new ArrayList<>();
 		this.theFile = new FileHandler();
 
 		// Read map from file:
 		currentMapOrdering = theFile.readMapOrdering(); // KEYS.ORDER_BY..
 		if (currentMapOrdering == -1) { // Note! -1 means that the file is Empty
-//			this.productsMap = null;
-			this.productsMap = Collections.synchronizedMap(new TreeMap<String, Product>());
+			this.productsMap = null;
+//			this.productsMap = Collections.synchronizedMap(new TreeMap<String, Product>());
 			// ask user for map order technique
 			// will be called when view asks for the map
 		} else { // _____________________ INIT PRODUCT MAP FROM FILE
@@ -70,7 +71,7 @@ public class Store {
 			this.productsMap = getNewEmptyMap(currentMapOrdering);
 			theFile.readMapFromFile(productsMap, true);
 			// 3. read subscribedCustomers from file
-			subscribedCustomers = getListenersFromMap(productsMap);
+			subscribedCustomers = getListenersFromMap(productsMap,null);
 		}
 		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
 	}
@@ -195,6 +196,7 @@ public class Store {
 			return "UNDO FAILED";
 		} else {
 			commandStack.pop().undo(); // popping the last command entered the queue and undoing it.
+			System.err.println((TAG + ", undoLastAction: promotionListeners = " + this.subscribedCustomers.size()));
 			return "Successfully reverted last action";
 		}
 	}
@@ -219,17 +221,24 @@ public class Store {
 		return newCopy;
 	}
 
-	public static ArrayList<saleEventListener> getListenersFromMap(Map<String, Product> theMap) {
-		ArrayList<saleEventListener> theNewList = new ArrayList<>();
+	public static ArrayList<saleEventListener> getListenersFromMap(Map<String, Product> theMap,ArrayList<saleEventListener> passNullForNewCopy) {
+		ArrayList<saleEventListener> result;
+		if (passNullForNewCopy == null) {
+			result = new ArrayList<saleEventListener>();
+		}
+		else{
+			result = passNullForNewCopy;
+		}
 		for (Map.Entry<String, Product> pair : theMap.entrySet()) {
 			if (pair != null) {
 				saleEventListener tmpCustomer = (Customer) (pair.getValue().getCustomer()); // a new hard copy ( NOT
 																							// REFERENCE )
-				if (((Customer) tmpCustomer).getIsAcceptingPromotions())
-					theNewList.add(tmpCustomer);
+				if (((Customer) tmpCustomer).getIsAcceptingPromotions()) {
+					result.add(tmpCustomer);
+				}
 			}
 		}
-		return theNewList;
+		return result;
 	}
 
 	// ________________________________________ MEMENTO

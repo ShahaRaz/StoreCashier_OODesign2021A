@@ -32,7 +32,7 @@ public class Cmnd_AddProduct implements Command {
 
 	@Override
 	public void execute() {
-		// 1. if product is already in map
+			// 1. if product is already in map
 		if (map_ref.containsKey(product.getBarcode())) {
 			// 1. notify that there was
 			wasProductInMapB4thisCmnd = true;

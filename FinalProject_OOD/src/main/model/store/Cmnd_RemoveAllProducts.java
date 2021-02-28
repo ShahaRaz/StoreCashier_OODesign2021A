@@ -10,6 +10,7 @@ import main.model.Product;
 public class Cmnd_RemoveAllProducts implements Command {
 	private Map<String, Product> map_ref;
 	private Map<String, Product> copyOfMap;
+	private static final String TAG = "Cmnd_RemoveAllProducts";
 
 	private int currentMapOrdering;
 
@@ -44,9 +45,9 @@ public class Cmnd_RemoveAllProducts implements Command {
 		// 5. remove all products from the file
 		theFile.removeAllProducts();
 		// 6. copy subscribedCustomers Array
-		this.copyOf_subscribedCustomers = Store.copySaleListenersList(subscribedCustomers_ref);
-		// 7. clearing all subscribedCustomers
-		subscribedCustomers_ref.clear();
+//		this.copyOf_subscribedCustomers = Store.copySaleListenersList(subscribedCustomers_ref);
+		// 7. clearing all subscribedCustomers /// ______ LOCAL STORAGE, not goin back
+		subscribedCustomers_ref.removeAll(subscribedCustomers_ref);
 	}
 
 	@Override
@@ -60,6 +61,8 @@ public class Cmnd_RemoveAllProducts implements Command {
 		soldProductsArr_ref = copyOfProductsArr;
 
 		// 4. restore subscribedCustomers array
-		subscribedCustomers_ref = copyOf_subscribedCustomers;
+		subscribedCustomers_ref = Store.getListenersFromMap(map_ref,subscribedCustomers_ref);
+		System.err.println((TAG + ", undo: " + subscribedCustomers_ref.size()));
+//		subscribedCustomers_ref = copyOf_subscribedCustomers; /// ______ LOCAL STORAGE, not goin back
 	}
 }

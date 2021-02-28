@@ -110,6 +110,8 @@ public class FileHandler implements Iterable<Product> {
 			Product p = (Product) i.next();
 			i.remove();
 		}
+
+		System.err.println((TAG + ", removeAllProducts: finished, file size is: " + file.length()));
 	}
 
 	public int readMapOrdering() {
@@ -234,11 +236,13 @@ public class FileHandler implements Iterable<Product> {
 
 				// overWrite over the element we deleted
 				raf_concreteItr.write(temp);
+				System.err.println((TAG + ", remove: raf_concreteItr.lenght is: " +raf_concreteItr.getFilePointer() ));
 
 				if (raf_concreteItr.getFilePointer() > 4) // just deleting the product
 					raf_concreteItr.setLength(raf_concreteItr.getFilePointer());
 				else { // only the mapOrderingIndicator left in the file
 					raf_concreteItr.setLength(0); // we will ask the user for new map ordering
+					System.err.println((TAG + ", remove: raf_concreteItr.lenght is: " +raf_concreteItr ));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
