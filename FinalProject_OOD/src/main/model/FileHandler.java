@@ -106,11 +106,11 @@ public class FileHandler implements Iterable<Product> {
 
 	public void removeAllProducts() {
 		Iterator i = this.iterator();
+
 		while (i.hasNext()) {
 			Product p = (Product) i.next();
 			i.remove();
 		}
-
 		System.err.println((TAG + ", removeAllProducts: finished, file size is: " + file.length()));
 	}
 
@@ -131,6 +131,10 @@ public class FileHandler implements Iterable<Product> {
 	}
 
 	public boolean writeMapOrderingToFile(int mapOrdering_KEYS) {
+		if (mapOrdering_KEYS==-1) {
+			System.err.println((TAG + ", writeMapOrderingToFile: Error! Applying 1 "));
+			mapOrdering_KEYS = 1;
+		}
 		if (file.length() != 0)
 			return false;// file already contains data, order has already been set.
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
@@ -194,6 +198,7 @@ public class FileHandler implements Iterable<Product> {
 			else { // we have next element!
 				try {
 					pointerToB4LastReturnedElement = raf_concreteItr.getFilePointer();
+					System.err.println((TAG + ", next: pointerToB4LastReturnedElement = " + pointerToB4LastReturnedElement ));
 
 					if (pointerToB4LastReturnedElement == 0) {
 						raf_concreteItr.readInt(); // skipping over the first 4 bytes
@@ -223,26 +228,30 @@ public class FileHandler implements Iterable<Product> {
 		public void remove() {
 			// delete the last element returned by the iterator
 			try {
+				System.err.println((TAG + ", remove: file pointer at " + raf_concreteItr.getFilePointer()));
 				if (raf_concreteItr.getFilePointer() == 0L) {
 					throw new IllegalStateException();
 				}
+
 				// backup data from pointer to the end of the file
 				byte[] temp = new byte[(int) (raf_concreteItr.length() - raf_concreteItr.getFilePointer())]; // creating
 
 				raf_concreteItr.read(temp); // reading the reset of the file into buffer
 
 				// return to the position b4 last element was read.
+				System.err.println((TAG + ", remove: return to " + pointerToB4LastReturnedElement ));
 				raf_concreteItr.seek(pointerToB4LastReturnedElement);
 
 				// overWrite over the element we deleted
 				raf_concreteItr.write(temp);
-				System.err.println((TAG + ", remove: raf_concreteItr.lenght is: " +raf_concreteItr.getFilePointer() ));
+				System.err.println((TAG + ", remove: raf_concreteItr.length is: " +raf_concreteItr.length() +
+						"file pointer is in : " + raf_concreteItr.getFilePointer() ));
 
-				if (raf_concreteItr.getFilePointer() > 4) // just deleting the product
+				if (raf_concreteItr.getFilePointer() > 5) // just deleting the product
 					raf_concreteItr.setLength(raf_concreteItr.getFilePointer());
 				else { // only the mapOrderingIndicator left in the file
 					raf_concreteItr.setLength(0); // we will ask the user for new map ordering
-					System.err.println((TAG + ", remove: raf_concreteItr.lenght is: " +raf_concreteItr ));
+					System.err.println((TAG + ", remove: raf_concreteItr.length is: " +raf_concreteItr.length() ));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -18,6 +18,13 @@ public class DisplayableCustomer {
         this.responseToPromotion = new SimpleStringProperty(customer.announceGotPromotion());
     }
 
+    public DisplayableCustomer(String str){
+        this.name = new SimpleStringProperty("unknown");
+        this.mobileNumber = new SimpleStringProperty("00000");;
+        this.isAcceptingPromotions = new SimpleBooleanProperty(false);
+        this.responseToPromotion = new SimpleStringProperty("not interested in promotions");
+
+    }
     public String getResponseToPromotion() {
         return responseToPromotion.get();
     }

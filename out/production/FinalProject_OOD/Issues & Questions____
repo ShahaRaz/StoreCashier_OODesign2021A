@@ -1,32 +1,16 @@
 ____________________________________________ Shahar ____________________________________________
 
 ______________________ Questions ______________________
-1. In the command pattern:
-    do i need to save only Add & Remove product, or also other things like query to display data...? what else??
 
-2. Map:
-    do i need to save as TreeMap, so for the entire program we will hold a sorted Sorted Map. if yes, how?????
-    or it is enough to hold a hashmap, and everytime the user asks for the products list convert the map to list and sort it?
-
-2b. sort Map:
-    how am i expected to sort the values in map?
-    a. https://www.baeldung.com/java-hashmap-sort tree map (2)
-    b. using external comparator ?? how? on the map, or on the set create from it?
-    c.
-
-
-
-3. Which data we save?
-    If we only save the map of products, than we wont be able to hold the Sales of each product
-    if we only save it inside the Customer.purchased products, we won't contain sales to antoninus buyers
-    So we need to also save an arraylist of all the sold products?
-
-4.
- where do we save all the saves??
 ______________________ Known Bugs & Issues ______________________
+1. in the Model.sendAllProductsToView, There are 2 Fire calls in the case that the map is empty,
+    it shouldn't be like that, the view should recive the set, understand that it's empty, then
+    fire it's by it's own a question for the user (about which map ordering he wants)
+    and then send to the model viewAskToOrderBy(int orderKey (Store.KEYS.ORDER_BY...) )
 
+2. the file does not shrink after removing products (raf.setLenght()) doesn't seem to work..
 
-
+3. unbalbe to finish promotion when undoing "add product"
 ____________________________________________ Gadi ____________________________________________
 
 1. 

@@ -62,7 +62,6 @@ public class Cmnd_RemoveAllProducts implements Command {
 
 		// 4. restore subscribedCustomers array
 		subscribedCustomers_ref = Store.getListenersFromMap(map_ref,subscribedCustomers_ref);
-		System.err.println((TAG + ", undo: " + subscribedCustomers_ref.size()));
 //		subscribedCustomers_ref = copyOf_subscribedCustomers; /// ______ LOCAL STORAGE, not goin back
 	}
 }

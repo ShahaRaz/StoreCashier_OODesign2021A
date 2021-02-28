@@ -130,8 +130,7 @@ public class HW01 extends Application {
     // reset OutputStream
     // A method that prevents Exception of adding objects to file
     private void resetOutputStream(String type) {
-        try {
-//            switch (type) {
+        //            switch (type) {
 //                case "Data":
 ////                    System.out.println("resetOutputStream: isAppendable: " + isAppendableData);
 //                     if file exists and isAppendable==false -> the file will be overwritten
@@ -154,11 +153,6 @@ public class HW01 extends Application {
 //                    }
 //                    break;
 //            }
-        } catch (FileNotFoundException e) {
-            System.out.println("resetOutputStream method Exception: " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("resetOutputStream method Exception: " + e.getMessage());
-        }
     }
 
     // save Value To File (DATA & OBJECT)

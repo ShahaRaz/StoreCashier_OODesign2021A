@@ -131,7 +131,8 @@ public class Model {
 	 * @param pWNewSaleInfo
 	 */
 	public void sendSaleToCustomers(Product pWNewSaleInfo) {
-		ArrayList<saleEventListener> listeners = store.getSubscribedCustomers();
+		ArrayList<saleEventListener> listeners = Store.copySaleListenersList(store.getSubscribedCustomers());
+
 		if (listeners.equals(null) || listeners.isEmpty()) {
 			fireOperationFailed("No Subscribed Customers");
 		} else { // we have customers who accepts promotions
@@ -147,7 +148,7 @@ public class Model {
 
 	public void revertedLastState() {
 		String isGood = store.getLastState();
-		if (isGood.equals(Store.KEYS.MOMENTO_FAILED_REVERT)) {
+		if (isGood.equals(Store.KEYS.MEMENTO_FAILED_REVERT)) {
 			fireOperationFailed("No Actions to Reverted");
 		} else {
 			fireSendMessageToUser("The State has been reverted");

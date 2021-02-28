@@ -22,9 +22,13 @@ import main.model.Product;
 public class Store {
 	private static final String TAG = "Store";
 
+	public int getCurrentMapOrdering() {
+		return currentMapOrdering;
+	}
+
 	public interface KEYS {
 		final String STORE_NAME = "atGadi's";
-		final String MOMENTO_FAILED_REVERT = "Reverted state FAILED";
+		final String MEMENTO_FAILED_REVERT = "Reverted state FAILED";
 
 		final int ORDER_BY_ABC_UP = 1;
 		final int ORDER_BY_ABC_DOWN = 2;
@@ -56,15 +60,14 @@ public class Store {
 		 * KEYS.SORT_BY??
 		 *
 		 */
-		this.subscribedCustomers = new ArrayList<>();
+
 		this.theFile = new FileHandler();
 
 		// Read map from file:
 		currentMapOrdering = theFile.readMapOrdering(); // KEYS.ORDER_BY..
 		if (currentMapOrdering == -1) { // Note! -1 means that the file is Empty
-			this.productsMap = null;
-//			this.productsMap = Collections.synchronizedMap(new TreeMap<String, Product>());
-			// ask user for map order technique
+			this.productsMap = Collections.synchronizedMap(new TreeMap<String, Product>());// null;
+			// will ask user for map ordering when command from the controller
 			// will be called when view asks for the map
 		} else { // _____________________ INIT PRODUCT MAP FROM FILE
 			// _____________________________
@@ -72,8 +75,10 @@ public class Store {
 			theFile.readMapFromFile(productsMap, true);
 			// 3. read subscribedCustomers from file
 			subscribedCustomers = getListenersFromMap(productsMap,null);
+			System.err.println((TAG + ", Store: subscribedCustomers" + subscribedCustomers));
 		}
-		this.soldProductsArr = new ArrayList<Product>(); // am i needed?
+		this.subscribedCustomers = new ArrayList<>();
+		this.soldProductsArr = new ArrayList<Product>(); // not listed in the system requirements, but we implement this for possible future use
 	}
 
 	public static Store getInstance() {
@@ -88,7 +93,11 @@ public class Store {
 
 	public Set<Map.Entry<String, Product>> getProductsSet() {
 		return this.productsMap.entrySet();
+//		Map<String, Product> newCopy = copyMap(this.productsMap,this.currentMapOrdering);
+//		return newCopy.entrySet();
 	}
+
+
 
 	// Implement Observable Pattern, notify all the subscribed customers.
 	public ArrayList<saleEventListener> getSubscribedCustomers() {
@@ -251,7 +260,7 @@ public class Store {
 	// Reverted state.
 	public String getLastState() {
 		if (mementoStack.isEmpty())
-			return KEYS.MOMENTO_FAILED_REVERT;
+			return KEYS.MEMENTO_FAILED_REVERT;
 		else { // popping the last saved memento.
 			setMemento(mementoStack.pop());
 			return "Successfully reverted state";

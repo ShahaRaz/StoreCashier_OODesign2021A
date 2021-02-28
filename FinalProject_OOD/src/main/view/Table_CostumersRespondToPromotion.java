@@ -139,7 +139,13 @@ public class Table_CostumersRespondToPromotion extends GridPane implements Runna
 		try {
 			totalSubscribed += theListeners.size();
 			for (saleEventListener l : this.theListeners) {
-				DisplayableCustomer tmp = new DisplayableCustomer((Customer) l);
+				DisplayableCustomer tmp;
+				if (l == null) {
+					tmp = new DisplayableCustomer("Not Interested");
+				}
+				else {
+					tmp = new DisplayableCustomer((Customer) l);
+				}
 				totalCustomersRespond += 1;
 				Platform.runLater(() -> {
 					updateStatus(totalCustomersRespond + " / " + totalSubscribed, "black");
