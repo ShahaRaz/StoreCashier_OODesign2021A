@@ -64,6 +64,7 @@ public class Model {
 	}
 
 	private void fireSendSaleListenersList(ArrayList<saleEventListener> listeners) {
+		System.out.println(listeners.size() + "MOdel line 67");
 		for (LogicListenable l : allListeners) {
 			l.modelSendSaleListeners(listeners);
 		}
@@ -119,8 +120,9 @@ public class Model {
 		Product p = store.getProductDetails(searchMe);
 		if (p == null) {
 			fireOperationFailed("Product doesn't exist!");
-		} else
+		} else {
 			fireGetProduct(p);
+		}
 	}
 
 	/**
@@ -131,6 +133,7 @@ public class Model {
 	 * @param pWNewSaleInfo
 	 */
 	public void sendSaleToCustomers(Product pWNewSaleInfo) {
+		System.out.println(store.getSubscribedCustomers().size() + "Model line 136");
 		ArrayList<saleEventListener> listeners = Store.copySaleListenersList(store.getSubscribedCustomers());
 
 		if (listeners.equals(null) || listeners.isEmpty()) {

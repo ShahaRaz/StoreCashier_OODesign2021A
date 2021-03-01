@@ -74,11 +74,11 @@ public class Store {
 			this.productsMap = getNewEmptyMap(currentMapOrdering);
 			theFile.readMapFromFile(productsMap, true);
 			// 3. read subscribedCustomers from file
-			subscribedCustomers = getListenersFromMap(productsMap,null);
-			System.err.println((TAG + ", Store: subscribedCustomers" + subscribedCustomers));
+			subscribedCustomers = getListenersFromMap(productsMap, null);
 		}
 		this.subscribedCustomers = new ArrayList<>();
-		this.soldProductsArr = new ArrayList<Product>(); // not listed in the system requirements, but we implement this for possible future use
+		this.soldProductsArr = new ArrayList<Product>(); // not listed in the system requirements, but we implement this
+															// for possible future use
 	}
 
 	public static Store getInstance() {
@@ -96,8 +96,6 @@ public class Store {
 //		Map<String, Product> newCopy = copyMap(this.productsMap,this.currentMapOrdering);
 //		return newCopy.entrySet();
 	}
-
-
 
 	// Implement Observable Pattern, notify all the subscribed customers.
 	public ArrayList<saleEventListener> getSubscribedCustomers() {
@@ -205,7 +203,6 @@ public class Store {
 			return "UNDO FAILED";
 		} else {
 			commandStack.pop().undo(); // popping the last command entered the queue and undoing it.
-			System.err.println((TAG + ", undoLastAction: promotionListeners = " + this.subscribedCustomers.size()));
 			return "Successfully reverted last action";
 		}
 	}
@@ -230,12 +227,12 @@ public class Store {
 		return newCopy;
 	}
 
-	public static ArrayList<saleEventListener> getListenersFromMap(Map<String, Product> theMap,ArrayList<saleEventListener> passNullForNewCopy) {
+	public static ArrayList<saleEventListener> getListenersFromMap(Map<String, Product> theMap,
+			ArrayList<saleEventListener> passNullForNewCopy) {
 		ArrayList<saleEventListener> result;
 		if (passNullForNewCopy == null) {
 			result = new ArrayList<saleEventListener>();
-		}
-		else{
+		} else {
 			result = passNullForNewCopy;
 		}
 		for (Map.Entry<String, Product> pair : theMap.entrySet()) {
@@ -287,6 +284,8 @@ public class Store {
 		 */
 		if (mementoStack.size() == 0)
 			addMemento();
+
+		theFile.saveMapToFile(productsMap, currentMapOrdering);
 	}
 
 	public static class Memento {

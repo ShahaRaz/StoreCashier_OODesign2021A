@@ -121,7 +121,6 @@ public class View extends GridPane {
 
 	/** View sending request to Undo last action */
 	public void fireUndo() {
-
 		for (ViewListenable l : allListeners)
 			l.viewAskForUndo();
 	}

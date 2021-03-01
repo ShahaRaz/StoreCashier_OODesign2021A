@@ -19,15 +19,16 @@ import java.util.NoSuchElementException;
  */
 public class FileHandler implements Iterable<Product> {
 	private File file;
-	private boolean isAppendableFile;
-	private RandomAccessFile raf;
+//	private boolean isAppendableFile;
+//	private RandomAccessFile raf;
 	private static final String FILE_NAME = "products.txt"; // Yes, it ends with .txt while its a binary file. (asked by
 															// the professor)
 	private static final String TAG = "FileHandler";
 
 	public FileHandler() {
 		this.file = new File(FILE_NAME);
-		this.isAppendableFile = file.exists();
+//		this.isAppendableFile = file.exists();
+
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 
 		} catch (FileNotFoundException e) {
@@ -46,7 +47,7 @@ public class FileHandler implements Iterable<Product> {
 		try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
 			writeMapOrderingToFile(mapOrdering_KEYS);// if products already in the map, it's already ordered
 			// First 4bytes [0,3] will indicate which ordering are we using
-			
+
 			raf.seek(4); // stepping over the mapOrderingIndicator (int, 4bytes)
 			for (Map.Entry<String, Product> pair : theMap.entrySet()) {
 				Product tmp = (Product) pair.getValue(); // gets the product
@@ -87,7 +88,7 @@ public class FileHandler implements Iterable<Product> {
 			// raf.seek(3); // go to begging of file
 			if (file.length() == 0)
 				return;
-			
+
 			raf.seek(0);
 			raf.readInt();
 
@@ -130,7 +131,7 @@ public class FileHandler implements Iterable<Product> {
 	}
 
 	public boolean writeMapOrderingToFile(int mapOrdering_KEYS) {
-		if (!(mapOrdering_KEYS >= 1 && mapOrdering_KEYS <= 3 )) {
+		if (!(mapOrdering_KEYS >= 1 && mapOrdering_KEYS <= 3)) {
 			System.err.println((TAG + ", writeMapOrderingToFile: Error, ordering has no valid value Applying 1 "));
 			mapOrdering_KEYS = 1;
 		}
@@ -225,7 +226,6 @@ public class FileHandler implements Iterable<Product> {
 		public void remove() {
 			// delete the last element returned by the iterator
 			try {
-				System.err.println((TAG + ", remove: file pointer at " + raf_concreteItr.getFilePointer()));
 				if (raf_concreteItr.getFilePointer() == 0L) {
 					throw new IllegalStateException();
 				}
@@ -241,12 +241,10 @@ public class FileHandler implements Iterable<Product> {
 				// overWrite over the element we deleted
 				raf_concreteItr.write(temp);
 
-
 				if (raf_concreteItr.getFilePointer() > 5) { // just deleting the product
 					raf_concreteItr.setLength(raf_concreteItr.getFilePointer());
 					raf_concreteItr.seek(pointerToB4LastReturnedElement);
-				}
-				else { // only the mapOrderingIndicator left in the file
+				} else { // only the mapOrderingIndicator left in the file
 					raf_concreteItr.setLength(0); // we will ask the user for new map ordering
 				}
 			} catch (IOException e) {
