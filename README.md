@@ -1,6 +1,8 @@
 # Welcome to Store Cashier JavaFx
-## our Object-Oriented-Design course project, Design Patterns Implemented
-MVC, Command, Memento, RandomAccessFile, File Iterator, Singleton, Threads, Listeners/Observers
+
+
+## Object-Oriented-Design project, Design Patterns Implemented:
+MVC, Command, Memento, RandomAccessFile, File Iterator, Threads, Singleton, Listeners/Observers
 
 
 # Snaps: 
