@@ -67,6 +67,7 @@ public class Store {
 		currentMapOrdering = theFile.readMapOrdering(); // KEYS.ORDER_BY..
 		if (currentMapOrdering == -1) { // Note! -1 means that the file is Empty
 			this.productsMap = Collections.synchronizedMap(new TreeMap<String, Product>());// null;
+			this.subscribedCustomers = new ArrayList<>();
 			// will ask user for map ordering when command from the controller
 			// will be called when view asks for the map
 		} else { // _____________________ INIT PRODUCT MAP FROM FILE
@@ -76,7 +77,6 @@ public class Store {
 			// 3. read subscribedCustomers from file
 			subscribedCustomers = getListenersFromMap(productsMap, null);
 		}
-		this.subscribedCustomers = new ArrayList<>();
 		this.soldProductsArr = new ArrayList<Product>(); // not listed in the system requirements, but we implement this
 															// for possible future use
 	}
