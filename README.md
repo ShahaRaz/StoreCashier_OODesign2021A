@@ -5,11 +5,8 @@
 MVC, Command, Memento, RandomAccessFile, File Iterator, Threads, Singleton, Listeners/Observers
 
 
-demo Video:
-![video](https://youtu.be/du2dGEYyGLg)
 
-
-# Snaps: 
+## Snaps: 
 
 
 ### Selectd Map's Sorting order
@@ -34,5 +31,9 @@ demo Video:
 
 ### Recived response from Promotion ( Using Threads , Platform.runLater() ) 
 ![image](https://user-images.githubusercontent.com/55464049/109415012-df2dcd00-79be-11eb-88f5-18915f1bf3aa.png)
+
+
+## demo Video:
+[![IMAGE ALT TEXT HERE](https://user-images.githubusercontent.com/55464049/109764310-11783e00-7bfc-11eb-815e-58b3bded6d20.png)](https://youtu.be/du2dGEYyGLg)
 
 
